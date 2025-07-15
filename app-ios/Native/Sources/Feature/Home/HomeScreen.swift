@@ -19,14 +19,37 @@ public struct HomeScreen: View {
                     dayTabBar
                     
                     if presenter.timetable.timetableMode == .list {
-                        timetableListView
+                        TimetableListView(
+                            timetableItems: presenter.timetable.timetableItems,
+                            onItemTap: { item in
+                                presenter.timetableItemTapped(item)
+                            },
+                            onFavoriteTap: { item, _ in
+                                presenter.timetable.toggleFavorite(item)
+                            },
+                            animationTrigger: { timetableItem, location in
+                                toggleFavorite(timetableItem: timetableItem, adjustedLocationPoint: location)
+                            }
+                        )
                     } else {
-                        timetableGridView
+                        TimetableGridView(
+                            timetableItems: presenter.timetable.timetableItems,
+                            onItemTap: { item in
+                                presenter.timetableItemTapped(item)
+                            },
+                            isFavorite: { itemId in
+                                presenter.timetable.isFavorite(itemId)
+                            }
+                        )
                     }
                 }
                 .background(Color(.systemBackground))
                 
-                makeHeartAnimationView()
+                FavoriteAnimationView(
+                    targetTimetableItemId: targetTimetableItemId,
+                    targetLocationPoint: targetLocationPoint,
+                    animationProgress: animationProgress
+                )
             }
             .navigationTitle("Timetable")
             .navigationBarTitleDisplayMode(.large)
@@ -89,68 +112,6 @@ public struct HomeScreen: View {
             .padding(.vertical, 8)
         }
         .background(Color(.secondarySystemBackground))
-    }
-    
-    private var timetableListView: some View {
-        ScrollView {
-            LazyVStack(spacing: 0) {
-                ForEach(presenter.timetable.timetableItems) { timeGroup in
-                    TimeGroupList(
-                        timeGroup: timeGroup,
-                        onItemTap: { item in
-                            presenter.timetableItemTapped(item)
-                        },
-                        onFavoriteTap: { item, location in
-                            presenter.timetable.toggleFavorite(item)
-                            
-                            if !item.isFavorited {
-                                toggleFavorite(timetableItem: item.timetableItem, adjustedLocationPoint: location)
-                            }
-                        }
-                    )
-                    
-                    if timeGroup != presenter.timetable.timetableItems.last {
-                        Divider()
-                            .padding(.horizontal, 16)
-                    }
-                }
-            }
-            .padding(.bottom, 60)
-        }
-    }
-    
-    private var timetableGridView: some View {
-        Text("Grid view not implemented yet")
-            .foregroundColor(Color(.secondaryLabel))
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-    
-    @ViewBuilder
-    private func makeHeartAnimationView() -> some View {
-        GeometryReader { geometry in
-            if targetTimetableItemId != nil {
-                Image(systemName: "heart.fill")
-                    .foregroundColor(Color.blue.opacity(0.8))
-                    .frame(width: 24, height: 24)
-                    .position(animationPosition(geometry: geometry))
-                    .opacity(1 - animationProgress)
-                    .zIndex(99)
-            }
-        }
-    }
-    
-    private func animationPosition(geometry: GeometryProxy) -> CGPoint {
-        let globalGeometrySize = geometry.frame(in: .global).size
-        let defaultGeometrySize = geometry.size
-        
-        let startPositionY = targetLocationPoint?.y ?? 0
-        let endPositionY = defaultGeometrySize.height - 25
-        let targetY = startPositionY + (endPositionY - startPositionY) * animationProgress
-        
-        let adjustedPositionX = animationProgress * (globalGeometrySize.width / 2 - globalGeometrySize.width + 50)
-        let targetX = defaultGeometrySize.width - 50 + adjustedPositionX
-        
-        return CGPoint(x: targetX, y: targetY)
     }
     
     private func toggleFavorite(timetableItem: TimetableItem, adjustedLocationPoint: CGPoint?) {
