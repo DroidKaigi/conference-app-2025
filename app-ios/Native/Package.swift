@@ -56,6 +56,7 @@ extension Target {
             dependencies: dependencies + [
                 .product(name: "Presentation", package: "Core"),
                 .target(name: "Component"),
+                .target(name: "Theme"),
             ],
             path: "Sources/Feature/\(name)"
         )
