@@ -26,18 +26,8 @@ public final class TimetableProvider {
     public var timetable: Timetable?
     
     // UI State
-    public var selectedDay: DayTab = .day1
-    public var timetableMode: TimetableMode = .list
     public var favoriteIds: Set<String> = []
-    
-    // Computed properties
-    public var timetableItems: [TimetableTimeGroupItems] {
-        guard let timetable = timetable else { return [] }
-        
-        // TODO: Implement proper grouping logic based on time slots and selected day
-        // For now, return empty array until proper implementation
-        return []
-    }
+    public var dayTimetable: [DroidKaigi2024Day: [TimetableTimeGroupItems]] = [:]
 
     public init() {}
 
@@ -45,25 +35,16 @@ public final class TimetableProvider {
     public func fetchTimetable() async {
         do {
             timetable = try await timeteableUseCase.load()
+            for day in DroidKaigi2024Day.allCases {
+                dayTimetable[day] = sortListIntoTimeGroups(
+                    timetableItems: timetable?.dayTimetable(droidKaigi2024Day: day).contents ?? []
+                )
+            }
         } catch {
             print(error)
         }
     }
-    
-    // UI Actions
-    public func selectDay(_ day: DayTab) {
-        selectedDay = day
-    }
-    
-    public func toggleViewMode() {
-        switch timetableMode {
-        case .list:
-            timetableMode = .grid
-        case .grid:
-            timetableMode = .list
-        }
-    }
-    
+
     public func toggleFavorite(_ item: TimetableItemWithFavorite) {
         if item.isFavorited {
             favoriteIds.remove(item.timetableItem.id.value)
@@ -74,5 +55,26 @@ public final class TimetableProvider {
     
     public func isFavorite(_ itemId: String) -> Bool {
         favoriteIds.contains(itemId)
+    }
+
+    private func sortListIntoTimeGroups(timetableItems: [TimetableItemWithFavorite]) -> [TimetableTimeGroupItems] {
+        let sortedItems: [(Date, Date, TimetableItemWithFavorite)] = timetableItems.map {
+            ($0.timetableItem.startsAt, $0.timetableItem.endsAt, $0)
+        }
+
+        let myDict = sortedItems.reduce(into: [Date: TimetableTimeGroupItems]()) {
+            if $0[$1.0] == nil {
+                $0[$1.0] = TimetableTimeGroupItems(
+                    startsTimeString:$1.0.formatted(.dateTime.hour(.twoDigits(amPM: .omitted)).minute()),
+                    endsTimeString:$1.1.formatted(.dateTime.hour(.twoDigits(amPM: .omitted)).minute()),
+                    items:[]
+                )
+            }
+            $0[$1.0]?.items.append($1.2)
+        }
+
+        return myDict.values.sorted {
+            $0.items[0].timetableItem.startsAt.timeIntervalSince1970 < $1.items[0].timetableItem.startsAt.timeIntervalSince1970
+        }
     }
 }

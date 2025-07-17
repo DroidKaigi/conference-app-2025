@@ -9,18 +9,22 @@ public struct HomeScreen: View {
     @State private var animationProgress: CGFloat = 0
     @State private var targetTimetableItemId: String?
     @State private var targetLocationPoint: CGPoint?
+    @State private var timetableMode: TimetableMode = .list
+    @State private var selectedDay: DayTab = .day1
 
     public init() {}
 
     public var body: some View {
+        let timetableItems = presenter.timetable.dayTimetable[selectedDay.model] ?? []
+
         NavigationStack {
             ZStack {
                 VStack(spacing: 0) {
                     dayTabBar
                     
-                    if presenter.timetable.timetableMode == .list {
+                    if timetableMode == .list {
                         TimetableListView(
-                            timetableItems: presenter.timetable.timetableItems,
+                            timetableItems: timetableItems,
                             onItemTap: { item in
                                 presenter.timetableItemTapped(item)
                             },
@@ -33,7 +37,7 @@ public struct HomeScreen: View {
                         )
                     } else {
                         TimetableGridView(
-                            timetableItems: presenter.timetable.timetableItems,
+                            timetableItems: timetableItems,
                             onItemTap: { item in
                                 presenter.timetableItemTapped(item)
                             },
@@ -65,9 +69,9 @@ public struct HomeScreen: View {
                         }
                         
                         Button(action: {
-                            presenter.timetable.toggleViewMode()
+                            timetableMode = timetableMode == .list ? .grid : .list
                         }) {
-                            Image(systemName: presenter.timetable.timetableMode == .list ? "square.grid.2x2" : "list.bullet")
+                            Image(systemName: timetableMode == .list ? "square.grid.2x2" : "list.bullet")
                                 .foregroundColor(Color(.label))
                                 .frame(width: 40, height: 40)
                         }
@@ -85,14 +89,14 @@ public struct HomeScreen: View {
             HStack(spacing: 20) {
                 ForEach(DayTab.allCases) { day in
                     Button(action: {
-                        presenter.timetable.selectDay(day)
+                        selectedDay = day
                     }) {
                         VStack(spacing: 4) {
                             Text(day.rawValue)
                                 .font(.system(size: 16, weight: .medium))
-                                .foregroundColor(presenter.timetable.selectedDay == day ? Color.blue : Color(.label))
+                                .foregroundColor(selectedDay == day ? Color.blue : Color(.label))
                             
-                            if presenter.timetable.selectedDay == day {
+                            if selectedDay == day {
                                 Rectangle()
                                     .fill(Color.blue)
                                     .frame(height: 2)
@@ -134,4 +138,15 @@ public struct HomeScreen: View {
 
 #Preview {
     HomeScreen()
+}
+
+private extension DayTab {
+    var model: DroidKaigi2024Day {
+        switch self {
+        case .day1:
+            .conferenceDay1
+        case .day2:
+            .conferenceDay2
+        }
+    }
 }
