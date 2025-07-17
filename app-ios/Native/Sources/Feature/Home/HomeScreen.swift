@@ -116,8 +116,8 @@ public struct HomeScreen: View {
     
     private func toggleFavorite(timetableItem: TimetableItem, adjustedLocationPoint: CGPoint?) {
         targetLocationPoint = adjustedLocationPoint
-        targetTimetableItemId = timetableItem.id
-        
+        targetTimetableItemId = timetableItem.id.value
+
         if targetTimetableItemId != nil {
             withAnimation(.easeOut(duration: 1)) {
                 animationProgress = 1

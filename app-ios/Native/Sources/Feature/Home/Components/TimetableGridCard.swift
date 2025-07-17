@@ -1,3 +1,4 @@
+import Extension
 import SwiftUI
 import Model
 import Presentation
@@ -13,14 +14,14 @@ struct TimetableGridCard: View {
             onTap(timetableItem)
         }) {
             VStack(alignment: .leading, spacing: 4) {
-                Text(timetableItem.title)
+                Text(timetableItem.title.currentLangTitle)
                     .font(.system(size: 14, weight: .medium))
                     .foregroundColor(Color(.label))
                     .multilineTextAlignment(.leading)
                     .lineLimit(2)
                 
                 if !timetableItem.speakers.isEmpty {
-                    Text(timetableItem.speakers.map { $0.name }.joined(separator: ", "))
+                    Text(timetableItem.speakers.map(\.name).joined(separator: ", "))
                         .font(.system(size: 12))
                         .foregroundColor(Color(.secondaryLabel))
                         .lineLimit(1)
@@ -29,7 +30,7 @@ struct TimetableGridCard: View {
                 Spacer()
                 
                 HStack {
-                    Text(timetableItem.language)
+                    Text(timetableItem.language.displayLanguage)
                         .font(.system(size: 10, weight: .medium))
                         .foregroundColor(Color(.secondaryLabel))
                     Spacer()
@@ -49,17 +50,11 @@ struct TimetableGridCard: View {
     }
 }
 
-#Preview {
-    TimetableGridCard(
-        timetableItem: TimetableItem(
-            title: "Opening Keynote",
-            startsAt: Date(),
-            endsAt: Date().addingTimeInterval(3600),
-            room: .roomA,
-            speakers: [Speaker(name: "John Doe")],
-            language: "EN"
-        ),
-        cellCount: 1,
-        onTap: { _ in }
-    )
-}
+// TODO: Add preview with proper test data
+//#Preview {
+//    TimetableGridCard(
+//        timetableItem: ...,
+//        cellCount: 1,
+//        onTap: { _ in }
+//    )
+//}

@@ -48,37 +48,15 @@ struct TimeGroupList: View {
     }
 }
 
-#Preview {
-    TimeGroupList(
-        timeGroup: TimetableTimeGroupItems(
-            startsTimeString: "10:00",
-            endsTimeString: "10:50",
-            items: [
-                TimetableItemWithFavorite(
-                    timetableItem: TimetableItem(
-                        title: "Opening Keynote",
-                        startsAt: Date(),
-                        endsAt: Date().addingTimeInterval(3600),
-                        room: .roomA,
-                        speakers: [Speaker(name: "John Doe")],
-                        language: "EN"
-                    ),
-                    isFavorited: false
-                ),
-                TimetableItemWithFavorite(
-                    timetableItem: TimetableItem(
-                        title: "Jetpack Compose Workshop",
-                        startsAt: Date(),
-                        endsAt: Date().addingTimeInterval(3600),
-                        room: .roomB,
-                        speakers: [Speaker(name: "Jane Smith")],
-                        language: "JA"
-                    ),
-                    isFavorited: true
-                )
-            ]
-        ),
-        onItemTap: { _ in },
-        onFavoriteTap: { _, _ in }
-    )
-}
+// TODO: Add preview with proper test data
+//#Preview {
+//    TimeGroupList(
+//        timeGroup: TimetableTimeGroupItems(
+//            startsTimeString: "10:00",
+//            endsTimeString: "10:50",
+//            items: []
+//        ),
+//        onItemTap: { _ in },
+//        onFavoriteTap: { _, _ in }
+//    )
+//}

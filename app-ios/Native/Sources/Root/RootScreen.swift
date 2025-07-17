@@ -1,10 +1,4 @@
-//
-//  SwiftUIView.swift
-//  Native
-//
-//  Created by Ryoya Ito on 2025/07/04.
-//
-
+import Dependencies
 import SwiftUI
 import HomeFeature
 
@@ -16,8 +10,7 @@ public struct RootScreen: View {
     @Environment(\.scenePhase) private var scenePhase
     private let presenter = RootPresenter()
 
-    public init() {
-    }
+    public init() {}
 
     public var body: some View {
         TabView {

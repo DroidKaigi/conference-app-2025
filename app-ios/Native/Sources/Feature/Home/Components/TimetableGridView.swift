@@ -7,7 +7,8 @@ struct TimetableGridView: View {
     let onItemTap: (TimetableItemWithFavorite) -> Void
     let isFavorite: (String) -> Bool
     
-    private let rooms: [Room] = [.roomA, .roomB, .roomC, .roomD]
+    // TODO: Get rooms from actual timetable data
+    private let rooms: [Room] = []
     
     var body: some View {
         ScrollView([.horizontal, .vertical]) {
@@ -17,10 +18,10 @@ struct TimetableGridView: View {
                     Color.clear
                         .gridCellUnsizedAxes([.horizontal, .vertical])
                     
-                    ForEach(rooms, id: \.self) { room in
-                        Text(room.rawValue)
+                    ForEach(rooms, id: \.id) { room in
+                        Text(room.displayName)
                             .font(.system(size: 16, weight: .medium))
-                            .foregroundColor(room.color)
+                            .foregroundColor(room.type.color)
                             .frame(width: 192)
                     }
                 }
@@ -50,7 +51,7 @@ struct TimetableGridView: View {
                                         onItemTap(
                                             TimetableItemWithFavorite(
                                                 timetableItem: item,
-                                                isFavorited: isFavorite(item.id)
+                                                isFavorited: isFavorite(item.id.value)
                                             )
                                         )
                                     }

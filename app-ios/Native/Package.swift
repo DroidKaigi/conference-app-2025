@@ -16,7 +16,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(path: "./Core"),
+        .package(path: "../Core"),
         .package(url: "https://github.com/pointfreeco/swift-dependencies.git", exact: "1.9.2"),
     ],
     targets: [
@@ -29,11 +29,19 @@ let package = Package(
         ),
 
         .target(
+            name: "Extension",
+            dependencies: [
+                .product(name: "Model", package: "Core"),
+            ]
+        ),
+
+        .target(
             name: "Root",
             dependencies: [
                 .target(name: "HomeFeature"),
                 .target(name: "KMPFramework"),
-                .product(name: "Model", package: "core"),
+                .product(name: "UseCase", package: "Core"),
+                .product(name: "Model", package: "Core"),
                 .product(name: "Dependencies", package: "swift-dependencies"),
             ]
         ),
@@ -55,7 +63,9 @@ extension Target {
             name: "\(name)Feature",
             dependencies: dependencies + [
                 .product(name: "Presentation", package: "Core"),
+                .product(name: "Model", package: "Core"),
                 .target(name: "Component"),
+                .target(name: "Extension"),
                 .target(name: "Theme"),
             ],
             path: "Sources/Feature/\(name)"

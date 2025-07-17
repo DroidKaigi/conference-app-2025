@@ -8,7 +8,7 @@ public enum LoadTimetableError: Error {
 
 @DependencyClient
 public struct TimetableUseCase: Sendable {
-    public var load: @Sendable () async throws(LoadTimetableError) -> Timetable = { .init(sample: "") }
+    public var load: @Sendable () async throws(LoadTimetableError) -> Timetable = { .init(timetableItems: [], bookmarks: .init()) }
 }
 
 public enum TimetableUseCaseKey: TestDependencyKey {

@@ -14,7 +14,8 @@ let package = Package(
             name: "Presentation",
             targets: ["Presentation"]
         ),
-        .library(name: "Model", targets: ["Model"])
+        .library(name: "Model", targets: ["Model"]),
+        .library(name: "UseCase", targets: ["UseCase"])
     ],
     dependencies: [
         .package(url: "https://github.com/pointfreeco/swift-dependencies.git", exact: "1.9.2"),

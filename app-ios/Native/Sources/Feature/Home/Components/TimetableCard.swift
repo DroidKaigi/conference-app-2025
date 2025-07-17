@@ -18,7 +18,7 @@ struct TimetableCard: View {
             VStack(alignment: .leading, spacing: 8) {
                 headerRow
                 
-                Text(timetableItem.title)
+                Text(timetableItem.title.currentLangTitle)
                     .font(.system(size: 16, weight: .medium))
                     .foregroundColor(Color(.label))
                     .multilineTextAlignment(.leading)
@@ -97,7 +97,7 @@ struct RoomTag: View {
     let room: Room
     
     var body: some View {
-        Text(room.rawValue)
+        Text(room.displayName)
             .font(.system(size: 12, weight: .medium))
             .foregroundColor(.white)
             .padding(.horizontal, 8)
@@ -108,10 +108,10 @@ struct RoomTag: View {
 }
 
 struct LanguageTag: View {
-    let language: String
+    let language: TimetableLanguage
     
     var body: some View {
-        Text(language)
+        Text(language.displayLanguage)
             .font(.system(size: 12, weight: .medium))
             .foregroundColor(Color(.secondaryLabel))
             .padding(.horizontal, 8)
@@ -145,22 +145,13 @@ struct CircularUserIcon: View {
     }
 }
 
-#Preview {
-    TimetableCard(
-        timetableItem: TimetableItem(
-            title: "Building Modern Android Apps with Jetpack Compose",
-            startsAt: Date(),
-            endsAt: Date().addingTimeInterval(3600),
-            room: .roomA,
-            speakers: [
-                Speaker(name: "John Doe"),
-                Speaker(name: "Jane Smith")
-            ],
-            language: "EN"
-        ),
-        isFavorite: false,
-        onTap: { _ in },
-        onTapFavorite: { _, _ in }
-    )
-    .padding()
-}
+// TODO: Add preview with proper test data
+//#Preview {
+//    TimetableCard(
+//        timetableItem: ...,
+//        isFavorite: false,
+//        onTap: { _ in },
+//        onTapFavorite: { _, _ in }
+//    )
+//    .padding()
+//}
