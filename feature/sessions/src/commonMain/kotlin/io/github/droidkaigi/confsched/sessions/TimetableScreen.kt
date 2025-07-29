@@ -74,6 +74,8 @@ fun TimetableScreen(
             var selectedDay by remember { mutableStateOf(DroidKaigi2025Day.ConferenceDay1) }
             val conferenceDays = listOf(DroidKaigi2025Day.ConferenceDay1, DroidKaigi2025Day.ConferenceDay2)
 
+            Text("Diff test")
+
             SingleChoiceSegmentedButtonRow {
                 conferenceDays.forEachIndexed { index, droidKaigi2025Day ->
                     SegmentedButton(
