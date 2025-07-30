@@ -5,6 +5,7 @@ import SwiftUI
 import Theme
 import Presentation
 import Component
+import TimetableDetailFeature
 
 public struct HomeScreen: View {
     @State private var presenter = HomePresenter()
@@ -13,6 +14,7 @@ public struct HomeScreen: View {
     @State private var targetLocationPoint: CGPoint?
     @State private var timetableMode: TimetableMode = .list
     @State private var selectedDay: DayTab = .day1
+    @State private var selectedTimetableItem: TimetableItemWithFavorite?
     
     let onNavigate: (HomeNavigationDestination) -> Void
     
@@ -31,6 +33,7 @@ public struct HomeScreen: View {
                         selectedDay: $selectedDay,
                         timetableItems: timetableItems,
                         onItemTap: { item in
+                            selectedTimetableItem = item
                             onNavigate(.timetableDetail(item))
                         },
                         onFavoriteTap: { item, _ in
@@ -46,6 +49,7 @@ public struct HomeScreen: View {
                         timetableItems: timetableItems,
                         rooms: presenter.timetable.rooms,
                         onItemTap: { item in
+                            selectedTimetableItem = item
                             onNavigate(.timetableDetail(item))
                         },
                         isFavorite: { itemId in
@@ -88,6 +92,9 @@ public struct HomeScreen: View {
                     }
                 }
             }
+        }
+        .navigationDestination(item: $selectedTimetableItem) { item in
+            TimetableDetailScreen(timetableItem: item)
         }
         .toolbarBackground(.hidden, for: .navigationBar)
         .task {

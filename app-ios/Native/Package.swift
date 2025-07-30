@@ -70,6 +70,7 @@ let package = Package(
                 .target(name: "Component"),
                 .target(name: "Extension"),
                 .target(name: "Theme"),
+                .target(name: "TimetableDetailFeature"),
             ],
             path: "Sources/Feature/Home",
             resources: [
