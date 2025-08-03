@@ -6,6 +6,10 @@ plugins {
     alias(libs.plugins.metro)
 }
 
+kotlin {
+    iosX64()
+}
+
 dependencies {
     commonMainImplementation(projects.core.model)
     commonMainImplementation(compose.runtime)
