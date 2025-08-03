@@ -12,11 +12,11 @@ runs:
     - name: Validate Gradle Wrapper
       uses: gradle/actions/wrapper-validation@ac638b010cf58a27ee6c972d7336334ccaf61c96 # v4.4.1
 
-    - name: Copy CI gradle.properties
-      shell: bash
-      run: |
-        mkdir -p ~/.gradle
-        cp .github/ci-gradle.properties ~/.gradle/gradle.properties
+#    - name: Copy CI gradle.properties
+#      shell: bash
+#      run: |
+#        mkdir -p ~/.gradle
+#        cp .github/ci-gradle.properties ~/.gradle/gradle.properties
 
     - name: Set up JDK ${{ inputs.java-version }}
       uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
