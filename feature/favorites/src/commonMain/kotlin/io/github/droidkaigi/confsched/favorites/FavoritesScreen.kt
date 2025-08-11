@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched.favorites
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
@@ -8,9 +9,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
@@ -43,6 +48,11 @@ fun FavoritesScreen(
     onDay2FilterChipClick: () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val transitionFraction by remember(scrollBehavior) {
+        derivedStateOf {
+            scrollBehavior.state.overlappedFraction.coerceIn(0f, 1f)
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -64,7 +74,15 @@ fun FavoritesScreen(
                 onAllFilterChipClick = onAllFilterChipClick,
                 onDay1FilterChipClick = onDay1FilterChipClick,
                 onDay2FilterChipClick = onDay2FilterChipClick,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .then(
+                        if (transitionFraction > 0f) {
+                            Modifier.background(MaterialTheme.colorScheme.surfaceContainer)
+                        } else {
+                            Modifier
+                        }
+                    ),
             )
             when (uiState.timetableContentState) {
                 FavoritesScreenUiState.TimetableContentState.Empty -> {
