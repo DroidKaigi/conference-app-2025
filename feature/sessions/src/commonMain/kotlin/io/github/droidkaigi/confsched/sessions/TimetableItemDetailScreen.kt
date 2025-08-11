@@ -42,9 +42,13 @@ fun TimetableItemDetailScreen(
             floatingActionButton = {
                 TimetableItemDetailFloatingActionButtonMenu(
                     isBookmarked = uiState.isBookmarked,
+                    slideUrl = uiState.timetableItem.asset.slideUrl,
+                    videoUrl = uiState.timetableItem.asset.videoUrl,
                     onBookmarkClick = onBookmarkClick,
                     onAddCalendarClick = { onAddCalendarClick(uiState.timetableItem) },
-                    onShareClick = { onShareClick(uiState.timetableItem) }
+                    onShareClick = { onShareClick(uiState.timetableItem) },
+                    onViewSlideClick = onLinkClick,
+                    onWatchVideoClick = onLinkClick
                 )
             },
             modifier = modifier

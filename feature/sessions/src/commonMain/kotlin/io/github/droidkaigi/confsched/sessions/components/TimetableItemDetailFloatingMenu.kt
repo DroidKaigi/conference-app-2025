@@ -5,7 +5,9 @@ import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.PlayCircle
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingActionButtonMenu
 import androidx.compose.material3.FloatingActionButtonMenuItem
@@ -30,15 +32,21 @@ import io.github.droidkaigi.confsched.sessions.add_to_bookmark
 import io.github.droidkaigi.confsched.sessions.add_to_calendar
 import io.github.droidkaigi.confsched.sessions.remove_from_bookmark
 import io.github.droidkaigi.confsched.sessions.share_link
+import io.github.droidkaigi.confsched.sessions.slide
+import io.github.droidkaigi.confsched.sessions.video
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun TimetableItemDetailFloatingActionButtonMenu(
     isBookmarked: Boolean,
+    slideUrl: String?,
+    videoUrl: String?,
     onBookmarkClick: (isBookmarked: Boolean) -> Unit,
     onAddCalendarClick: () -> Unit,
     onShareClick: () -> Unit,
+    onViewSlideClick: (url: String) -> Unit,
+    onWatchVideoClick: (url: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -46,10 +54,14 @@ fun TimetableItemDetailFloatingActionButtonMenu(
     TimetableItemDetailFloatingActionButtonMenu(
         expanded = expanded,
         isBookmarked = isBookmarked,
+        slideUrl = slideUrl,
+        videoUrl = videoUrl,
         onExpandedChange = { expanded = it },
         onBookmarkClick = onBookmarkClick,
         onAddCalendarClick = onAddCalendarClick,
         onShareClick = onShareClick,
+        onViewSlideClick = onViewSlideClick,
+        onWatchVideoClick = onWatchVideoClick,
         modifier = modifier,
     )
 }
@@ -59,10 +71,14 @@ fun TimetableItemDetailFloatingActionButtonMenu(
 private fun TimetableItemDetailFloatingActionButtonMenu(
     expanded: Boolean,
     isBookmarked: Boolean,
+    slideUrl: String?,
+    videoUrl: String?,
     onExpandedChange: (Boolean) -> Unit,
     onBookmarkClick: (isBookmarked: Boolean) -> Unit,
     onAddCalendarClick: () -> Unit,
     onShareClick: () -> Unit,
+    onViewSlideClick: (url: String) -> Unit,
+    onWatchVideoClick: (url: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val roomTheme = LocalRoomTheme.current
@@ -131,14 +147,37 @@ private fun TimetableItemDetailFloatingActionButtonMenu(
             icon = { Icon(Icons.Default.Share, contentDescription = null) },
             containerColor = menuItemContainerColor,
         )
+        slideUrl?.let { url ->
+            FloatingActionButtonMenuItem(
+                onClick = {
+                    onViewSlideClick(url)
+                    onExpandedChange(false)
+                },
+                text = { Text(stringResource(SessionsRes.string.slide)) },
+                icon = { Icon(Icons.Outlined.Description, contentDescription = null) },
+                containerColor = menuItemContainerColor,
+            )
+        }
+        videoUrl?.let { url ->
+            FloatingActionButtonMenuItem(
+                onClick = {
+                    onWatchVideoClick(url)
+                    onExpandedChange(false)
+                },
+                text = { Text(stringResource(SessionsRes.string.video)) },
+                icon = { Icon(Icons.Outlined.PlayCircle, contentDescription = null) },
+                containerColor = menuItemContainerColor,
+            )
+        }
     }
 }
 
 @Preview
 @Composable
 private fun TimetableItemDetailFloatingMenuPreview() {
+    val session = TimetableItem.Session.fake()
     KaigiPreviewContainer {
-        ProvideRoomTheme(TimetableItem.Session.fake().room.roomTheme) {
+        ProvideRoomTheme(session.room.roomTheme) {
             TimetableItemDetailFloatingActionButtonMenu(
                 expanded = false,
                 isBookmarked = false,
@@ -146,6 +185,10 @@ private fun TimetableItemDetailFloatingMenuPreview() {
                 onBookmarkClick = {},
                 onAddCalendarClick = {},
                 onShareClick = {},
+                slideUrl = session.asset.slideUrl,
+                videoUrl = session.asset.videoUrl,
+                onViewSlideClick = {},
+                onWatchVideoClick = {},
             )
         }
     }
@@ -154,8 +197,9 @@ private fun TimetableItemDetailFloatingMenuPreview() {
 @Preview
 @Composable
 private fun TimetableItemDetailFloatingMenuExpandedPreview() {
+    val session = TimetableItem.Session.fake()
     KaigiPreviewContainer {
-        ProvideRoomTheme(TimetableItem.Session.fake().room.roomTheme) {
+        ProvideRoomTheme(session.room.roomTheme) {
             TimetableItemDetailFloatingActionButtonMenu(
                 expanded = true,
                 isBookmarked = false,
@@ -163,6 +207,10 @@ private fun TimetableItemDetailFloatingMenuExpandedPreview() {
                 onBookmarkClick = {},
                 onAddCalendarClick = {},
                 onShareClick = {},
+                slideUrl = session.asset.slideUrl,
+                videoUrl = session.asset.videoUrl,
+                onViewSlideClick = {},
+                onWatchVideoClick = {},
             )
         }
     }

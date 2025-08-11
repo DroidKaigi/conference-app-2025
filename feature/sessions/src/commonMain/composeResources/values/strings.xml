@@ -10,8 +10,8 @@
     <string name="read_more">More</string>
     <string name="target_audience">Target Audience</string>
     <string name="archive">Archive</string>
-    <string name="slide">Slide</string>
-    <string name="video">Video</string>
+    <string name="slide">Open Session Slides</string>
+    <string name="video">Watch Video</string>
     <string name="workshop">Workshop</string>
     <string name="back">Back</string>
     <string name="search">Search</string>

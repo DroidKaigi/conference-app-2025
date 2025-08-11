@@ -3,22 +3,13 @@ package io.github.droidkaigi.confsched.sessions.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.selection.SelectionContainer
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Description
-import androidx.compose.material.icons.outlined.PlayCircle
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -28,7 +19,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -38,15 +28,11 @@ import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.session.roomTheme
 import io.github.droidkaigi.confsched.model.core.Lang
-import io.github.droidkaigi.confsched.model.sessions.TimetableAsset
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import io.github.droidkaigi.confsched.model.sessions.fake
 import io.github.droidkaigi.confsched.sessions.SessionsRes
-import io.github.droidkaigi.confsched.sessions.archive
 import io.github.droidkaigi.confsched.sessions.read_more
-import io.github.droidkaigi.confsched.sessions.slide
 import io.github.droidkaigi.confsched.sessions.target_audience
-import io.github.droidkaigi.confsched.sessions.video
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -66,13 +52,6 @@ fun TimetableItemDetailContent(
             onLinkClick = onLinkClick,
         )
         TargetAudienceSection(targetAudience = timetableItem.targetAudience)
-        if (timetableItem.asset.isAvailable) {
-            ArchiveSection(
-                timetableAsset = timetableItem.asset,
-                onViewSlideClick = onLinkClick,
-                onWatchVideoClick = onLinkClick,
-            )
-        }
     }
 }
 
@@ -146,68 +125,6 @@ private fun TargetAudienceSection(
     }
 }
 
-@Composable
-private fun ArchiveSection(
-    timetableAsset: TimetableAsset,
-    modifier: Modifier = Modifier,
-    onViewSlideClick: (url: String) -> Unit,
-    onWatchVideoClick: (url: String) -> Unit,
-) {
-    Column(
-        modifier = modifier
-            .padding(8.dp)
-    ) {
-        Text(
-            text = stringResource(SessionsRes.string.archive),
-            style = MaterialTheme.typography.titleLarge,
-            color = LocalRoomTheme.current.primaryColor,
-        )
-        Spacer(Modifier.height(8.dp))
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            timetableAsset.slideUrl?.let { slideUrl ->
-                Button(
-                    modifier = Modifier
-                        .weight(1f),
-                    onClick = { onViewSlideClick(slideUrl) },
-                    colors = ButtonDefaults.buttonColors().copy(
-                        containerColor = LocalRoomTheme.current.primaryColor,
-                    ),
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Description,
-                        contentDescription = stringResource(SessionsRes.string.slide),
-                    )
-                    Text(
-                        text = stringResource(SessionsRes.string.slide),
-                        style = MaterialTheme.typography.labelLarge,
-                    )
-                }
-            }
-            timetableAsset.videoUrl?.let { videoUrl ->
-                Spacer(modifier = Modifier.width(8.dp))
-                Button(
-                    modifier = Modifier
-                        .weight(1f),
-                    onClick = { onWatchVideoClick(videoUrl) },
-                    colors = ButtonDefaults.buttonColors().copy(
-                        containerColor = LocalRoomTheme.current.primaryColor,
-                    ),
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.PlayCircle,
-                        contentDescription = stringResource(SessionsRes.string.video),
-                    )
-                    Text(
-                        text = stringResource(SessionsRes.string.video),
-                        style = MaterialTheme.typography.labelLarge,
-                    )
-                }
-            }
-        }
-    }
-}
 
 @Composable
 @Preview
