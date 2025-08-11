@@ -1,18 +1,12 @@
 package io.github.droidkaigi.confsched.droidkaigiui
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.material3.CircularWavyProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import io.github.droidkaigi.confsched.context.ScreenContext
-import io.github.droidkaigi.confsched.droidkaigiui.component.DefaultErrorFallbackContent
+import io.github.droidkaigi.confsched.droidkaigiui.component.DefaultErrorFallback
+import io.github.droidkaigi.confsched.droidkaigiui.component.DefaultSuspenseFallback
 import kotlinx.coroutines.launch
 import soil.plant.compose.reacty.Await
 import soil.plant.compose.reacty.ErrorBoundary
@@ -28,9 +22,11 @@ fun <T> SoilDataBoundary(
     state: DataModel<T>,
     modifier: Modifier = Modifier,
     errorFallback: @Composable BoxScope.(ErrorBoundaryContext) -> Unit = {
-        DefaultErrorFallbackContent(errorBoundaryContext = it)
+        DefaultErrorFallback(errorBoundaryContext = it)
     },
-    suspenseFallback: @Composable BoxScope.() -> Unit = DefaultSuspenseFallback,
+    suspenseFallback: @Composable BoxScope.() -> Unit = {
+        DefaultSuspenseFallback()
+    },
     content: @Composable (T) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -57,9 +53,11 @@ fun <T1, T2> SoilDataBoundary(
     state2: DataModel<T2>,
     modifier: Modifier = Modifier,
     errorFallback: @Composable BoxScope.(ErrorBoundaryContext) -> Unit = {
-        DefaultErrorFallbackContent(errorBoundaryContext = it)
+        DefaultErrorFallback(errorBoundaryContext = it)
     },
-    suspenseFallback: @Composable BoxScope.() -> Unit = DefaultSuspenseFallback,
+    suspenseFallback: @Composable BoxScope.() -> Unit = {
+        DefaultSuspenseFallback()
+    },
     content: @Composable (T1, T2) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -92,9 +90,11 @@ fun <T1, T2, T3> SoilDataBoundary(
     state3: DataModel<T3>,
     modifier: Modifier = Modifier,
     errorFallback: @Composable BoxScope.(ErrorBoundaryContext) -> Unit = {
-        DefaultErrorFallbackContent(errorBoundaryContext = it)
+        DefaultErrorFallback(errorBoundaryContext = it)
     },
-    suspenseFallback: @Composable BoxScope.() -> Unit = DefaultSuspenseFallback,
+    suspenseFallback: @Composable BoxScope.() -> Unit = {
+        DefaultSuspenseFallback()
+    },
     content: @Composable (T1, T2, T3) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -118,21 +118,6 @@ fun <T1, T2, T3> SoilDataBoundary(
                 content = content
             )
         }
-    }
-}
-
-const val DefaultSuspenseFallbackTestTag = "DefaultSuspenseFallbackTestTag"
-
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
-private val DefaultSuspenseFallback: @Composable BoxScope.() -> Unit = {
-    Box(
-        modifier = Modifier
-            .testTag(DefaultSuspenseFallbackTestTag)
-            .safeDrawingPadding()
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center,
-    ) {
-        CircularWavyProgressIndicator()
     }
 }
 
