@@ -64,8 +64,7 @@ fun FavoritesScreen(
         modifier = modifier
     ) { innerPadding ->
         Column(
-            modifier = Modifier
-                .padding(innerPadding)
+            modifier = Modifier.padding(innerPadding)
         ) {
             FavoriteFilters(
                 allFilterSelected = uiState.filterState.allFilterSelected,
@@ -92,7 +91,7 @@ fun FavoritesScreen(
                         onBookmarkClick = onBookmarkClick,
                         isBookmarked = { true },
                         isDateTagVisible = true,
-                        contentPadding = WindowInsets.safeDrawingWithBottomNavBar.excludeTop().asPaddingValues() + PaddingValues(horizontal = 16.dp),
+                        contentPadding = WindowInsets.safeDrawingWithBottomNavBar.excludeTop().asPaddingValues() + PaddingValues(16.dp),
                         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
                     )
                 }
