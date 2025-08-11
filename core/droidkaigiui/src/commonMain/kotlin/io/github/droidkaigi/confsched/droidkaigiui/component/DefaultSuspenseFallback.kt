@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched.droidkaigiui.component
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -13,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import io.github.droidkaigi.confsched.context.ScreenContext
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
+import io.github.droidkaigi.confsched.droidkaigiui.compositionlocal.safeDrawingWithBottomNavBar
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 const val DefaultSuspenseFallbackTestTag = "DefaultSuspenseFallbackTestTag"
@@ -43,6 +45,7 @@ fun DefaultSuspenseFallback(
                 )
             }
         },
+        contentWindowInsets = WindowInsets.safeDrawingWithBottomNavBar,
         modifier = modifier.testTag(DefaultSuspenseFallbackTestTag),
     ) { innerPadding ->
         DefaultSuspenseFallbackContent(

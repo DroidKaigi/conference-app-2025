@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched.droidkaigiui.component
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -11,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.github.droidkaigi.confsched.context.ScreenContext
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
+import io.github.droidkaigi.confsched.droidkaigiui.compositionlocal.safeDrawingWithBottomNavBar
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import soil.plant.compose.reacty.ErrorBoundaryContext
 
@@ -41,6 +43,7 @@ fun DefaultErrorFallback(
                 )
             }
         },
+        contentWindowInsets = WindowInsets.safeDrawingWithBottomNavBar,
         modifier = modifier,
     ) { innerPadding ->
         DefaultErrorFallbackContent(
