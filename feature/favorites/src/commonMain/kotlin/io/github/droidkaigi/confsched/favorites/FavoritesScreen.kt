@@ -76,13 +76,7 @@ fun FavoritesScreen(
                 onDay2FilterChipClick = onDay2FilterChipClick,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .then(
-                        if (transitionFraction > 0f) {
-                            Modifier.background(MaterialTheme.colorScheme.surfaceContainer)
-                        } else {
-                            Modifier
-                        }
-                    ),
+                    .background(MaterialTheme.colorScheme.surfaceContainer.copy(alpha = transitionFraction)),
             )
             when (uiState.timetableContentState) {
                 FavoritesScreenUiState.TimetableContentState.Empty -> {
