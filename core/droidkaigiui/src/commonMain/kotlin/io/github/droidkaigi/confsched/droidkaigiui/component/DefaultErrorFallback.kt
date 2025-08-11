@@ -10,11 +10,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import io.github.droidkaigi.confsched.context.ScreenContext
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.compositionlocal.safeDrawingWithBottomNavBar
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import soil.plant.compose.reacty.ErrorBoundaryContext
+
+const val DefaultErrorFallbackTestTag = "DefaultErrorFallbackTestTag"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,7 +47,7 @@ fun DefaultErrorFallback(
             }
         },
         contentWindowInsets = WindowInsets.safeDrawingWithBottomNavBar,
-        modifier = modifier,
+        modifier = modifier.testTag(DefaultErrorFallbackTestTag),
     ) { innerPadding ->
         DefaultErrorFallbackContent(
             errorBoundaryContext = errorBoundaryContext,

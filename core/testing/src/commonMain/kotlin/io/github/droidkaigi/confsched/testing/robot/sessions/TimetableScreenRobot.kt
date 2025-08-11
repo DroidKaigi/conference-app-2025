@@ -4,12 +4,12 @@ import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import dev.zacsweers.metro.Inject
-import io.github.droidkaigi.confsched.droidkaigiui.DefaultSuspenseFallbackTestTag
 import io.github.droidkaigi.confsched.droidkaigiui.component.DefaultErrorFallbackContentRetryTestTag
+import io.github.droidkaigi.confsched.droidkaigiui.component.DefaultErrorFallbackTestTag
+import io.github.droidkaigi.confsched.droidkaigiui.component.DefaultSuspenseFallbackTestTag
 import io.github.droidkaigi.confsched.droidkaigiui.session.TimetableListTestTag
 import io.github.droidkaigi.confsched.model.core.DroidKaigi2025Day
 import io.github.droidkaigi.confsched.sessions.TimetableScreenContext
-import io.github.droidkaigi.confsched.sessions.TimetableScreenErrorFallbackTestTag
 import io.github.droidkaigi.confsched.sessions.TimetableScreenRoot
 import io.github.droidkaigi.confsched.testing.compose.TestDefaultsProvider
 import io.github.droidkaigi.confsched.testing.robot.core.CaptureScreenRobot
@@ -81,7 +81,7 @@ class TimetableScreenRobot(
 
     context(composeUiTest: ComposeUiTest)
     fun checkErrorFallbackDisplayed() {
-        composeUiTest.onNodeWithTag(TimetableScreenErrorFallbackTestTag).assertExists()
+        composeUiTest.onNodeWithTag(DefaultErrorFallbackTestTag).assertExists()
     }
 
     context(composeUiTest: ComposeUiTest)
