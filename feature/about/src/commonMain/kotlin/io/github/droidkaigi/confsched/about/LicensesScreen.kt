@@ -8,12 +8,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
+import io.github.droidkaigi.confsched.droidkaigiui.component.AnimatedTextTopAppBar
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -24,8 +23,8 @@ fun LicensesScreen(
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text(text = stringResource(AboutRes.string.oss_licenses)) },
+            AnimatedTextTopAppBar(
+                title = stringResource(AboutRes.string.oss_licenses),
                 navigationIcon = {
                     IconButton(onBackClick) {
                         Icon(

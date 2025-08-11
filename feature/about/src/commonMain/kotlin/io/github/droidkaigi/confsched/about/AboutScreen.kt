@@ -5,15 +5,16 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import io.github.droidkaigi.confsched.about.section.AboutDroidKaigiHeader
 import io.github.droidkaigi.confsched.about.section.AboutFooter
 import io.github.droidkaigi.confsched.about.section.aboutCredits
 import io.github.droidkaigi.confsched.about.section.aboutOthers
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
+import io.github.droidkaigi.confsched.droidkaigiui.component.AnimatedTextTopAppBar
 import io.github.droidkaigi.confsched.droidkaigiui.compositionlocal.safeDrawingWithBottomNavBar
 import io.github.droidkaigi.confsched.droidkaigiui.extension.excludeTop
 import io.github.droidkaigi.confsched.droidkaigiui.extension.plus
@@ -28,12 +29,13 @@ fun AboutScreen(
     onAboutItemClick: (AboutItem) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(stringResource(AboutRes.string.about_droidkaigi))
-                }
+            AnimatedTextTopAppBar(
+                title = stringResource(AboutRes.string.about_droidkaigi),
+                scrollBehavior = scrollBehavior,
             )
         },
         contentWindowInsets = WindowInsets(),
@@ -41,6 +43,7 @@ fun AboutScreen(
     ) { contentPadding ->
         LazyColumn(
             contentPadding = contentPadding + WindowInsets.safeDrawingWithBottomNavBar.excludeTop().asPaddingValues(),
+            modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         ) {
             item {
                 AboutDroidKaigiHeader(
