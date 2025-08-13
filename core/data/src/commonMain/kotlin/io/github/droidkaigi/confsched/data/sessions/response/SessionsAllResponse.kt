@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched.data.sessions.response
 
+import io.github.droidkaigi.confsched.data.core.RoomResponse
 import kotlinx.serialization.Serializable
 
 @Serializable

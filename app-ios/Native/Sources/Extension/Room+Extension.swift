@@ -1,5 +1,6 @@
 import Model
 import SwiftUI
+import Theme
 
 public struct RoomTheme {
     public let primaryColor: Color
@@ -10,17 +11,17 @@ extension Room {
     public var color: Color {
         switch type {
         case .roomF:
-            return Color.blue
+            return AssetColors.flamingo.swiftUIColor
         case .roomG:
-            return Color.green
+            return AssetColors.giraffe.swiftUIColor
         case .roomH:
-            return Color.orange
+            return AssetColors.koala.swiftUIColor
         case .roomI:
-            return Color.purple
+            return AssetColors.jellyfish.swiftUIColor
         case .roomJ:
-            return Color.red
+            return Color.red  // TODO: Add narwhal color
         case .roomIJ:
-            return Color.indigo
+            return AssetColors.jellyfish.swiftUIColor
         }
     }
 
@@ -35,6 +36,36 @@ extension Room {
         Locale.current.identifier == "ja-JP"
             ? name.jaTitle
             : name.enTitle
+    }
+
+    public var displayNameWithFloor: String {
+        "\(displayName) (\(floorInfo))"
+    }
+
+    public var floorInfo: String {
+        switch type {
+        case .roomF, .roomG:
+            return "1F"
+        case .roomH, .roomI, .roomJ, .roomIJ:
+            return "B1F"
+        }
+    }
+
+    public var iconName: String {
+        switch type {
+        case .roomF:
+            return "ic_rhombus"
+        case .roomG:
+            return "ic_circle"
+        case .roomH:
+            return "ic_diamond"
+        case .roomI:
+            return "ic_square"
+        case .roomJ:
+            return "ic_triangle"
+        case .roomIJ:
+            return "ic_square"
+        }
     }
 
     // For backward compatibility with old code

@@ -7,7 +7,10 @@ import dev.zacsweers.metro.createGraphFactory
 class App : Application() {
     val appGraph: AppGraph by lazy {
         createGraphFactory<AndroidAppGraph.Factory>()
-            .createAndroidAppGraph(this)
+            .createAndroidAppGraph(
+                applicationContext = this,
+                licensesJsonReader = AndroidLicensesJsonReader(this),
+            )
     }
 }
 

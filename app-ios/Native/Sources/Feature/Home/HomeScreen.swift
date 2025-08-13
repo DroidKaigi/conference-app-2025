@@ -47,9 +47,6 @@ public struct HomeScreen: View {
                         rooms: presenter.timetable.rooms,
                         onItemTap: { item in
                             onNavigate(.timetableDetail(item))
-                        },
-                        isFavorite: { itemId in
-                            presenter.timetable.isFavorite(itemId)
                         }
                     )
                 }
@@ -65,9 +62,9 @@ public struct HomeScreen: View {
             Image("background_night", bundle: .module)
                 .resizable()
                 .edgesIgnoringSafeArea(.all)
-                .accessibilityLabel("Conference background")
+                .accessibilityLabel(String(localized: "Conference background", bundle: .module))
         )
-        .navigationTitle("Timetable")
+        .navigationTitle(String(localized: "Timetable", bundle: .module))
         .navigationBarTitleDisplayMode(.automatic)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -80,7 +77,7 @@ public struct HomeScreen: View {
                             Image(systemName: "magnifyingglass")
                                 .foregroundStyle(AssetColors.onSurface.swiftUIColor)
                                 .frame(width: 40, height: 40)
-                                .accessibilityLabel("Search sessions")
+                                .accessibilityLabel(String(localized: "Search sessions", bundle: .module))
                         })
 
                     Button(
@@ -92,7 +89,9 @@ public struct HomeScreen: View {
                                 .foregroundStyle(AssetColors.onSurface.swiftUIColor)
                                 .frame(width: 40, height: 40)
                                 .accessibilityLabel(
-                                    timetableMode == .list ? "Switch to grid view" : "Switch to list view")
+                                    timetableMode == .list
+                                        ? String(localized: "Switch to grid view", bundle: .module)
+                                        : String(localized: "Switch to list view", bundle: .module))
                         })
                 }
             }

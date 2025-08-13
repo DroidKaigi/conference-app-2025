@@ -5,3 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data object AboutNavKey : NavKey
+
+@Serializable
+data object LicensesNavKey : NavKey

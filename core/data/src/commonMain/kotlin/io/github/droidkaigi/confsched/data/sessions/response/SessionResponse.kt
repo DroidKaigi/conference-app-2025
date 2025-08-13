@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched.data.sessions.response
 
+import io.github.droidkaigi.confsched.data.core.LocaledResponse
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -16,7 +17,7 @@ public data class SessionResponse(
     val roomId: Int,
     val sessionCategoryItemId: Int,
     val sessionType: String,
-    val message: SessionMessageResponse?,
+    val message: LocaledResponse?,
     val isPlenumSession: Boolean,
     val targetAudience: String,
     val interpretationTarget: Boolean,

@@ -58,66 +58,7 @@ struct TimetableProviderTest {
             #expect(dayItems?.isEmpty == true)
         }
     }
-    
-    @Test
-    func toggleFavoriteAddItem() async throws {
-        let provider = TimetableProvider()
-        let item = TestData.createTimetableItemWithFavorite(isFavorited: false)
-        
-        #expect(provider.favoriteIds.isEmpty)
-        
-        provider.toggleFavorite(item)
-        
-        #expect(provider.favoriteIds.count == 1)
-        #expect(provider.favoriteIds.contains(item.timetableItem.id.value))
-        #expect(provider.isFavorite(item.timetableItem.id.value))
-    }
-    
-    @Test
-    func toggleFavoriteRemoveItem() async throws {
-        let provider = TimetableProvider()
-        let item = TestData.createTimetableItemWithFavorite(isFavorited: true)
-        provider.favoriteIds.insert(item.timetableItem.id.value)
-        
-        #expect(provider.favoriteIds.count == 1)
-        
-        provider.toggleFavorite(item)
-        
-        #expect(provider.favoriteIds.isEmpty)
-        #expect(provider.isFavorite(item.timetableItem.id.value) == false)
-    }
-    
-    @Test
-    func toggleFavoriteMultipleItems() async throws {
-        let provider = TimetableProvider()
-        let item1 = TestData.createTimetableItemWithFavorite(id: "1", isFavorited: false)
-        let item2 = TestData.createTimetableItemWithFavorite(id: "2", isFavorited: false)
-        let item3 = TestData.createTimetableItemWithFavorite(id: "3", isFavorited: true)
-        
-        provider.favoriteIds.insert(item3.timetableItem.id.value)
-        
-        provider.toggleFavorite(item1)
-        provider.toggleFavorite(item2)
-        provider.toggleFavorite(item3)
-        
-        #expect(provider.favoriteIds.count == 2)
-        #expect(provider.isFavorite("1"))
-        #expect(provider.isFavorite("2"))
-        #expect(provider.isFavorite("3") == false)
-    }
-    
-    @Test
-    func isFavoriteMethod() async throws {
-        let provider = TimetableProvider()
-        
-        #expect(provider.isFavorite("nonexistent") == false)
-        
-        provider.favoriteIds.insert("test-id")
-        
-        #expect(provider.isFavorite("test-id"))
-        #expect(provider.isFavorite("another-id") == false)
-    }
-    
+
     @MainActor
     @Test
     func dayTimetableGrouping() async throws {
@@ -323,26 +264,6 @@ struct TimetableProviderTest {
             #expect(itemIds.contains("2"))
             #expect(itemIds.contains("3"))
         }
-    }
-    
-    @Test("Verify favoriteIds initial state and operations")
-    func favoriteIdsManagement() async throws {
-        let provider = TimetableProvider()
-        
-        #expect(provider.favoriteIds.isEmpty)
-        
-        provider.favoriteIds = Set(["id1", "id2", "id3"])
-        
-        #expect(provider.favoriteIds.count == 3)
-        #expect(provider.isFavorite("id1"))
-        #expect(provider.isFavorite("id2"))
-        #expect(provider.isFavorite("id3"))
-        #expect(!provider.isFavorite("id4"))
-        
-        provider.favoriteIds.remove("id2")
-        
-        #expect(provider.favoriteIds.count == 2)
-        #expect(!provider.isFavorite("id2"))
     }
 }
 

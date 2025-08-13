@@ -3,6 +3,7 @@ package io.github.droidkaigi.confsched.model.sessions
 import io.github.droidkaigi.confsched.model.core.DroidKaigi2025Day
 import io.github.droidkaigi.confsched.model.core.Filters
 import io.github.droidkaigi.confsched.model.core.MultiLangText
+import io.github.droidkaigi.confsched.model.core.Room
 import io.github.droidkaigi.confsched.model.core.RoomType
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.PersistentSet
@@ -23,7 +24,7 @@ data class Timetable(
         }
     }
 
-    val rooms: List<TimetableRoom> by lazy {
+    val rooms: List<Room> by lazy {
         timetableItems.map { it.room }.toSet().sorted()
     }
 
@@ -103,11 +104,11 @@ fun Timetable?.orEmptyContents(): Timetable = this ?: Timetable()
 
 fun Timetable.Companion.fake(): Timetable {
     val rooms = mutableListOf(
-        TimetableRoom(1, MultiLangText("Flamingo", "Flamingo"), RoomType.RoomF, 4),
-        TimetableRoom(2, MultiLangText("Giraffe", "Giraffe"), RoomType.RoomG, 5),
-        TimetableRoom(3, MultiLangText("Hedgehog", "Hedgehog"), RoomType.RoomH, 1),
-        TimetableRoom(4, MultiLangText("Iguana", "Iguana"), RoomType.RoomI, 2),
-        TimetableRoom(5, MultiLangText("Jellyfish", "Jellyfish"), RoomType.RoomJ, 3),
+        Room(1, MultiLangText("Meerkat", "Meerkat"), RoomType.RoomF, 4),
+        Room(2, MultiLangText("Ladybug", "Ladybug"), RoomType.RoomG, 5),
+        Room(3, MultiLangText("Koala", "Koala"), RoomType.RoomH, 1),
+        Room(4, MultiLangText("Jellyfish", "Jellyfish"), RoomType.RoomI, 2),
+        Room(5, MultiLangText("Narwhal", "Narwhal"), RoomType.RoomJ, 3),
     )
     repeat(10) {
         rooms += rooms

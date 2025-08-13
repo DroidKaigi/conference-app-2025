@@ -29,7 +29,7 @@ public struct StaffScreen: View {
                 .background(AssetColors.surface.swiftUIColor)
             }
         }
-        .navigationTitle("スタッフ")
+        .navigationTitle(String(localized: "スタッフ", bundle: .module))
         #if os(iOS)
             .navigationBarTitleDisplayMode(.large)
         #endif

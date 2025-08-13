@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinxSerialization)
     id("droidkaigi.primitive.metro")
+    id("droidkaigi.primitive.aboutlibraries")
 }
 
 android {

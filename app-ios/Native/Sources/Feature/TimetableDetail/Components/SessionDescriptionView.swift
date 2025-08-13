@@ -6,15 +6,16 @@ struct SessionDescriptionView: View {
     @State private var isDescriptionExpanded = false
     @State private var canBeExpanded = false
     let content: String
-    let themeColor: Color
+    let primaryColor: Color
+    let containerColor: Color
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text(.init(content))
-                .font(.system(size: 16))
+                .font(Typography.bodyLarge)
                 .textSelection(.enabled)
                 .lineLimit(isDescriptionExpanded ? nil : 5)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(AssetColors.onSurface.swiftUIColor)
                 .background {
                     ViewThatFits(in: .vertical) {
                         Text(content)
@@ -31,15 +32,12 @@ struct SessionDescriptionView: View {
                     isDescriptionExpanded = true
                     canBeExpanded = false
                 } label: {
-                    Text("もっと読む")
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundStyle(themeColor)
+                    Text("続きを読む")
+                        .font(Typography.labelLarge)
+                        .foregroundStyle(primaryColor)
                         .frame(height: 40)
                         .frame(maxWidth: .infinity, alignment: .center)
-                        .overlay {
-                            Capsule()
-                                .stroke(Color.gray.opacity(0.3))
-                        }
+                        .background(containerColor, in: Capsule())
                 }
             }
         }
@@ -52,7 +50,8 @@ struct SessionDescriptionView: View {
         SessionDescriptionView(
             content:
                 "Kotlin Coroutinesは非同期処理をシンプルに記述できるKotlinの言語機能です。実験的な機能としてこれまでも提供されてきましたがKotlin 1.3で正式にリリース予定です。Androidの誕生から10年たちアプリの利用シーンが増えたKotlin Coroutinesは非同期処理をシンプルに記述できるKotlinの言語機能です。実験的な機能としてこれまでも提供されてきましたがKotlin 1.3で正式にリリース予定です。Androidの誕生から10年たちアプリの利用シーンが増えた.",
-            themeColor: .blue
+            primaryColor: .blue,
+            containerColor: .gray
         )
         .padding(.horizontal, 16)
     }

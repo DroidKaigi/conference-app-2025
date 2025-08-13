@@ -1,0 +1,5 @@
+<resources>
+    <string name="event_map">イベントマップ</string>
+    <string name="event_map_description">DroidKaigiでは、セッション以外にも参加者が楽しめるイベントを開催。コミュニケーションや技術交流を通じてカンファレンスを満喫しましょう！</string>
+    <string name="read_more">詳しく見る</string>
+</resources>

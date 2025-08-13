@@ -77,7 +77,6 @@ fun AboutFooter(
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        Spacer(modifier = Modifier.height(80.dp))
     }
 }
 

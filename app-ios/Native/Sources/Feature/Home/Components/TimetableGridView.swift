@@ -9,7 +9,6 @@ struct TimetableGridView: View {
     let timetableItems: [TimetableTimeGroupItems]
     let rooms: [Room]
     let onItemTap: (TimetableItemWithFavorite) -> Void
-    let isFavorite: (String) -> Bool
 
     var body: some View {
         ScrollView(.vertical) {
@@ -96,12 +95,7 @@ struct TimetableGridView: View {
                 timetableItem: lunchItem.timetableItem,
                 cellCount: rooms.count,
                 onTap: { item in
-                    onItemTap(
-                        TimetableItemWithFavorite(
-                            timetableItem: item,
-                            isFavorited: isFavorite(item.id.value)
-                        )
-                    )
+                    onItemTap(lunchItem)
                 }
             )
             .gridCellColumns(rooms.count)

@@ -25,9 +25,6 @@ public final class TimetableProvider {
     private var fetchTask: Task<Void, Never>?
 
     public var timetable: Timetable?
-
-    // UI State
-    public var favoriteIds: Set<String> = []
     public var dayTimetable: [DroidKaigi2024Day: [TimetableTimeGroupItems]] = [:]
 
     // Extract unique rooms from timetable items
@@ -69,15 +66,7 @@ public final class TimetableProvider {
     }
 
     public func toggleFavorite(_ item: TimetableItemWithFavorite) {
-        if item.isFavorited {
-            favoriteIds.remove(item.timetableItem.id.value)
-        } else {
-            favoriteIds.insert(item.timetableItem.id.value)
-        }
-    }
-
-    public func isFavorite(_ itemId: String) -> Bool {
-        favoriteIds.contains(itemId)
+        // TODO: Implement
     }
 
     private func sortListIntoTimeGroups(timetableItems: [TimetableItemWithFavorite]) -> [TimetableTimeGroupItems] {

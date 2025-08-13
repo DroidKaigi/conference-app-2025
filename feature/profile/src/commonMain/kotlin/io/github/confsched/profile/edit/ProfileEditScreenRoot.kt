@@ -2,6 +2,7 @@ package io.github.confsched.profile.edit
 
 import androidx.compose.runtime.Composable
 import io.github.confsched.profile.ProfileScreenContext
+import io.github.droidkaigi.confsched.common.compose.SafeLaunchedEffect
 import io.github.droidkaigi.confsched.common.compose.rememberEventFlow
 import io.github.droidkaigi.confsched.model.profile.Profile
 
@@ -13,11 +14,16 @@ fun ProfileEditScreenRoot(
 ) {
     val eventFlow = rememberEventFlow<ProfileEditScreenEvent>()
 
-    val form = profileEditScreenPresenter(
+    val uiState = profileEditScreenPresenter(
         eventFlow = eventFlow,
         profile = profile,
-        onProfileCreate = onProfileCreate,
     )
 
-    ProfileEditScreen(form = form)
+    SafeLaunchedEffect(uiState.created) {
+        if (uiState.created) {
+            onProfileCreate()
+        }
+    }
+
+    ProfileEditScreen(form = uiState.form)
 }

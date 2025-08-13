@@ -6,12 +6,12 @@ import shared
 struct EventMapUseCaseImpl {
     func load() async throws(LoadEventError) -> [Model.EventMapEvent] {
         // TODO: implement actual kmp connection
-        return await EventMapEvent.mockEvents
+        return await Model.EventMapEvent.mockEvents
     }
 }
 
-extension EventMapEvent {
-    @MainActor static let mockEvents: [EventMapEvent] = [
+extension Model.EventMapEvent {
+    @MainActor static let mockEvents: [Model.EventMapEvent] = [
         EventMapEvent(
             id: "1",
             title: "Welcome Talk",

@@ -36,12 +36,12 @@ import androidx.compose.ui.unit.sp
 import io.github.droidkaigi.confsched.designsystem.theme.LocalRoomTheme
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
-import io.github.droidkaigi.confsched.droidkaigiui.session.roomTheme
+import io.github.droidkaigi.confsched.droidkaigiui.extension.roomTheme
 import io.github.droidkaigi.confsched.model.core.Locale
 import io.github.droidkaigi.confsched.model.core.getDefaultLocale
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import io.github.droidkaigi.confsched.model.sessions.fake
-import io.github.droidkaigi.confsched.model.sessions.nameAndFloor
+import io.github.droidkaigi.confsched.model.core.nameAndFloor
 import io.github.droidkaigi.confsched.sessions.SessionsRes
 import io.github.droidkaigi.confsched.sessions.category_title
 import io.github.droidkaigi.confsched.sessions.content_description_category

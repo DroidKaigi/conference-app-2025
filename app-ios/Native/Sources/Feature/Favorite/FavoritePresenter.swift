@@ -12,7 +12,7 @@ final class FavoritePresenter {
         let favoriteItems = timetable.dayTimetable.values
             .flatMap { $0 }
             .flatMap { $0.items }
-            .filter { timetable.favoriteIds.contains($0.timetableItem.id.value) }
+            .filter(\.isFavorited)
 
         return sortListIntoTimeGroups(timetableItems: favoriteItems)
     }

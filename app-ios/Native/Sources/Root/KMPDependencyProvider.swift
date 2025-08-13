@@ -6,6 +6,6 @@ public struct KMPDependencyProvider: Sendable {
     public let appGraph: shared.IosAppGraph
 
     private init() {
-        self.appGraph = createIosAppGraph()
+        self.appGraph = IosAppGraphKt.createIosAppGraph()
     }
 }

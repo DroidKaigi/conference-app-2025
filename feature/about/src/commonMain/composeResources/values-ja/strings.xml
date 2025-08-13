@@ -20,4 +20,5 @@
     <string name="content_description_youtube">YouTube</string>
     <string name="content_description_x">X</string>
     <string name="content_description_medium">Medium</string>
+    <string name="oss_licenses">オープンソースライセンス</string>
 </resources>

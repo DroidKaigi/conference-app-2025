@@ -4,12 +4,12 @@ import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.binding
 import io.github.droidkaigi.confsched.data.DataScope
-import io.github.droidkaigi.confsched.data.sessions.response.LocaledResponse
+import io.github.droidkaigi.confsched.data.core.toMultiLangText
+import io.github.droidkaigi.confsched.data.core.toRoom
 import io.github.droidkaigi.confsched.data.sessions.response.SessionAssetResponse
-import io.github.droidkaigi.confsched.data.sessions.response.SessionMessageResponse
 import io.github.droidkaigi.confsched.data.sessions.response.SessionsAllResponse
 import io.github.droidkaigi.confsched.model.core.MultiLangText
-import io.github.droidkaigi.confsched.model.core.RoomType
+import io.github.droidkaigi.confsched.model.core.Room
 import io.github.droidkaigi.confsched.model.data.TimetableQueryKey
 import io.github.droidkaigi.confsched.model.sessions.Timetable
 import io.github.droidkaigi.confsched.model.sessions.TimetableAsset
@@ -17,7 +17,6 @@ import io.github.droidkaigi.confsched.model.sessions.TimetableCategory
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import io.github.droidkaigi.confsched.model.sessions.TimetableItemId
 import io.github.droidkaigi.confsched.model.sessions.TimetableLanguage
-import io.github.droidkaigi.confsched.model.sessions.TimetableRoom
 import io.github.droidkaigi.confsched.model.sessions.TimetableSessionType
 import io.github.droidkaigi.confsched.model.sessions.TimetableSpeaker
 import kotlinx.collections.immutable.toPersistentList
@@ -73,17 +72,10 @@ public fun SessionsAllResponse.toTimetable(): Timetable {
                 )
             }.first()
         }
-    val roomIdToRoom: Map<Int, TimetableRoom> = timetableContents.rooms
+    val roomIdToRoom: Map<Int, Room> = timetableContents.rooms
         .associateBy(
-            keySelector = { room -> room.id },
-            valueTransform = { room ->
-                TimetableRoom(
-                    id = room.id,
-                    name = room.name.toMultiLangText(),
-                    type = room.name.toRoomType(),
-                    sort = room.sort,
-                )
-            },
+            keySelector = { roomResponse -> roomResponse.id },
+            valueTransform = { roomResponse -> roomResponse.toRoom() },
         )
 
     return Timetable(
@@ -103,10 +95,7 @@ public fun SessionsAllResponse.toTimetable(): Timetable {
                         isInterpretationTarget = apiSession.interpretationTarget,
                     ),
                     asset = apiSession.asset.toTimetableAsset(),
-                    description = if (
-                        apiSession.i18nDesc?.ja == null &&
-                        apiSession.i18nDesc?.en == null
-                    ) {
+                    description = if (apiSession.i18nDesc == null) {
                         MultiLangText(
                             jaTitle = apiSession.description ?: "",
                             enTitle = apiSession.description ?: "",
@@ -139,10 +128,7 @@ public fun SessionsAllResponse.toTimetable(): Timetable {
                         .map { speakerIdToSpeaker[it]!! }
                         .toPersistentList(),
                     levels = apiSession.levels.toPersistentList(),
-                    description = if (
-                        apiSession.i18nDesc?.ja == null &&
-                        apiSession.i18nDesc?.en == null
-                    ) {
+                    description = if (apiSession.i18nDesc == null) {
                         MultiLangText(
                             jaTitle = apiSession.description ?: "",
                             enTitle = apiSession.description ?: "",
@@ -162,24 +148,9 @@ public fun SessionsAllResponse.toTimetable(): Timetable {
     )
 }
 
-private fun LocaledResponse.toMultiLangText() =
-    MultiLangText(jaTitle = ja ?: "", enTitle = en ?: "")
-
-private fun SessionMessageResponse.toMultiLangText() = MultiLangText(jaTitle = ja, enTitle = en)
-
 private fun SessionAssetResponse.toTimetableAsset() = TimetableAsset(videoUrl, slideUrl)
 
 internal fun String.toInstantAsJST(): Instant {
     val (date, _) = split("+")
     return LocalDateTime.parse(date).toInstant(TimeZone.of("UTC+9"))
-}
-
-private fun LocaledResponse.toRoomType() = when (en?.lowercase()) {
-    "flamingo" -> RoomType.RoomF
-    "giraffe" -> RoomType.RoomG
-    "hedgehog" -> RoomType.RoomH
-    "iguana" -> RoomType.RoomI
-    "jellyfish" -> RoomType.RoomJ
-    // Assume the room on the first day.
-    else -> RoomType.RoomIJ
 }

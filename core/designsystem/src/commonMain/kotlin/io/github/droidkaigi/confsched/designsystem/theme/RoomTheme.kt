@@ -8,36 +8,31 @@ import androidx.compose.ui.graphics.Color
 
 sealed interface RoomTheme {
     val primaryColor: Color
-    val containerColor: Color
+    val containerColor: Color get() = primaryColor.copy(alpha = 0.1f)
     val dimColor: Color
 
-    data object Iguana : RoomTheme {
-        override val primaryColor = Color(0xFF45E761)
-        override val containerColor = Color(0xFF45E761).copy(alpha = 0.1f)
+    data object Jellyfish : RoomTheme {
+        override val primaryColor = Color(0xFFBCC8F5)
         override val dimColor = Color(0xFF132417)
     }
 
-    data object Hedgehog : RoomTheme {
-        override val primaryColor = Color(0xFFFF974B)
-        override val containerColor = Color(0xFFFF974B).copy(alpha = 0.1f)
+    data object Koala : RoomTheme {
+        override val primaryColor = Color(0xFFDAA3ED)
         override val dimColor = Color(0xFF251C15)
     }
 
-    data object Giraffe : RoomTheme {
-        override val primaryColor = Color(0xFFDDD33C)
-        override val containerColor = Color(0xFFDDD33C).copy(alpha = 0.1f)
+    data object Ladybug : RoomTheme {
+        override val primaryColor = Color(0xFFB19BFA)
         override val dimColor = Color(0xFF222213)
     }
 
-    data object Flamingo : RoomTheme {
-        override val primaryColor = Color(0xFFFF53CF)
-        override val containerColor = Color(0xFFFF53CF).copy(alpha = 0.1f)
+    data object Meerkat : RoomTheme {
+        override val primaryColor = Color(0xFFB2F5FB)
         override val dimColor = Color(0xFF271A25)
     }
 
-    data object Jellyfish : RoomTheme {
-        override val primaryColor = Color(0xFF44ADE7)
-        override val containerColor = Color(0xFF44ADE7).copy(alpha = 0.1f)
+    data object Narwhal : RoomTheme {
+        override val primaryColor = Color(0xFF7EE5BD)
         override val dimColor = Color(0xFF121E25)
     }
 }

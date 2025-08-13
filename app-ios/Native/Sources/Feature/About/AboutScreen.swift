@@ -49,14 +49,14 @@ public struct AboutScreen: View {
     @ViewBuilder
     private var creditsSection: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("Credits")
+            Text("Credits", bundle: .module)
                 .foregroundStyle(AssetColors.primaryFixed.swiftUIColor)
                 .font(.subheadline)
                 .padding(.bottom, 8)
 
             VStack(spacing: 0) {
                 AboutButton(
-                    title: "Contributors",
+                    title: String(localized: "Contributors", bundle: .module),
                     imageName: "ic_diversity"
                 ) {
                     presenter.contributorsTapped()
@@ -67,7 +67,7 @@ public struct AboutScreen: View {
                     .background(AssetColors.outlineVariant.swiftUIColor)
 
                 AboutButton(
-                    title: "Staffs",
+                    title: String(localized: "Staffs", bundle: .module),
                     imageName: "ic_sentiment_very_satisfied"
                 ) {
                     presenter.staffsTapped()
@@ -78,7 +78,7 @@ public struct AboutScreen: View {
                     .background(AssetColors.outlineVariant.swiftUIColor)
 
                 AboutButton(
-                    title: "Sponsors",
+                    title: String(localized: "Sponsors", bundle: .module),
                     imageName: "ic_apartment"
                 ) {
                     presenter.sponsorsTapped()
@@ -95,14 +95,14 @@ public struct AboutScreen: View {
     private var othersSection: some View {
         // swiftlint:disable:next closure_body_length
         VStack(alignment: .leading, spacing: 0) {
-            Text("Others")
+            Text("Others", bundle: .module)
                 .foregroundStyle(AssetColors.primaryFixed.swiftUIColor)
                 .font(.subheadline)
                 .padding(.bottom, 8)
 
             VStack(spacing: 0) {
                 AboutButton(
-                    title: "Code of Conduct",
+                    title: String(localized: "Code of Conduct", bundle: .module),
                     imageName: "ic_gavel"
                 ) {
                     presenter.codeOfConductTapped()
@@ -113,7 +113,7 @@ public struct AboutScreen: View {
                     .background(AssetColors.outlineVariant.swiftUIColor)
 
                 AboutButton(
-                    title: "Licenses",
+                    title: String(localized: "Licenses", bundle: .module),
                     imageName: "ic_file_copy"
                 ) {
                     presenter.licensesTapped()
@@ -124,7 +124,7 @@ public struct AboutScreen: View {
                     .background(AssetColors.outlineVariant.swiftUIColor)
 
                 AboutButton(
-                    title: "Privacy Policy",
+                    title: String(localized: "Privacy Policy", bundle: .module),
                     imageName: "ic_privacy_tip"
                 ) {
                     presenter.privacyPolicyTapped()
@@ -135,7 +135,7 @@ public struct AboutScreen: View {
                     .background(AssetColors.outlineVariant.swiftUIColor)
 
                 AboutButton(
-                    title: "Settings",
+                    title: String(localized: "Settings", bundle: .module),
                     imageName: "ic_settings"
                 ) {
                     presenter.settingsTapped()
@@ -146,14 +146,16 @@ public struct AboutScreen: View {
                     .background(AssetColors.outlineVariant.swiftUIColor)
 
                 AboutButton(
-                    title: "Switch to Compose Multiplatform",
+                    title: String(localized: "Switch to Compose Multiplatform", bundle: .module),
                     imageName: "switch.2",
                     isSystemImage: true
                 ) {
                     showSwitchToComposeMultiplatformAlert = true
                     presenter.switchToComposeMultiplatformTapped()
                 }
-                .alert("Switch UI", isPresented: $showSwitchToComposeMultiplatformAlert) {
+                .alert(
+                    String(localized: "Switch UI", bundle: .module), isPresented: $showSwitchToComposeMultiplatformAlert
+                ) {
                     Button("Cancel", role: .cancel) {}
                     Button("Switch") {
                         onEnableComposeMultiplatform()

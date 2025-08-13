@@ -13,4 +13,5 @@ plugins {
     alias(libs.plugins.roborazzi) apply false
     alias(libs.plugins.detekt) apply false
     alias(libs.plugins.composeHotReload) apply false
+    alias(libs.plugins.aboutLibraries) apply false
 }

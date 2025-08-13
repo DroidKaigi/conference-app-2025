@@ -32,12 +32,12 @@ import io.github.droidkaigi.confsched.designsystem.theme.LocalRoomTheme
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.rememberAsyncImagePainter
-import io.github.droidkaigi.confsched.droidkaigiui.session.icon
-import io.github.droidkaigi.confsched.droidkaigiui.session.roomTheme
+import io.github.droidkaigi.confsched.droidkaigiui.extension.icon
+import io.github.droidkaigi.confsched.droidkaigiui.extension.roomTheme
 import io.github.droidkaigi.confsched.model.core.MultiLangText
 import io.github.droidkaigi.confsched.model.core.RoomType
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
-import io.github.droidkaigi.confsched.model.sessions.TimetableRoom
+import io.github.droidkaigi.confsched.model.core.Room
 import io.github.droidkaigi.confsched.model.sessions.TimetableSpeaker
 import io.github.droidkaigi.confsched.model.sessions.fake
 import kotlinx.collections.immutable.persistentListOf
@@ -229,7 +229,7 @@ private fun TimetableGridItemPreview_WelcomeTalk() {
                     enTitle = "Welcome Talk",
                 ),
                 speakers = persistentListOf(),
-                room = TimetableRoom(
+                room = Room(
                     id = 1,
                     name = MultiLangText("Jellyfish", "Jellyfish"),
                     type = RoomType.RoomJ,

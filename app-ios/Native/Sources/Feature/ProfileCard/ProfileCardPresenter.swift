@@ -6,7 +6,7 @@ import Presentation
 @MainActor
 @Observable
 final class ProfileCardPresenter {
-    var userName: String = "DroidKaigi Attendee"
+    var userName: String = "DroidKaigi"
     var userRole: String = "Android Developer"
     var userCompany: String = "Tech Company"
     var userBio: String = "Passionate about Android development and attending DroidKaigi 2025!"

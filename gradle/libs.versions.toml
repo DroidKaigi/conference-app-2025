@@ -54,6 +54,8 @@ molecule = "2.1.0"
 
 navigationCompose = "2.9.0-beta04"
 
+aboutLibraries = "12.2.4"
+
 [libraries]
 # gradle plugins
 androidGradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidGradlePlugin" }
@@ -68,6 +70,7 @@ detektGradlePlugin = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugi
 roborazziGradlePlugin = { module = "io.github.takahirom.roborazzi:roborazzi-gradle-plugin", version.ref = "roborazzi" }
 buildkonfigGradlePlugin = { module = "com.codingfeline.buildkonfig:buildkonfig-gradle-plugin", version.ref = "buildkonfig" }
 skieGradlePlugin = { module = "co.touchlab.skie:co.touchlab.skie.gradle.plugin", version.ref = "skie" }
+aboutLibrariesGradlePlugin = { module = "com.mikepenz.aboutlibraries.plugin:com.mikepenz.aboutlibraries.plugin.gradle.plugin", version.ref = "aboutLibraries" }
 
 # ktor and ktorfit
 ktorClientOkhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
@@ -134,7 +137,7 @@ navigationeventDesktop = { group = "androidx.navigationevent", name = "navigatio
 
 # coil
 coil = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
-coilNetwork = { module = "io.coil-kt.coil3:coil-network-ktor2", version.ref = "coil" }
+coilNetwork = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
 coilTest = { module = "io.coil-kt.coil3:coil-test", version.ref = "coil" }
 
 haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
@@ -145,6 +148,8 @@ buildkonfigCompiler = { module = "com.codingfeline.buildkonfig:buildkonfig-compi
 molecule = { module = "app.cash.molecule:molecule-runtime", version.ref = "molecule" }
 
 navigationCompose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+
+aboutLibrariesComposeM3 = { module = "com.mikepenz:aboutlibraries-compose-m3", version.ref = "aboutLibraries" }
 
 [plugins]
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
@@ -162,6 +167,7 @@ metro = { id = "dev.zacsweers.metro", version.ref = "metro" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 composeHotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "composeHotReload" }
+aboutLibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutLibraries" }
 
 [bundles]
 plugins = [
@@ -177,4 +183,5 @@ plugins = [
     "roborazziGradlePlugin",
     "buildkonfigGradlePlugin",
     "skieGradlePlugin",
+    "aboutLibrariesGradlePlugin",
 ]

@@ -3,6 +3,7 @@ package io.github.droidkaigi.confsched.model.sessions
 import io.github.droidkaigi.confsched.model.core.DroidKaigi2025Day
 import io.github.droidkaigi.confsched.model.core.Lang
 import io.github.droidkaigi.confsched.model.core.MultiLangText
+import io.github.droidkaigi.confsched.model.core.Room
 import io.github.droidkaigi.confsched.model.core.RoomType.RoomF
 import io.github.droidkaigi.confsched.model.core.defaultLang
 import kotlinx.collections.immutable.PersistentList
@@ -27,7 +28,7 @@ sealed class TimetableItem {
     abstract val endsAt: Instant
     abstract val category: TimetableCategory
     abstract val sessionType: TimetableSessionType
-    abstract val room: TimetableRoom
+    abstract val room: Room
     abstract val targetAudience: String
     abstract val language: TimetableLanguage
     abstract val asset: TimetableAsset
@@ -46,7 +47,7 @@ sealed class TimetableItem {
         @Contextual override val endsAt: Instant,
         override val category: TimetableCategory,
         override val sessionType: TimetableSessionType,
-        override val room: TimetableRoom,
+        override val room: Room,
         override val targetAudience: String,
         override val language: TimetableLanguage,
         override val asset: TimetableAsset,
@@ -66,7 +67,7 @@ sealed class TimetableItem {
         @Contextual override val endsAt: Instant,
         override val category: TimetableCategory,
         override val sessionType: TimetableSessionType,
-        override val room: TimetableRoom,
+        override val room: Room,
         override val targetAudience: String,
         override val language: TimetableLanguage,
         override val asset: TimetableAsset,
@@ -166,7 +167,7 @@ fun TimetableItem.Session.Companion.fake(duration: Duration = 40.minutes): Timet
             ),
         ),
         sessionType = TimetableSessionType.NORMAL,
-        room = TimetableRoom(
+        room = Room(
             id = 1,
             name = MultiLangText("Room1", "Room2"),
             type = RoomF,

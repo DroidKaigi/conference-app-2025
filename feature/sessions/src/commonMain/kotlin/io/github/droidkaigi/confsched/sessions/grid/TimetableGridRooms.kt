@@ -27,17 +27,17 @@ import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.designsystem.theme.LocalRoomTheme
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
-import io.github.droidkaigi.confsched.droidkaigiui.session.roomTheme
+import io.github.droidkaigi.confsched.droidkaigiui.extension.roomTheme
 import io.github.droidkaigi.confsched.model.core.MultiLangText
 import io.github.droidkaigi.confsched.model.core.RoomType
-import io.github.droidkaigi.confsched.model.sessions.TimetableRoom
+import io.github.droidkaigi.confsched.model.core.Room
 import io.github.droidkaigi.confsched.sessions.TimetableScrollState
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun RoomItem(
-    room: TimetableRoom,
+    room: Room,
     modifier: Modifier = Modifier,
 ) {
     ProvideRoomTheme(room.roomTheme) {
@@ -285,7 +285,7 @@ object RoomsDefaults {
 @Composable
 private fun TimetableGridRoomsPreview() {
     val rooms = listOf(
-        TimetableRoom(
+        Room(
             id = 1,
             name = MultiLangText(
                 enTitle = "Room A",
@@ -294,7 +294,7 @@ private fun TimetableGridRoomsPreview() {
             type = RoomType.RoomJ,
             sort = 1,
         ),
-        TimetableRoom(
+        Room(
             id = 2,
             name = MultiLangText(
                 enTitle = "Room B",
@@ -303,7 +303,7 @@ private fun TimetableGridRoomsPreview() {
             type = RoomType.RoomF,
             sort = 2,
         ),
-        TimetableRoom(
+        Room(
             id = 3,
             name = MultiLangText(
                 enTitle = "Room C",

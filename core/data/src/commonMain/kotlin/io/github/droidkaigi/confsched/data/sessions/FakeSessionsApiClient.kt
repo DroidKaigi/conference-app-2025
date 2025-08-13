@@ -3,13 +3,12 @@ package io.github.droidkaigi.confsched.data.sessions
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import io.github.droidkaigi.confsched.data.DataScope
+import io.github.droidkaigi.confsched.data.core.LocaledResponse
+import io.github.droidkaigi.confsched.data.core.RoomResponse
 import io.github.droidkaigi.confsched.data.sessions.DefaultSessionsApiClient.Companion.filterConferenceDaySessions
 import io.github.droidkaigi.confsched.data.sessions.response.CategoryItemResponse
 import io.github.droidkaigi.confsched.data.sessions.response.CategoryResponse
-import io.github.droidkaigi.confsched.data.sessions.response.LocaledResponse
-import io.github.droidkaigi.confsched.data.sessions.response.RoomResponse
 import io.github.droidkaigi.confsched.data.sessions.response.SessionAssetResponse
-import io.github.droidkaigi.confsched.data.sessions.response.SessionMessageResponse
 import io.github.droidkaigi.confsched.data.sessions.response.SessionResponse
 import io.github.droidkaigi.confsched.data.sessions.response.SessionsAllResponse
 import io.github.droidkaigi.confsched.data.sessions.response.SpeakerResponse
@@ -139,13 +138,11 @@ public fun SessionsAllResponse.Companion.onlyVideoAssetAvailableFake(): Sessions
 
 public fun SessionsAllResponse.Companion.messageExistsFake(): SessionsAllResponse = SessionsAllResponse.fake(
     sessions = SessionResponse.fakes(
-        message = SessionMessageResponse.fake(),
+        message = LocaledResponse(
+            ja = "このセッションは中止になりました",
+            en = "This session has been canceled.",
+        )
     ),
-)
-
-public fun SessionMessageResponse.Companion.fake(): SessionMessageResponse = SessionMessageResponse(
-    ja = "このセッションは中止になりました",
-    en = "This session has been canceled.",
 )
 
 private fun RoomResponse.Companion.fakes(): List<RoomResponse> = listOf(
@@ -202,7 +199,7 @@ private fun SessionResponse.Companion.fakes(
     rooms: List<RoomResponse> = RoomResponse.fakes(),
     categories: List<CategoryResponse> = CategoryResponse.fakes(),
     asset: SessionAssetResponse = SessionAssetResponse.fake(),
-    message: SessionMessageResponse? = null,
+    message: LocaledResponse? = null,
 ): List<SessionResponse> {
     val sessions = mutableListOf<SessionResponse>()
 

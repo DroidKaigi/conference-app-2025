@@ -13,10 +13,12 @@ import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.rememberHazeState
 import io.github.droidkaigi.confsched.component.KaigiNavigationScaffold
 import io.github.droidkaigi.confsched.component.MainScreenTab
+import io.github.droidkaigi.confsched.model.about.AboutItem
 import io.github.droidkaigi.confsched.navigation.component.NavHostWithSharedAxisX
 import io.github.droidkaigi.confsched.navigation.extension.navigateToAboutTab
 import io.github.droidkaigi.confsched.navigation.extension.navigateToEventMapTab
 import io.github.droidkaigi.confsched.navigation.extension.navigateToFavoritesTab
+import io.github.droidkaigi.confsched.navigation.extension.navigateToLicenses
 import io.github.droidkaigi.confsched.navigation.extension.navigateToProfileCardTab
 import io.github.droidkaigi.confsched.navigation.extension.navigateToSearch
 import io.github.droidkaigi.confsched.navigation.extension.navigateToTimetableItemDetail
@@ -84,7 +86,9 @@ actual fun KaigiAppUi() {
                 onShareClick = externalNavController::onShareClick,
                 onAddCalendarClick = externalNavController::navigateToCalendarRegistration,
             )
-            eventMapTabNavGraph()
+            eventMapTabNavGraph(
+                onClickReadMore = externalNavController::navigate,
+            )
             favoritesTabNavGraph(
                 onBackClick = { navController.popBackStack() },
                 onLinkClick = externalNavController::navigate,
@@ -94,8 +98,21 @@ actual fun KaigiAppUi() {
             )
             aboutTabNavGraph(
                 onAboutItemClick = {
-                    // TODO
-                }
+                    when (it) {
+                        AboutItem.Map -> TODO()
+                        AboutItem.Contributors -> TODO()
+                        AboutItem.Staff -> TODO()
+                        AboutItem.Sponsors -> TODO()
+                        AboutItem.CodeOfConduct -> TODO()
+                        AboutItem.License -> navController.navigateToLicenses()
+                        AboutItem.PrivacyPolicy -> TODO()
+                        AboutItem.Settings -> TODO()
+                        AboutItem.Youtube -> TODO()
+                        AboutItem.X -> TODO()
+                        AboutItem.Medium -> TODO()
+                    }
+                },
+                onBackClick = navController::popBackStack,
             )
             profileTabNavGraph()
         }

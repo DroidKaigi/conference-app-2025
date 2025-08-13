@@ -87,4 +87,15 @@ final class TimetableDetailPresenter {
         else { return nil }
         return url
     }
+
+    func navigateToFavorite() {
+        // TODO: Add logic to navigate to favorite screen
+    }
+
+    var isCancelledSession: Bool {
+        if let session = timetableItem.timetableItem as? TimetableItemSession {
+            return session.message != nil
+        }
+        return false
+    }
 }

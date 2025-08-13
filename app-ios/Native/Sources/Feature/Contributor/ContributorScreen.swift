@@ -63,7 +63,7 @@ public struct ContributorScreen: View {
             }
         }
         .background(AssetColors.surface.swiftUIColor)
-        .navigationTitle("Contributors")
+        .navigationTitle(String(localized: "Contributors", bundle: .module))
         #if os(iOS)
             .navigationBarTitleDisplayMode(.large)
         #endif

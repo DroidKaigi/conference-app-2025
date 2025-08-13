@@ -1,15 +1,25 @@
+import Component
 import SwiftUI
 import Theme
 
+// TODO: fix actual model
+enum ProfileCardType: String {
+    case dark
+    case light
+}
+
 public struct ProfileCardScreen: View {
     @State private var presenter = ProfileCardPresenter()
+    @State private var isFront: Bool = true
+    @State private var animatedDegree: Angle = .zero
+    @State private var cardType: ProfileCardType = .dark
 
     public init() {}
 
     public var body: some View {
         NavigationStack {
             profileCardScrollView
-                .background(Color.primary.opacity(0.02))
+                .background(AssetColors.surface.swiftUIColor)
                 .navigationTitle("Profile Card")
                 #if os(iOS)
                     .navigationBarTitleDisplayMode(.large)
@@ -19,80 +29,54 @@ public struct ProfileCardScreen: View {
 
     private var profileCardScrollView: some View {
         ScrollView {
-            VStack(spacing: 24) {
+            VStack(spacing: 0) {
                 profileCard
                 actionButtons
             }
-            .padding(.vertical, 24)
+            .padding(.vertical, 20)
             .padding(.bottom, 80)  // Tab bar padding
+        }
+        .onAppear {
+            withAnimation(.bouncy) {
+                animatedDegree = .degrees(30)
+            } completion: {
+                animatedDegree = .zero
+            }
         }
     }
 
     private var profileCard: some View {
-        VStack(spacing: 20) {
-            avatarImage
-            userInfoSection
-            bioText
-            qrCodeSection
+        ZStack {
+            if isFront {
+                FrontCard(
+                    userRole: presenter.userRole,
+                    userName: presenter.userName,
+                    cardType: cardType
+                )
+            } else {
+                BackCard(
+                    cardType: cardType
+                )
+                .rotation3DEffect(Angle(degrees: 180), axis: (x: 0, y: 1, z: 0))
+            }
         }
-        .padding(24)
-        .background(Color.primary.opacity(0.05))
-        .cornerRadius(20)
-        .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 5)
-        .padding(.horizontal, 16)
-    }
-
-    private var avatarImage: some View {
-        Image(systemName: "person.circle.fill")
-            .resizable()
-            .frame(width: 120, height: 120)
-            .foregroundColor(.accentColor)
-    }
-
-    private var userInfoSection: some View {
-        VStack(spacing: 8) {
-            Text(presenter.userName)
-                .font(.title2)
-                .fontWeight(.bold)
-
-            Text(presenter.userRole)
-                .font(.body)
-                .foregroundColor(.secondary)
-
-            Text(presenter.userCompany)
-                .font(.caption)
-                .foregroundColor(.secondary)
+        .padding(.horizontal, 56)
+        .padding(.vertical, 32)
+        .onTapGesture {
+            withAnimation {
+                isFront.toggle()
+            }
         }
-    }
-
-    private var bioText: some View {
-        Text(presenter.userBio)
-            .font(.body)
-            .multilineTextAlignment(.center)
-            .padding(.horizontal, 20)
-    }
-
-    private var qrCodeSection: some View {
-        VStack(spacing: 8) {
-            // TODO: Replace with actual QR code generation
-            Image(systemName: "qrcode")
-                .resizable()
-                .frame(width: 150, height: 150)
-                .foregroundColor(.primary.opacity(0.3))
-
-            Text("Scan to connect")
-                .font(.caption)
-                .foregroundColor(.secondary)
-        }
-        .padding(.top, 8)
+        .rotation3DEffect(isFront ? animatedDegree : .degrees(180), axis: (x: 0, y: 1, z: 0))
     }
 
     private var actionButtons: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 8) {
             shareButton
             editButton
         }
         .padding(.horizontal, 16)
+        .padding(.vertical, 12)
     }
 
     private var shareButton: some View {
@@ -101,24 +85,23 @@ public struct ProfileCardScreen: View {
         } label: {
             Label("Share Profile Card", systemImage: "square.and.arrow.up")
                 .frame(maxWidth: .infinity)
-                .padding()
-                .background(Color.accentColor)
-                .foregroundColor(.white)
-                .cornerRadius(12)
         }
+        .filledButtonStyle()
     }
 
     private var editButton: some View {
         Button {
             presenter.editProfile()
+            if cardType == .dark {
+                cardType = .light
+            } else {
+                cardType = .dark
+            }
         } label: {
-            Label("Edit Profile", systemImage: "pencil")
+            Text("Edit Profile")
                 .frame(maxWidth: .infinity)
-                .padding()
-                .background(Color.primary.opacity(0.1))
-                .foregroundColor(.primary)
-                .cornerRadius(12)
         }
+        .textButtonStyle()
     }
 }
 

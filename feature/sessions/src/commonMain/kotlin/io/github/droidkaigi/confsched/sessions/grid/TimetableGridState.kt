@@ -14,9 +14,8 @@ import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.model.core.DroidKaigi2025Day
 import io.github.droidkaigi.confsched.model.sessions.Timetable
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
-import io.github.droidkaigi.confsched.model.sessions.TimetableRoom
+import io.github.droidkaigi.confsched.model.core.Room
 import io.github.droidkaigi.confsched.sessions.TimetableScrollState
-import io.github.droidkaigi.confsched.sessions.rememberTimetableScrollState
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
@@ -176,7 +175,7 @@ class TimetableGridState(
 }
 
 data class TimetableLayout(
-    val rooms: List<TimetableRoom>,
+    val rooms: List<Room>,
     val dayStartTime: Instant?,
     val dayToStartTime: Map<DroidKaigi2025Day, Instant>,
     val timetableLayouts: List<TimetableItemLayout>,
@@ -273,7 +272,7 @@ data class TimetableItemLayout(
 }
 
 private fun TimetableItem.toLayout(
-    rooms: List<TimetableRoom>,
+    rooms: List<Room>,
     dayStartTime: Instant,
     density: Density,
     minutePx: Float,
