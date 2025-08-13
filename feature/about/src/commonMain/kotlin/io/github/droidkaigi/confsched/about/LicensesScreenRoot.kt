@@ -4,7 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import com.mikepenz.aboutlibraries.ui.compose.rememberLibraries
 import io.github.droidkaigi.confsched.droidkaigiui.SoilDataBoundary
+import io.github.droidkaigi.confsched.droidkaigiui.SoilDataBoundaryDefaults
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.stringResource
 import soil.query.compose.rememberQuery
 
 @OptIn(ExperimentalResourceApi::class)
@@ -15,6 +17,10 @@ fun LicensesScreenRoot(
 ) {
     SoilDataBoundary(
         state = rememberQuery(screenContext.licensesQueryKey),
+        fallback = SoilDataBoundaryDefaults.appBarFallback(
+            title = stringResource(AboutRes.string.oss_licenses),
+            onBackClick = onBackClick,
+        ),
     ) { licensesJson ->
         val libraries by rememberLibraries(licensesJson)
         LicensesScreen(

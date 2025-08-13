@@ -13,10 +13,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-context(_: ScreenContext)
-fun DefaultSuspenseFallbackContent(
-    modifier: Modifier = Modifier,
-) {
+fun DefaultSuspenseFallbackContent(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,

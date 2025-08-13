@@ -18,7 +18,7 @@ import soil.query.core.DataModel
 
 context(_: ScreenContext)
 @Composable
-fun <T> SoilDataBoundary(
+internal fun <T> SoilDataBoundary(
     state: DataModel<T>,
     modifier: Modifier = Modifier,
     errorFallback: @Composable BoxScope.(ErrorBoundaryContext) -> Unit = {
@@ -48,7 +48,7 @@ fun <T> SoilDataBoundary(
 
 context(_: ScreenContext)
 @Composable
-fun <T1, T2> SoilDataBoundary(
+internal fun <T1, T2> SoilDataBoundary(
     state1: DataModel<T1>,
     state2: DataModel<T2>,
     modifier: Modifier = Modifier,
@@ -84,7 +84,7 @@ fun <T1, T2> SoilDataBoundary(
 
 context(_: ScreenContext)
 @Composable
-fun <T1, T2, T3> SoilDataBoundary(
+internal fun <T1, T2, T3> SoilDataBoundary(
     state1: DataModel<T1>,
     state2: DataModel<T2>,
     state3: DataModel<T3>,

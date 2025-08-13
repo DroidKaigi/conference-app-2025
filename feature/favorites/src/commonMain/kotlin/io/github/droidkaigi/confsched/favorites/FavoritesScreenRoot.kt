@@ -3,6 +3,7 @@ package io.github.droidkaigi.confsched.favorites
 import androidx.compose.runtime.Composable
 import io.github.droidkaigi.confsched.common.compose.rememberEventFlow
 import io.github.droidkaigi.confsched.droidkaigiui.SoilDataBoundary
+import io.github.droidkaigi.confsched.droidkaigiui.SoilDataBoundaryDefaults
 import io.github.droidkaigi.confsched.droidkaigiui.component.DefaultErrorFallback
 import io.github.droidkaigi.confsched.droidkaigiui.component.DefaultSuspenseFallback
 import io.github.droidkaigi.confsched.model.sessions.TimetableItemId
@@ -18,8 +19,9 @@ fun FavoritesScreenRoot(
     SoilDataBoundary(
         state1 = rememberQuery(screenContext.timetableQueryKey),
         state2 = rememberSubscription(screenContext.favoriteTimetableIdsSubscriptionKey),
-        suspenseFallback = { DefaultSuspenseFallback(title = stringResource(FavoritesRes.string.favorite)) },
-        errorFallback = { DefaultErrorFallback(it, title = stringResource(FavoritesRes.string.favorite)) },
+        fallback = SoilDataBoundaryDefaults.appBarFallback(
+            title = stringResource(FavoritesRes.string.favorite),
+        ),
     ) { timetable, favoriteTimetableItemIds ->
         val eventFlow = rememberEventFlow<FavoritesScreenEvent>()
 

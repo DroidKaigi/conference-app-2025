@@ -20,11 +20,11 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 const val DefaultSuspenseFallbackTestTag = "DefaultSuspenseFallbackTestTag"
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
-context(_: ScreenContext)
 @Composable
 fun DefaultSuspenseFallback(
     modifier: Modifier = Modifier,
     title: String? = null,
+    appBarType: SoilDefaultFallbackAppBarType = SoilDefaultFallbackAppBarType.Default,
     onBackClick: (() -> Unit)? = null,
 ) {
     Scaffold(
