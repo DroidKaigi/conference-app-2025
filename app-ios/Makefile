@@ -51,9 +51,10 @@ test: ## Run Core tests (Linux-compatible)
 	@echo "Tests complete!"
 
 .PHONY: test-native
-test-native: ## Run Native module tests (macOS only)
-	@echo "Running Native tests (macOS only)..."
-	@cd Native && swift test --enable-experimental-prebuilts
+test-native: ## Run Native module tests (iOS Simulator)
+	@echo "Running Native tests on iOS Simulator..."
+	@xcodebuild test -scheme ComponentTests -destination 'platform=iOS Simulator,name=iPhone 16 Pro' -quiet
+	@xcodebuild test -scheme FeatureTests -destination 'platform=iOS Simulator,name=iPhone 16 Pro' -quiet
 	@echo "Native tests complete!"
 
 .PHONY: test-all
