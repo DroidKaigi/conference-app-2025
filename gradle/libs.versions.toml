@@ -1,9 +1,9 @@
 [versions]
-androidGradlePlugin = "8.11.0"
+androidGradlePlugin = "8.11.1"
 kotlin = "2.2.0"
 ksp = "2.2.0-2.0.2"
 
-jetbrainsCompose = "1.9.0-beta01"
+jetbrainsCompose = "1.9.0-beta03"
 material3 = "1.9.0-alpha04"
 
 kotlinPoet = "2.2.0"
@@ -11,50 +11,48 @@ kotlinxSerialization = "1.9.0"
 kotlinxCollectionsImmutable = "0.4.0"
 kotlinxDatetime = "0.7.1"
 
-androidxActivityCompose = "1.12.0-alpha04"
 androidxNavigation3 = "1.0.0-alpha05"
+androidxActivityCompose = "1.12.0-alpha06"
 androidxNavigation3Material = "1.0.0-SNAPSHOT"
 androidxDatastore = "1.1.7"
 androidxAppCompat = "1.7.1"
-androidxTestCore = "1.6.1"
-androidxBrowser = "1.8.0"
+androidxTestCore = "1.7.0"
+androidxBrowser = "1.9.0"
 
 ktor = "3.2.1"
-ktorfit = "2.6.2"
+ktorfit = "2.6.4"
 
 soil = "1.0.0-alpha12"
 
 rin = "0.3.0"
 
-metro = "0.5.1"
+metro = "0.5.5"
 
-lifecycleCompose = "2.9.1"
+lifecycleCompose = "2.9.2"
 lifecycleViewmodelNavigation3 = "1.0.0-SNAPSHOT"
 
 robolectric = "4.15.1"
 
-composeBom = "2025.07.00"
+composeBom = "2025.08.00"
 roborazzi = "1.48.0"
-composablePreviewScanner = "0.6.1"
+composablePreviewScanner = "0.7.0"
 junit = "4.13.2"
 
 twitterComposeRule = "0.0.26"
 spotless = "7.2.1"
 ktlint = "1.7.1"
 
-navigationeventDesktop = "1.0.0-alpha04"
-
-composeHotReload = "1.0.0-beta04"
-coil = "3.2.0"
+composeHotReload = "1.0.0-beta05"
+coil = "3.3.0"
 buildkonfig = "0.17.1"
 
-haze = "1.6.9"
+haze = "1.6.10"
 
-skie = "0.10.4"
+skie = "0.10.5"
 
 molecule = "2.1.0"
 
-navigationCompose = "2.9.0-beta04"
+navigationCompose = "2.9.0-beta05"
 
 aboutLibraries = "12.2.4"
 
@@ -128,14 +126,13 @@ junit = { module = "junit:junit", version.ref = "junit" }
 navigation3Ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "androidxNavigation3" }
 navigation3Runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "androidxNavigation3" }
 navigation3Adaptive = { module = "androidx.compose.material3.adaptive:adaptive-navigation3", version.ref = "androidxNavigation3Material" }
+navigationeventDesktop = { group = "androidx.navigationevent", name = "navigationevent-desktop", version.ref = "androidxNavigation3" }
 
 lifecycleViewmodelCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleCompose" }
 lifecycleRuntimeCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleCompose" }
 lifecycleViewmodelNavigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecycleViewmodelNavigation3" }
 
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
-
-navigationeventDesktop = { group = "androidx.navigationevent", name = "navigationevent-desktop", version.ref = "navigationeventDesktop" }
 
 # coil
 coil = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
