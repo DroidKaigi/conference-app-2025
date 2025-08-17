@@ -164,7 +164,7 @@ private fun BottomNavigationBarItems(
                 Icon(
                     painter = if (selected) painterResource(tab.iconOn) else painterResource(tab.iconOff),
                     contentDescription = stringResource(tab.label),
-                    tint = if (selected) MaterialTheme.colorScheme.primaryFixed else MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = modifier.size(24.dp),
                 )
             }
