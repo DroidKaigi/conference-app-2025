@@ -1,21 +1,11 @@
 package io.github.droidkaigi.confsched.testing.di
 
-import androidx.datastore.core.DataStore
-import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
-import androidx.datastore.preferences.core.PreferenceDataStoreFactory
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.emptyPreferences
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Binds
 import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.Provides
-import dev.zacsweers.metro.SingleIn
 import dev.zacsweers.metro.createGraph
 import io.github.droidkaigi.confsched.data.DataScope
-import io.github.droidkaigi.confsched.data.DataStoreDependencyProviders
-import io.github.droidkaigi.confsched.data.SessionCacheDataStoreQualifier
-import io.github.droidkaigi.confsched.data.UserDataStoreQualifier
-import io.github.droidkaigi.confsched.data.annotations.IoDispatcher
 import io.github.droidkaigi.confsched.data.contributors.DefaultContributorsApiClient
 import io.github.droidkaigi.confsched.data.core.DataStorePathProducer
 import io.github.droidkaigi.confsched.data.core.defaultJson
@@ -28,9 +18,7 @@ import io.github.droidkaigi.confsched.model.data.FavoriteTimetableItemIdMutation
 import io.github.droidkaigi.confsched.model.data.TimetableQueryKey
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.serialization.json.Json
-import okio.Path.Companion.toPath
 import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSFileManager
 import platform.Foundation.NSURL

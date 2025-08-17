@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.eventmap.EventMapUiState
 import io.github.droidkaigi.confsched.eventmap.EventmapRes
-import io.github.droidkaigi.confsched.eventmap.event_map
 import io.github.droidkaigi.confsched.eventmap.event_map_description
 import io.github.droidkaigi.confsched.model.eventmap.FloorLevel
 import org.jetbrains.compose.resources.stringResource
