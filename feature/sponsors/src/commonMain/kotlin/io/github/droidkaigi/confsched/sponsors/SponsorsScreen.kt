@@ -126,7 +126,7 @@ private fun LazyGridScope.sponsorsByPlanSection(
         val headerText = stringResource(headerStringResource)
         Text(
             text = headerText,
-            color = Color.Black, // FIXME: use theme color
+            color = MaterialTheme.colorScheme.primaryFixed,
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(vertical = 6.dp),
         )
