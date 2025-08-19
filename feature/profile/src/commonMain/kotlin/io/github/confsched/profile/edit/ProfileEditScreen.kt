@@ -64,7 +64,7 @@ import soil.form.rule.notBlank
 @Composable
 fun ProfileEditScreen(
     form: Form<Profile>,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Scaffold(
         topBar = {
