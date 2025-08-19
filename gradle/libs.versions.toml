@@ -119,7 +119,7 @@ roborazziComposeDesktop = { module = "io.github.takahirom.roborazzi:roborazzi-co
 roborazziComposeIos = { module = "io.github.takahirom.roborazzi:roborazzi-compose-ios", version.ref = "roborazzi" }
 roborazziPreviewScannerSupport = { module = "io.github.takahirom.roborazzi:roborazzi-compose-preview-scanner-support", version.ref = "roborazzi" }
 composablePreviewScannerAndroid = { module = "io.github.sergio-sastre.ComposablePreviewScanner:android", version.ref = "composablePreviewScanner" }
-composablePreviewScannerJvm = { module = "io.github.sergio-sastre.ComposablePreviewScanner:jvm", version.ref = "composablePreviewScanner" }
+composablePreviewScannerCommon = { module = "io.github.sergio-sastre.ComposablePreviewScanner:common", version.ref = "composablePreviewScanner" }
 junit = { module = "junit:junit", version.ref = "junit" }
 
 # navigation3
