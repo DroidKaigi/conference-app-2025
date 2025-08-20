@@ -46,7 +46,7 @@ fun AboutContentColumn(
         ) {
             Icon(
                 imageVector = leadingIcon,
-                contentDescription = null,
+                contentDescription = label,
                 modifier = Modifier
                     .padding(
                         horizontal = 12.dp,
