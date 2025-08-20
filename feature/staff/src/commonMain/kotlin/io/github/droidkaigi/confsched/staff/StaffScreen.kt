@@ -9,6 +9,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.testTag
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.component.AnimatedMediumTopAppBar
 import io.github.droidkaigi.confsched.model.staff.Staff
@@ -17,6 +18,9 @@ import io.github.droidkaigi.confsched.staff.component.StaffItem
 import kotlinx.collections.immutable.PersistentList
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+
+const val StaffScreenLazyColumnTestTag = "StaffScreenLazyColumnTestTag"
+const val StaffItemTestTagPrefix = "StaffItemTestTag:"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,7 +43,9 @@ fun StaffScreen(
         modifier = modifier,
     ) { contentPadding ->
         LazyColumn(
-            modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+            modifier = Modifier
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
+                .testTag(StaffScreenLazyColumnTestTag),
             contentPadding = contentPadding,
         ) {
             items(
@@ -49,7 +55,9 @@ fun StaffScreen(
                 StaffItem(
                     staff = staff,
                     onStaffItemClick = { staff.profileUrl?.let(onStaffItemClick) },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag(StaffItemTestTagPrefix.plus(staff.id)),
                 )
             }
         }

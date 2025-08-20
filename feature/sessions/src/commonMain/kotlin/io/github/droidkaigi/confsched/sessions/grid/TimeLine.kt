@@ -1,13 +1,13 @@
 package io.github.droidkaigi.confsched.sessions.grid
 
 import io.github.droidkaigi.confsched.model.core.DroidKaigi2025Day
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Instant
 
 data class TimeLine(
     private val currentTime: Instant,

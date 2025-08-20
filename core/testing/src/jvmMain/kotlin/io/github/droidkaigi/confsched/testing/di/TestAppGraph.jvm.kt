@@ -6,6 +6,7 @@ import dev.zacsweers.metro.createGraph
 import io.github.droidkaigi.confsched.data.DataScope
 import io.github.droidkaigi.confsched.data.contributors.DefaultContributorsApiClient
 import io.github.droidkaigi.confsched.data.sessions.DefaultSessionsApiClient
+import io.github.droidkaigi.confsched.data.staff.DefaultStaffApiClient
 import kotlinx.coroutines.CoroutineDispatcher
 
 @DependencyGraph(
@@ -15,6 +16,7 @@ import kotlinx.coroutines.CoroutineDispatcher
     excludes = [
         DefaultSessionsApiClient::class,
         DefaultContributorsApiClient::class,
+        DefaultStaffApiClient::class,
         CoroutineDispatcher::class,
     ],
 )

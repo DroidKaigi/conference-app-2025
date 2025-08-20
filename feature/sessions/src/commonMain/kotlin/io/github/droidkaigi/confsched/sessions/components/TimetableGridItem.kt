@@ -180,6 +180,12 @@ private fun TimetableSpeaker(
         Text(
             text = speaker.name,
             style = MaterialTheme.typography.titleSmall,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            autoSize = TextAutoSize.StepBased(
+                minFontSize = TimetableGridItemDefaults.minTitleFontSize,
+                maxFontSize = TimetableGridItemDefaults.maxTitleFontSize,
+            ),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier
                 .align(Alignment.CenterVertically)

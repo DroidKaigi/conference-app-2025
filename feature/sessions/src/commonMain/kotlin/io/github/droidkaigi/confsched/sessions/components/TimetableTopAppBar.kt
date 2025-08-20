@@ -19,8 +19,8 @@ import io.github.droidkaigi.confsched.sessions.ic_view_timeline
 import io.github.droidkaigi.confsched.sessions.search
 import io.github.droidkaigi.confsched.sessions.timeline_view
 import io.github.droidkaigi.confsched.sessions.timetable
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,15 +42,15 @@ fun TimetableTopAppBar(
             }
             IconButton(onClick = onUiTypeChangeClick) {
                 val iconRes = when (timetableUiType) {
-                    TimetableUiType.List -> SessionsRes.drawable.ic_view_timeline
-                    TimetableUiType.Grid -> SessionsRes.drawable.ic_view_grid
+                    TimetableUiType.List -> SessionsRes.drawable.ic_view_grid
+                    TimetableUiType.Grid -> SessionsRes.drawable.ic_view_timeline
                 }
                 val descriptionRes = when (timetableUiType) {
-                    TimetableUiType.List -> SessionsRes.string.timeline_view
-                    TimetableUiType.Grid -> SessionsRes.string.grid_view
+                    TimetableUiType.List -> SessionsRes.string.grid_view
+                    TimetableUiType.Grid -> SessionsRes.string.timeline_view
                 }
                 Icon(
-                    painter = painterResource(iconRes),
+                    imageVector = vectorResource(iconRes),
                     contentDescription = stringResource(descriptionRes),
                 )
             }

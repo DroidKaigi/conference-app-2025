@@ -1,0 +1,31 @@
+name: build desktop
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    paths:
+      - '**/*.kt'
+      - '**/*.kts'
+      - '**/*.xml'
+      - 'gradle/libs.versions.toml'
+      - '.github/workflows/build-desktop.yml'
+  merge_group:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.7
+
+      - uses: ./.github/actions/setup-java
+
+      - run: ./gradlew :app-desktop:build --stacktrace

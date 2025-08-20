@@ -48,8 +48,8 @@ import dev.chrisbanes.haze.hazeEffect
 import dev.chrisbanes.haze.rememberHazeState
 import io.github.droidkaigi.confsched.common.graphics.isBlurSupported
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -162,7 +162,7 @@ private fun BottomNavigationBarItems(
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
-                    painter = if (selected) painterResource(tab.iconOn) else painterResource(tab.iconOff),
+                    imageVector = if (selected) vectorResource(tab.iconOn) else vectorResource(tab.iconOff),
                     contentDescription = stringResource(tab.label),
                     tint = if (selected) MaterialTheme.colorScheme.primaryFixed else MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = modifier.size(24.dp),

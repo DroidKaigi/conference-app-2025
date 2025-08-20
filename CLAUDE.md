@@ -1,7 +1,7 @@
 # Command
 
-- `./gradlew detekt`: Lint
-- `./gradlew detekt --auto-correct`: Format
+- `./gradlew spotlessCheck`: Lint
+- `./gradlew spotlessApply`: Format
 - `./gradlew testDebugUnitTest`: Unit Test
 
 # Commit Guideline

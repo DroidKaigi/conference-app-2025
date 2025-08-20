@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
@@ -26,6 +27,9 @@ import io.github.droidkaigi.confsched.droidkaigiui.rememberAsyncImagePainter
 import io.github.droidkaigi.confsched.model.contributors.Contributor
 import io.github.droidkaigi.confsched.model.contributors.fake
 import org.jetbrains.compose.ui.tooling.preview.Preview
+
+const val ContributorsItemImageTestTagPrefix = "ContributorsItemImageTestTag:"
+const val ContributorsUserNameTextTestTagPrefix = "ContributorsUserNameTextTestTag:"
 
 @Composable
 fun ContributorItem(
@@ -59,13 +63,15 @@ fun ContributorItem(
                     width = 1.dp,
                     color = MaterialTheme.colorScheme.outline,
                     shape = CircleShape,
-                ),
+                )
+                .testTag("${ContributorsItemImageTestTagPrefix}${contributor.username}"),
         )
         Text(
             text = contributor.username,
             style = MaterialTheme.typography.bodyLarge,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.testTag("${ContributorsUserNameTextTestTagPrefix}${contributor.username}"),
         )
     }
 }

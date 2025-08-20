@@ -1,4 +1,4 @@
-name: Spotless Check
+name: spotless-check
 
 on:
   pull_request:
@@ -13,7 +13,6 @@ concurrency:
 
 permissions:
   contents: read # for clone
-  pull-requests: write
 
 jobs:
   spotless-check:
@@ -25,15 +24,3 @@ jobs:
 
       - name: Run spotlessCheck
         run: ./gradlew spotlessCheck
-
-      - name: Post Comment on Failure
-        if: ${{ failure() }}
-        uses: marocchino/sticky-pull-request-comment@v2.9.4
-        with:
-          header: Spotless Check Failed 🚨
-          message: |
-            Spotless check failed. Run the following command to fix it:
-            ```
-            ./gradlew spotlessApply
-            ```
-            Commit the changes to update this pull request.

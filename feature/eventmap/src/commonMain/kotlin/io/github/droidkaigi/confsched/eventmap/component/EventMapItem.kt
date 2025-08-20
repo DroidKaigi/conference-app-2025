@@ -33,8 +33,8 @@ import io.github.droidkaigi.confsched.eventmap.read_more
 import io.github.droidkaigi.confsched.model.eventmap.EventMapEvent
 import io.github.droidkaigi.confsched.model.eventmap.fakes
 import org.jetbrains.compose.resources.DrawableResource
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -127,7 +127,7 @@ private fun ToolTip(
     ) {
         roomIcon?.let {
             Icon(
-                painter = painterResource(it),
+                imageVector = vectorResource(it),
                 contentDescription = null,
                 tint = color,
                 modifier = Modifier.size(12.dp),

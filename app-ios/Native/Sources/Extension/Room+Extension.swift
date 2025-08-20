@@ -9,17 +9,23 @@ public struct RoomTheme {
 
 extension Room {
     public var color: Color {
+        // NOTE: The color names in Figma do not match the room names.
         switch type {
         case .roomF:
-            return AssetColors.flamingo.swiftUIColor
+            // JELLYFISH
+            return AssetColors.iguana.swiftUIColor
         case .roomG:
-            return AssetColors.giraffe.swiftUIColor
+            // KOALA
+            return AssetColors.hedgehog.swiftUIColor
         case .roomH:
-            return AssetColors.koala.swiftUIColor
+            // LADYBUG
+            return AssetColors.giraffe.swiftUIColor
         case .roomI:
-            return AssetColors.jellyfish.swiftUIColor
+            // MEERKAT
+            return AssetColors.flamingo.swiftUIColor
         case .roomJ:
-            return Color.red  // TODO: Add narwhal color
+            // NARWHAL
+            return AssetColors.jellyfish.swiftUIColor
         case .roomIJ:
             return AssetColors.jellyfish.swiftUIColor
         }

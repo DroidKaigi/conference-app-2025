@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
@@ -25,6 +26,9 @@ import io.github.droidkaigi.confsched.droidkaigiui.rememberAsyncImagePainter
 import io.github.droidkaigi.confsched.model.staff.Staff
 import io.github.droidkaigi.confsched.model.staff.fakes
 import org.jetbrains.compose.ui.tooling.preview.Preview
+
+const val StaffItemImageTestTag = "StaffItemImageTestTag:"
+const val StaffItemUserNameTextTestTag = "StaffItemUserNameTextTestTag:"
 
 private val staffIconShape = CircleShape
 
@@ -56,13 +60,15 @@ fun StaffItem(
                     width = 1.dp,
                     color = MaterialTheme.colorScheme.outline,
                     shape = staffIconShape,
-                ),
+                )
+                .testTag(StaffItemImageTestTag.plus(staff.id)),
         )
         Text(
             text = staff.name,
             style = MaterialTheme.typography.bodyLarge,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.testTag(StaffItemUserNameTextTestTag.plus(staff.id)),
         )
     }
 }

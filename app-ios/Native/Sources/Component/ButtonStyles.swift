@@ -8,7 +8,7 @@ public struct FilledButtonStyle: ButtonStyle {
             .typographyStyle(.labelLarge)
             .foregroundColor(AssetColors.primary0.swiftUIColor)
             .padding()
-            .background(AssetColors.primary80.swiftUIColor)
+            .background(AssetColors.primary.swiftUIColor)
             .clipShape(.capsule)
             .opacity(configuration.isPressed ? 0.8 : 1)
             .frame(height: 56)
@@ -20,7 +20,7 @@ public struct TextButtonStyle: ButtonStyle {
     public func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .typographyStyle(.labelLarge)
-            .foregroundColor(AssetColors.primary80.swiftUIColor)
+            .foregroundColor(AssetColors.primary.swiftUIColor)
             .padding()
             .background(.clear)
             .contentShape(.capsule)
