@@ -30,6 +30,7 @@ import io.github.droidkaigi.confsched.model.sessions.fake
 import io.github.droidkaigi.confsched.sessions.SessionsRes
 import io.github.droidkaigi.confsched.sessions.add_to_bookmark
 import io.github.droidkaigi.confsched.sessions.add_to_calendar
+import io.github.droidkaigi.confsched.sessions.content_description_close
 import io.github.droidkaigi.confsched.sessions.remove_from_bookmark
 import io.github.droidkaigi.confsched.sessions.share_link
 import io.github.droidkaigi.confsched.sessions.slide
@@ -94,12 +95,16 @@ private fun TimetableItemDetailFloatingActionButtonMenu(
                 if (expanded) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = null,
+                        contentDescription = stringResource(SessionsRes.string.content_description_close),
                     )
                 } else {
                     Icon(
                         imageVector = if (isBookmarked) Icons.Default.Favorite else Icons.Outlined.FavoriteBorder,
-                        contentDescription = null,
+                        contentDescription = if (isBookmarked) {
+                            stringResource(SessionsRes.string.remove_from_bookmark)
+                        } else {
+                            stringResource(SessionsRes.string.add_to_bookmark)
+                        },
                     )
                 }
             }
@@ -124,7 +129,11 @@ private fun TimetableItemDetailFloatingActionButtonMenu(
             icon = {
                 Icon(
                     if (isBookmarked) Icons.Default.Favorite else Icons.Outlined.FavoriteBorder,
-                    contentDescription = null,
+                    contentDescription = if (isBookmarked) {
+                        stringResource(SessionsRes.string.remove_from_bookmark)
+                    } else {
+                        stringResource(SessionsRes.string.add_to_bookmark)
+                    },
                 )
             },
             containerColor = menuItemContainerColor,
@@ -135,7 +144,7 @@ private fun TimetableItemDetailFloatingActionButtonMenu(
                 onExpandedChange(false)
             },
             text = { Text(stringResource(SessionsRes.string.add_to_calendar)) },
-            icon = { Icon(Icons.Default.CalendarMonth, contentDescription = null) },
+            icon = { Icon(Icons.Default.CalendarMonth, contentDescription = stringResource(SessionsRes.string.add_to_calendar)) },
             containerColor = menuItemContainerColor,
         )
         FloatingActionButtonMenuItem(
@@ -144,7 +153,7 @@ private fun TimetableItemDetailFloatingActionButtonMenu(
                 onExpandedChange(false)
             },
             text = { Text(stringResource(SessionsRes.string.share_link)) },
-            icon = { Icon(Icons.Default.Share, contentDescription = null) },
+            icon = { Icon(Icons.Default.Share, contentDescription = stringResource(SessionsRes.string.share_link)) },
             containerColor = menuItemContainerColor,
         )
         slideUrl?.let { url ->
@@ -154,7 +163,7 @@ private fun TimetableItemDetailFloatingActionButtonMenu(
                     onExpandedChange(false)
                 },
                 text = { Text(stringResource(SessionsRes.string.slide)) },
-                icon = { Icon(Icons.Outlined.Description, contentDescription = null) },
+                icon = { Icon(Icons.Outlined.Description, contentDescription = stringResource(SessionsRes.string.slide)) },
                 containerColor = menuItemContainerColor,
             )
         }
@@ -165,7 +174,7 @@ private fun TimetableItemDetailFloatingActionButtonMenu(
                     onExpandedChange(false)
                 },
                 text = { Text(stringResource(SessionsRes.string.video)) },
-                icon = { Icon(Icons.Outlined.PlayCircle, contentDescription = null) },
+                icon = { Icon(Icons.Outlined.PlayCircle, contentDescription = stringResource(SessionsRes.string.video)) },
                 containerColor = menuItemContainerColor,
             )
         }

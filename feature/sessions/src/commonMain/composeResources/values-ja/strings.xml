@@ -41,4 +41,11 @@
     <string name="remove_from_bookmark">ブックマークを削除</string>
     <string name="add_to_calendar">カレンダーに登録</string>
     <string name="share_link">リンクをシェア</string>
+    <string name="content_description_favorite">お気に入り</string>
+    <string name="content_description_close">閉じる</string>
+    <string name="content_description_selected">選択済み</string>
+    <string name="content_description_room_icon">ルーム</string>
+    <string name="content_description_info">情報</string>
+    <string name="content_description_speaker_icon">スピーカープロフィール</string>
+    <string name="content_description_background">背景装飾</string>
 </resources>

@@ -41,4 +41,11 @@
     <string name="remove_from_bookmark">Remove from Bookmarks</string>
     <string name="add_to_calendar">Add to Calendar</string>
     <string name="share_link">Share Link</string>
+    <string name="content_description_favorite">Favorite</string>
+    <string name="content_description_close">Close</string>
+    <string name="content_description_selected">Selected</string>
+    <string name="content_description_room_icon">Room</string>
+    <string name="content_description_info">Info</string>
+    <string name="content_description_speaker_icon">Speaker profile</string>
+    <string name="content_description_background">Background decoration</string>
 </resources>

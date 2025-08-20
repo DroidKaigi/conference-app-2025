@@ -40,6 +40,11 @@ import io.github.droidkaigi.confsched.model.core.RoomType
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import io.github.droidkaigi.confsched.model.sessions.TimetableSpeaker
 import io.github.droidkaigi.confsched.model.sessions.fake
+import io.github.droidkaigi.confsched.sessions.SessionsRes
+import io.github.droidkaigi.confsched.sessions.content_description_error_icon
+import io.github.droidkaigi.confsched.sessions.content_description_room_icon
+import io.github.droidkaigi.confsched.sessions.content_description_speaker_icon
+import org.jetbrains.compose.resources.stringResource
 import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.vectorResource
@@ -91,7 +96,7 @@ fun TimetableGridItem(
                     if (timetableItem.message != null) {
                         Icon(
                             imageVector = Icons.Default.Error,
-                            contentDescription = null,
+                            contentDescription = stringResource(SessionsRes.string.content_description_error_icon),
                             tint = MaterialTheme.colorScheme.error,
                             modifier = Modifier
                                 .size(TimetableGridItemDefaults.errorSize),
@@ -113,7 +118,7 @@ private fun TimetableSchedule(
         if (icon != null) {
             Icon(
                 imageVector = vectorResource(icon),
-                contentDescription = null,
+                contentDescription = stringResource(SessionsRes.string.content_description_room_icon),
                 tint = LocalRoomTheme.current.primaryColor,
                 modifier = Modifier.height(TimetableGridItemDefaults.scheduleHeight),
             )
@@ -136,7 +141,7 @@ private fun TimetableSpeaker(
     Row(modifier) {
         Image(
             painter = painter,
-            contentDescription = null,
+            contentDescription = stringResource(SessionsRes.string.content_description_speaker_icon),
             modifier = Modifier
                 .size(32.dp)
                 .clip(CircleShape)

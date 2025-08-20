@@ -39,6 +39,8 @@ import io.github.droidkaigi.confsched.model.core.Lang
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import io.github.droidkaigi.confsched.model.sessions.fake
 import io.github.droidkaigi.confsched.sessions.SessionsRes
+import io.github.droidkaigi.confsched.sessions.content_description_selected
+import io.github.droidkaigi.confsched.sessions.content_description_speaker_icon
 import io.github.droidkaigi.confsched.sessions.english
 import io.github.droidkaigi.confsched.sessions.japanese
 import org.jetbrains.compose.resources.stringResource
@@ -95,7 +97,7 @@ fun TimetableItemDetailHeadline(
             ) {
                 Image(
                     painter = rememberAsyncImagePainter(speaker.iconUrl),
-                    contentDescription = null,
+                    contentDescription = stringResource(SessionsRes.string.content_description_speaker_icon),
                     modifier = Modifier
                         .border(border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.onSurfaceVariant), shape = CircleShape)
                         .clip(CircleShape)
@@ -152,7 +154,7 @@ private fun LanguageSwitcher(
                 AnimatedVisibility(isSelected) {
                     Icon(
                         imageVector = Icons.Default.Check,
-                        contentDescription = null,
+                        contentDescription = stringResource(SessionsRes.string.content_description_selected),
                         modifier = Modifier
                             .padding(end = 4.dp)
                             .size(12.dp),
