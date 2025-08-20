@@ -5,4 +5,5 @@
     <string name="empty_guide">気になるセッションをお気に入り登録しましょう</string>
     <string name="filter_all">すべて</string>
     <string name="content_description_back">戻る</string>
+    <string name="content_description_favorite_icon">お気に入り</string>
 </resources>

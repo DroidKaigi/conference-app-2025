@@ -23,6 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.favorites.FavoritesRes
+import io.github.droidkaigi.confsched.favorites.content_description_favorite_icon
 import io.github.droidkaigi.confsched.favorites.empty_description
 import io.github.droidkaigi.confsched.favorites.empty_guide
 import org.jetbrains.compose.resources.stringResource
@@ -47,7 +48,7 @@ fun FavoriteEmpty(modifier: Modifier = Modifier) {
             Icon(
                 modifier = Modifier.size(36.dp),
                 imageVector = Icons.Filled.Favorite,
-                contentDescription = null,
+                contentDescription = stringResource(FavoritesRes.string.content_description_favorite_icon),
                 tint = MaterialTheme.colorScheme.primaryFixed,
             )
         }

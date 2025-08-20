@@ -7,4 +7,5 @@
     <string name="filter_day1">9/12</string>
     <string name="filter_day2">9/13</string>
     <string name="content_description_back">Back</string>
+    <string name="content_description_favorite_icon">Favorite</string>
 </resources>
