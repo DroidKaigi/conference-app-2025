@@ -3,4 +3,5 @@
     <!-- TODO: Localize -->
     <string name="event_map_description">DroidKaigiでは、セッション以外にも参加者が楽しめるイベントを開催。コミュニケーションや技術交流を通じてカンファレンスを満喫しましょう！</string>
     <string name="read_more">Read More</string>
+    <string name="content_description_room_icon">Room</string>
 </resources>

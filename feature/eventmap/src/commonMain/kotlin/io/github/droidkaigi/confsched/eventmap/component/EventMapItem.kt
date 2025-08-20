@@ -29,6 +29,7 @@ import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.extension.icon
 import io.github.droidkaigi.confsched.droidkaigiui.extension.roomTheme
 import io.github.droidkaigi.confsched.eventmap.EventmapRes
+import io.github.droidkaigi.confsched.eventmap.content_description_room_icon
 import io.github.droidkaigi.confsched.eventmap.read_more
 import io.github.droidkaigi.confsched.model.eventmap.EventMapEvent
 import io.github.droidkaigi.confsched.model.eventmap.fakes
@@ -128,7 +129,7 @@ private fun ToolTip(
         roomIcon?.let {
             Icon(
                 painter = painterResource(it),
-                contentDescription = null,
+                contentDescription = stringResource(EventmapRes.string.content_description_room_icon),
                 tint = color,
                 modifier = Modifier.size(12.dp),
             )
