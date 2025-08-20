@@ -41,6 +41,8 @@ import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.DroidkaigiuiRes
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.bookmarked
+import io.github.droidkaigi.confsched.droidkaigiui.content_description_info
+import io.github.droidkaigi.confsched.droidkaigiui.content_description_speaker_icon
 import io.github.droidkaigi.confsched.droidkaigiui.extension.icon
 import io.github.droidkaigi.confsched.droidkaigiui.extension.roomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.not_bookmarked
@@ -118,7 +120,7 @@ fun TimetableItemCard(
                     ) {
                         Icon(
                             imageVector = Icons.Filled.Info,
-                            contentDescription = null,
+                            contentDescription = stringResource(DroidkaigiuiRes.string.content_description_info),
                             tint = MaterialTheme.colorScheme.error,
                             modifier = Modifier.size(TimetableItemCardDefaults.errorIconSize),
                         )
@@ -246,7 +248,7 @@ private fun TimetableItemSpeaker(
         val painter = rememberAsyncImagePainter(speaker.iconUrl)
         Image(
             painter = painter,
-            contentDescription = null,
+            contentDescription = stringResource(DroidkaigiuiRes.string.content_description_speaker_icon),
             modifier = Modifier
                 .width(32.dp)
                 .height(32.dp)

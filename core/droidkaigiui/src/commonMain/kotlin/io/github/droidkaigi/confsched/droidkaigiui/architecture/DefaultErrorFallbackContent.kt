@@ -15,6 +15,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.droidkaigiui.DroidkaigiuiRes
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
+import io.github.droidkaigi.confsched.droidkaigiui.content_description_error_mascot
 import io.github.droidkaigi.confsched.droidkaigiui.error_mascot
 import io.github.droidkaigi.confsched.droidkaigiui.error_occurred
 import io.github.droidkaigi.confsched.droidkaigiui.retry
@@ -38,7 +39,7 @@ fun DefaultErrorFallbackContent(modifier: Modifier = Modifier) {
     ) {
         Image(
             painter = painterResource(DroidkaigiuiRes.drawable.error_mascot),
-            contentDescription = null,
+            contentDescription = stringResource(DroidkaigiuiRes.string.content_description_error_mascot),
         )
         Text(
             text = stringResource(DroidkaigiuiRes.string.error_occurred),

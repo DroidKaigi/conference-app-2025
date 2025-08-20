@@ -5,4 +5,9 @@
     <string name="connection_failed">接続に失敗しました、ネットワーク設定を確認してください。</string>
     <string name="error_occurred">エラー...</string>
     <string name="retry">再試行</string>
+    <string name="content_description_error_mascot">エラーマスコット</string>
+    <string name="content_description_selected">選択済み</string>
+    <string name="content_description_info">情報</string>
+    <string name="content_description_room_icon">ルーム</string>
+    <string name="content_description_speaker_icon">スピーカープロフィール</string>
 </resources>

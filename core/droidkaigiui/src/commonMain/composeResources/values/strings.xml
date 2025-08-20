@@ -5,4 +5,9 @@
     <string name="connection_failed">Connection failed, Check your network settings.</string>
     <string name="error_occurred">Error...</string>
     <string name="retry">Retry</string>
+    <string name="content_description_error_mascot">Error mascot</string>
+    <string name="content_description_selected">Selected</string>
+    <string name="content_description_info">Info</string>
+    <string name="content_description_room_icon">Room</string>
+    <string name="content_description_speaker_icon">Speaker profile</string>
 </resources>

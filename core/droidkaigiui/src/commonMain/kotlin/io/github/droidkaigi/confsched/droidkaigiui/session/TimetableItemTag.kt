@@ -14,10 +14,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import io.github.droidkaigi.confsched.droidkaigiui.DroidkaigiuiRes
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
+import io.github.droidkaigi.confsched.droidkaigiui.content_description_room_icon
 import io.github.droidkaigi.confsched.droidkaigiui.extension.toResDrawable
 import io.github.droidkaigi.confsched.model.core.RoomIcon
 import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -90,7 +93,7 @@ private fun TimetableItemTag(
         icon?.let { icon ->
             Icon(
                 imageVector = vectorResource(icon),
-                contentDescription = null,
+                contentDescription = stringResource(DroidkaigiuiRes.string.content_description_room_icon),
                 tint = contentColor,
             )
         }
