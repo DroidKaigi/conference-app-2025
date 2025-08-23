@@ -11,8 +11,8 @@ import com.github.takahirom.roborazzi.captureRoboImage
 import com.github.takahirom.roborazzi.registerRoborazziActivityToRobolectricIfNeeded
 import org.junit.rules.RuleChain
 import org.junit.rules.TestWatcher
-import sergio.sastre.composable.preview.scanner.jvm.common.CommonComposablePreviewScanner
-import sergio.sastre.composable.preview.scanner.jvm.common.CommonPreviewInfo
+import sergio.sastre.composable.preview.scanner.common.CommonComposablePreviewScanner
+import sergio.sastre.composable.preview.scanner.common.CommonPreviewInfo
 
 @Suppress("UNUSED")
 @OptIn(ExperimentalRoborazziApi::class)

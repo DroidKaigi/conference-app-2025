@@ -59,7 +59,7 @@ kotlin {
 
             implementation(libs.roborazziPreviewScannerSupport)
             implementation(libs.composablePreviewScannerAndroid)
-            implementation(libs.composablePreviewScannerJvm)
+            implementation(libs.composablePreviewScannerCommon)
         }
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
