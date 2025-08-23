@@ -24,6 +24,8 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.layout.onSizeChanged
 import io.github.droidkaigi.confsched.designsystem.theme.LocalRoomTheme
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
@@ -98,14 +100,15 @@ private fun TimetableItemDetailFloatingActionButtonMenu(
     }
 
     val roomTheme = LocalRoomTheme.current
-    val menuItemContainerColor = roomTheme.primaryColor // TODO: use room containerColor
+    // TODO: This color is temporary. We should define a proper color once the official Figma definitions are available.
+    val menuItemContainerColor = roomTheme.primaryColor.copy(alpha = 0.5f).compositeOver(Color.Black)
     FloatingActionButtonMenu(
         expanded = expanded,
         button = {
             ToggleFloatingActionButton(
                 checked = expanded,
                 onCheckedChange = onExpandedChange,
-                containerColor = { _ -> roomTheme.primaryColor }, // TODO: use room containerColor
+                containerColor = { _ -> menuItemContainerColor },
             ) {
                 if (expanded) {
                     Icon(

@@ -68,6 +68,12 @@ public class UserDataStore(
         }
     }
 
+    public suspend fun clearFavorites() {
+        dataStore.edit { preferences ->
+            preferences.remove(FAVORITE_SESSION_IDS_KEY)
+        }
+    }
+
     private companion object {
         private val FAVORITE_SESSION_IDS_KEY = stringSetPreferencesKey("FAVORITE_SESSION_IDS_KEY")
         private val PROFILE_KEY = stringPreferencesKey("PROFILE_KEY")

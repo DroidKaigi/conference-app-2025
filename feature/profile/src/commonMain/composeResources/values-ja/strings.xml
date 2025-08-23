@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="profile_card_title">プロフィールカード</string>
+    <string name="profile_card_title">Profile Card</string>
     <string name="profile_card_edit_description">会場やSNSで自分を紹介できるプロフィールカードを作ってみましょう！</string>
     <string name="link_example_text">（ex.X、Instagram...）</string>
     <string name="select_theme">テーマ選択</string>

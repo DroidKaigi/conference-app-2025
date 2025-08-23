@@ -12,6 +12,12 @@
         }
       }
     },
+    "Profile Card" : {
+
+    },
+    "QRCode" : {
+
+    },
     "Share" : {
       "extractionState" : "manual",
       "localizations" : {

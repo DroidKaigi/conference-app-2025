@@ -11,7 +11,9 @@ This is the iOS app for DroidKaigi 2025 conference. For general project informat
 ### Quick Setup
 ```bash
 # Install nest (if not already installed)
-brew install mtj0928/tap/nest
+curl -s https://raw.githubusercontent.com/mtj0928/nest/main/Scripts/install.sh | bash
+# Add nest to PATH (if not already done)
+export PATH="$PATH:~/.nest/bin"
 
 # Initial setup (installs SwiftLint via nest)
 make setup

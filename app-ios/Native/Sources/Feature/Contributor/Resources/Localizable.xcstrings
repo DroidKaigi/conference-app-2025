@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%lld" : {
+
+    },
     "Contributors" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -17,6 +20,12 @@
           }
         }
       }
+    },
+    "persons" : {
+
+    },
+    "Total" : {
+
     }
   },
   "version" : "1.0"

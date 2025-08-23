@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
@@ -20,6 +21,9 @@ import io.github.droidkaigi.confsched.sessions.image
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+const val TimetableItemDetailMessageRowTestTag = "TimetableItemDetailMessageRowTestTag"
+const val TimetableItemDetailMessageRowTextTestTag = "TimetableItemDetailMessageRowTextTestTag"
+
 @Composable
 fun TimetableItemDetailAnnounceMessage(
     message: String,
@@ -27,7 +31,8 @@ fun TimetableItemDetailAnnounceMessage(
 ) {
     Row(
         modifier = modifier
-            .height(IntrinsicSize.Min),
+            .height(IntrinsicSize.Min)
+            .testTag(TimetableItemDetailMessageRowTestTag),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Icon(
@@ -37,6 +42,7 @@ fun TimetableItemDetailAnnounceMessage(
             tint = MaterialTheme.colorScheme.error,
         )
         Text(
+            modifier = Modifier.testTag(TimetableItemDetailMessageRowTextTestTag),
             text = message,
             fontSize = 16.sp,
             color = MaterialTheme.colorScheme.error,

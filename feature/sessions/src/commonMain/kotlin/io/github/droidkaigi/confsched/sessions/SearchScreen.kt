@@ -56,7 +56,9 @@ fun SearchScreen(
                         onBookmarkClick = { sessionId ->
                             onEvent(SearchScreenEvent.Bookmark(sessionId.value))
                         },
-                        isBookmarked = { false }, // TODO: Pass actual bookmarked state
+                        isBookmarked = { timetableItemId ->
+                            uiState.bookmarks.contains(timetableItemId)
+                        },
                         highlightWord = uiState.searchQuery,
                     )
                 }

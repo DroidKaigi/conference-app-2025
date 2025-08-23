@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
@@ -54,6 +55,8 @@ import io.github.droidkaigi.confsched.sessions.schedule_title
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+const val SummaryCardTextTag = "SummaryCardTextTag:"
+
 @Composable
 fun TimetableItemDetailSummaryCard(
     timetableItem: TimetableItem,
@@ -67,7 +70,10 @@ fun TimetableItemDetailSummaryCard(
     ) {
         SummaryCardText(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .testTag(
+                    SummaryCardTextTag.plus(stringResource(SessionsRes.string.schedule_title)),
+                ),
             imageVector = Icons.Outlined.Schedule,
             contentDescription = stringResource(SessionsRes.string.content_description_schedule),
             title = stringResource(SessionsRes.string.schedule_title),
@@ -76,7 +82,10 @@ fun TimetableItemDetailSummaryCard(
         Spacer(Modifier.height(8.dp))
         SummaryCardText(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .testTag(
+                    SummaryCardTextTag.plus(stringResource(SessionsRes.string.location_title)),
+                ),
             imageVector = Icons.Outlined.LocationOn,
             contentDescription = stringResource(SessionsRes.string.content_description_location),
             title = stringResource(SessionsRes.string.location_title),
@@ -85,7 +94,10 @@ fun TimetableItemDetailSummaryCard(
         Spacer(Modifier.height(8.dp))
         SummaryCardText(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .testTag(
+                    SummaryCardTextTag.plus(stringResource(SessionsRes.string.language_title)),
+                ),
             imageVector = Icons.Outlined.Language,
             contentDescription = stringResource(SessionsRes.string.content_description_language),
             title = stringResource(SessionsRes.string.language_title),
@@ -96,7 +108,10 @@ fun TimetableItemDetailSummaryCard(
         Spacer(Modifier.height(8.dp))
         SummaryCardText(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .testTag(
+                    SummaryCardTextTag.plus(stringResource(SessionsRes.string.category_title)),
+                ),
             imageVector = Icons.Outlined.Category,
             contentDescription = stringResource(SessionsRes.string.content_description_category),
             title = stringResource(SessionsRes.string.category_title),

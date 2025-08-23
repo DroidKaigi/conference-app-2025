@@ -22,7 +22,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,6 +36,7 @@ import io.github.droidkaigi.confsched.droidkaigiui.layout.rememberCollapsingHead
 import io.github.droidkaigi.confsched.droidkaigiui.session.TimetableList
 import io.github.droidkaigi.confsched.model.core.DroidKaigi2025Day
 import io.github.droidkaigi.confsched.model.sessions.Timetable
+import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import io.github.droidkaigi.confsched.model.sessions.TimetableItemId
 import io.github.droidkaigi.confsched.model.sessions.TimetableUiType
 import io.github.droidkaigi.confsched.model.sessions.fake
@@ -46,6 +46,7 @@ import io.github.droidkaigi.confsched.sessions.grid.TimetableGridUiState
 import io.github.droidkaigi.confsched.sessions.section.TimetableListUiState
 import io.github.droidkaigi.confsched.sessions.section.TimetableUiState
 import kotlinx.collections.immutable.persistentMapOf
+import kotlinx.collections.immutable.toPersistentMap
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -197,8 +198,10 @@ private fun TimetableScreenPreview_List() {
                 timetable = TimetableUiState.ListTimetable(
                     timetableListUiStates = mapOf(
                         DroidKaigi2025Day.ConferenceDay1 to TimetableListUiState(
-                            persistentMapOf(),
-                            Timetable.fake(),
+                            timetableItemMap = TimetableListUiState.TimeSlot.fakes().associateWith {
+                                listOf(TimetableItem.Session.fake())
+                            }.toPersistentMap(),
+                            timetable = Timetable.fake(),
                         ),
                         DroidKaigi2025Day.ConferenceDay2 to TimetableListUiState(
                             persistentMapOf(),

@@ -1,8 +1,11 @@
+import Dependencies
+import DependencyExtra
 import SwiftUI
 import Theme
 
 public struct AboutScreen: View {
     @State private var presenter = AboutPresenter()
+    @Dependency(\.safari) var safari
     let onNavigate: (AboutNavigationDestination) -> Void
     let onEnableComposeMultiplatform: () -> Void
 
@@ -106,7 +109,9 @@ public struct AboutScreen: View {
                     image: AssetImages.icGavel.swiftUIImage
                 ) {
                     presenter.codeOfConductTapped()
-                    onNavigate(.codeOfConduct)
+                    Task {
+                        await safari(URL(string: String(localized: "CodeOfConductURL", bundle: .module))!)
+                    }
                 }
 
                 Divider()
@@ -128,7 +133,9 @@ public struct AboutScreen: View {
                     image: AssetImages.icPrivacyTip.swiftUIImage
                 ) {
                     presenter.privacyPolicyTapped()
-                    onNavigate(.privacyPolicy)
+                    Task {
+                        await safari(URL(string: String(localized: "PrivacyPolicyURL", bundle: .module))!)
+                    }
                 }
 
                 Divider()

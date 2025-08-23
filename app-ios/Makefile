@@ -20,7 +20,7 @@ setup: ## Initial setup for the project
 			echo "Please install nest from: https://github.com/mtj0928/nest"; \
 			echo ""; \
 			echo "Installation options:"; \
-			echo "  - Homebrew: brew install mtj0928/tap/nest"; \
+			echo "  - Script: curl -s https://raw.githubusercontent.com/mtj0928/nest/main/Scripts/install.sh | bash (Don't forget to add ~/.nest/bin to PATH)"; \
 			echo "  - Manual: Download from https://github.com/mtj0928/nest/releases"; \
 			exit 1; \
 		fi; \
@@ -29,7 +29,6 @@ setup: ## Initial setup for the project
 	fi
 	@cd Core && swift package resolve
 	@cd Native && swift package resolve
-	@swift package resolve
 	@echo "Setup complete!"
 
 .PHONY: build

@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched.favorites
 
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import io.github.droidkaigi.confsched.common.compose.rememberEventFlow
 import io.github.droidkaigi.confsched.droidkaigiui.architecture.SoilDataBoundary
@@ -9,6 +10,7 @@ import org.jetbrains.compose.resources.stringResource
 import soil.query.compose.rememberQuery
 import soil.query.compose.rememberSubscription
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 context(screenContext: FavoritesScreenContext)
 fun FavoritesScreenRoot(

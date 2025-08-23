@@ -26,7 +26,7 @@ soil = "1.0.0-alpha12"
 
 rin = "0.3.0"
 
-metro = "0.5.1"
+metro = "0.5.2"
 
 lifecycleCompose = "2.9.1"
 lifecycleViewmodelNavigation3 = "1.0.0-SNAPSHOT"
@@ -56,7 +56,11 @@ molecule = "2.1.0"
 
 navigationCompose = "2.9.0-beta04"
 
-aboutLibraries = "12.2.4"
+# >= 12.1.2 triggers a Kotlin MPP model failure during Gradle sync
+# java.lang.IllegalStateException:
+# The value for task ':app-shared:findLibraries' property 'offlineMode'
+# is final and cannot be changed any further.
+aboutLibraries = "12.1.1"
 
 filekit = "0.10.0"
 

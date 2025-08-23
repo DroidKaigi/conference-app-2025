@@ -33,7 +33,7 @@ struct KeyVisual: View {
                         .typographyStyle(.titleSmall)
                         .padding(.trailing, 4)
 
-                    Text("2025.09.12(Thu) - 13(Fri)")
+                    Text("2025.09.11(Thu) - 12(Fri)")
                         .foregroundStyle(AssetColors.onSurface.swiftUIColor)
                         .typographyStyle(.titleSmall)
                 }

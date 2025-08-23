@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.component.AnimatedTextTopAppBar
@@ -35,6 +36,8 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentMapOf
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+
+const val FavoritesScreenTestTag = "FavoritesScreenTestTag"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -61,7 +64,8 @@ fun FavoritesScreen(
                 scrollBehavior = scrollBehavior,
             )
         },
-        modifier = modifier,
+        modifier = modifier
+            .testTag(FavoritesScreenTestTag),
     ) { innerPadding ->
         Column(
             modifier = Modifier.padding(innerPadding),

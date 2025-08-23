@@ -108,11 +108,12 @@
 				};
 			};
 			buildConfigurationList = BF779E652E0F8D5E000A0710 /* Build configuration list for PBXProject "DroidKaigi2025" */;
-			developmentRegion = en;
+			developmentRegion = ja;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				ja,
 			);
 			mainGroup = BF779E612E0F8D5E000A0710;
 			minimizedProjectReferenceProxies = 1;

@@ -3,7 +3,10 @@ package io.github.droidkaigi.confsched.droidkaigiui.architecture
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.component.AnimatedMediumTopAppBar
@@ -23,6 +26,9 @@ fun AppBarFallbackScaffold(
     title: String,
     onBackClick: (() -> Unit)? = null,
     appBarSize: AppBarSize = AppBarSize.Default,
+    appBarColors: TopAppBarColors = TopAppBarDefaults.topAppBarColors().copy(
+        scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+    ),
     windowInsets: WindowInsets = WindowInsets.safeDrawingWithBottomNavBar,
     content: @Composable (innerPadding: PaddingValues) -> Unit,
 ) {
@@ -32,6 +38,7 @@ fun AppBarFallbackScaffold(
                 AppBarSize.Default -> {
                     AnimatedTextTopAppBar(
                         title = title,
+                        colors = appBarColors,
                         onBackClick = onBackClick,
                     )
                 }
@@ -39,6 +46,7 @@ fun AppBarFallbackScaffold(
                 AppBarSize.Medium -> {
                     AnimatedMediumTopAppBar(
                         title = title,
+                        colors = appBarColors,
                         onBackClick = { onBackClick?.invoke() },
                     )
                 }
@@ -49,6 +57,7 @@ fun AppBarFallbackScaffold(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 private fun AppBarFallbackScaffoldPreview() {
@@ -63,6 +72,7 @@ private fun AppBarFallbackScaffoldPreview() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 private fun AppBarFallbackScaffoldMediumPreview() {

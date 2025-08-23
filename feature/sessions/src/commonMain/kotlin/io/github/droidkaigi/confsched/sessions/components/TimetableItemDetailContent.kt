@@ -19,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.designsystem.component.ClickableLinkText
@@ -35,6 +36,15 @@ import io.github.droidkaigi.confsched.sessions.read_more
 import io.github.droidkaigi.confsched.sessions.target_audience
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+
+const val TargetAudienceSectionTestTag = "TargetAudienceSectionTestTag"
+const val DescriptionMoreButtonTestTag = "DescriptionMoreButtonTestTag"
+
+// TODO https://github.com/DroidKaigi/conference-app-2025/issues/218
+// const val TimetableItemDetailContentArchiveSectionTestTag = "TimetableItemDetailContentArchiveSectionTestTag"
+// const val TimetableItemDetailContentArchiveSectionSlideButtonTestTag = "TimetableItemDetailContentArchiveSectionSlideButtonTestTag"
+// const val TimetableItemDetailContentArchiveSectionVideoButtonTestTag = "TimetableItemDetailContentArchiveSectionVideoButtonTestTag"
+const val TimetableItemDetailContentTargetAudienceSectionBottomTestTag = "TimetableItemDetailContentTargetAudienceSectionBottomTestTag"
 
 @Composable
 fun TimetableItemDetailContent(
@@ -82,6 +92,7 @@ private fun DescriptionSection(
             visible = isExpand.not() && isOverFlow,
             enter = EnterTransition.None,
             exit = fadeOut(),
+            modifier = Modifier.testTag(DescriptionMoreButtonTestTag),
         ) {
             OutlinedButton(
                 modifier = Modifier.fillMaxWidth(),
@@ -109,7 +120,8 @@ private fun TargetAudienceSection(
 ) {
     Column(
         modifier = modifier
-            .padding(8.dp),
+            .padding(8.dp)
+            .testTag(TargetAudienceSectionTestTag),
     ) {
         Text(
             text = stringResource(SessionsRes.string.target_audience),
@@ -121,7 +133,7 @@ private fun TargetAudienceSection(
             text = targetAudience,
             style = MaterialTheme.typography.bodyLarge,
         )
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(8.dp).testTag(TimetableItemDetailContentTargetAudienceSectionBottomTestTag))
     }
 }
 

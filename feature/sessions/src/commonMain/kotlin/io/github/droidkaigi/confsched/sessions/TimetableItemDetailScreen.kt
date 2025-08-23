@@ -1,11 +1,15 @@
 package io.github.droidkaigi.confsched.sessions
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
@@ -20,6 +24,10 @@ import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailHea
 import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailSummaryCard
 import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailTopAppBar
 import org.jetbrains.compose.ui.tooling.preview.Preview
+
+// TODO https://github.com/DroidKaigi/conference-app-2025/issues/218
+// const val TimetableItemDetailBookmarkIconTestTag = "TimetableItemDetailBookmarkIconTestTag"
+const val TimetableItemDetailScreenLazyColumnTestTag = "TimetableItemDetailScreenLazyColumnTestTag"
 
 @Composable
 fun TimetableItemDetailScreen(
@@ -49,14 +57,17 @@ fun TimetableItemDetailScreen(
                     onShareClick = { onShareClick(uiState.timetableItem) },
                     onViewSlideClick = onLinkClick,
                     onWatchVideoClick = onLinkClick,
+                    modifier = Modifier.padding(bottom = WindowInsets.safeGestures.asPaddingValues().calculateBottomPadding()),
                 )
             },
+            contentWindowInsets = WindowInsets(),
             modifier = modifier,
         ) { innerPadding ->
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(innerPadding),
+                    .padding(innerPadding)
+                    .testTag(TimetableItemDetailScreenLazyColumnTestTag),
             ) {
                 item {
                     TimetableItemDetailHeadline(

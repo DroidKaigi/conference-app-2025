@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "Native",
+    defaultLocalization: "ja",
     platforms: [
         .iOS(.v18),
         .macOS(.v15),
@@ -108,6 +109,7 @@ let package = Package(
                 .product(name: "Presentation", package: "Core"),
                 .product(name: "Model", package: "Core"),
                 .target(name: "Component"),
+                .target(name: "DependencyExtra"),
                 .target(name: "Extension"),
                 .target(name: "Theme"),
             ],

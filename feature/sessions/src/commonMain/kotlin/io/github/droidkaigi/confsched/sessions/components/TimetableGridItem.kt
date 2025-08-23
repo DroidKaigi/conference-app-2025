@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +21,7 @@ import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -67,14 +69,19 @@ fun TimetableGridItem(
     }
 
     ProvideRoomTheme(timetableItem.room.roomTheme) {
+        val shape = RoundedCornerShape(16.dp)
         Column(
             verticalArrangement = Arrangement.Center,
             modifier = modifier
-                .clickable { onTimetableItemClick(timetableItem) }
-                .background(LocalRoomTheme.current.containerColor)
                 .width(TimetableGridItemDefaults.width)
                 .height(scaledHeight)
-                .border(1.dp, LocalRoomTheme.current.primaryColor, RoundedCornerShape(16.dp))
+                .border(1.dp, LocalRoomTheme.current.primaryColor, shape)
+                .clip(shape)
+                .background(LocalRoomTheme.current.containerColor)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = ripple(bounded = true),
+                ) { onTimetableItemClick(timetableItem) }
                 .padding(
                     horizontal = TimetableGridItemDefaults.contentPadding,
                     vertical =

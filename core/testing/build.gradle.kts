@@ -29,6 +29,7 @@ kotlin {
             implementation(projects.feature.contributors)
             implementation(projects.feature.eventmap)
             implementation(projects.feature.staff)
+            implementation(projects.feature.favorites)
 
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.uiTest)

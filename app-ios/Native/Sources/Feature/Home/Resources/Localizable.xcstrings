@@ -1,22 +1,35 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "Timetable" : {
+    "%@ ~ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ ~ %2$@"
+          }
+        }
+      }
+    },
+    "Conference background" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Timetable"
+            "value" : "Conference background"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "タイムテーブル"
+            "value" : "カンファレンスの背景"
           }
         }
       }
+    },
+    "Day" : {
+
     },
     "Search sessions" : {
       "extractionState" : "manual",
@@ -69,19 +82,19 @@
         }
       }
     },
-    "Conference background" : {
+    "Timetable" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Conference background"
+            "value" : "Timetable"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "カンファレンスの背景"
+            "value" : "タイムテーブル"
           }
         }
       }
