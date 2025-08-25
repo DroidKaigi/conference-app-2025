@@ -12,7 +12,10 @@ import dev.zacsweers.metro.createGraphFactory
 
 fun main() = application {
     val graphFactory = createGraphFactory<JvmAppGraph.Factory>()
-    val graph: JvmAppGraph = graphFactory.createJvmAppGraph(JvmLicensesJsonReader())
+    val graph: JvmAppGraph = graphFactory.createJvmAppGraph(
+        licensesJsonReader = JvmLicensesJsonReader(),
+        useProductionApiBaseUrl = false,
+    )
 
     Window(
         onCloseRequest = ::exitApplication,

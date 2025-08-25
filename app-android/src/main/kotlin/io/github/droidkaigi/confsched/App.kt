@@ -10,6 +10,7 @@ class App : Application() {
             .createAndroidAppGraph(
                 applicationContext = this,
                 licensesJsonReader = AndroidLicensesJsonReader(this),
+                useProductionApiBaseUrl = BuildConfig.USE_PRODUCTION_API_BASE_URL,
             )
     }
 }

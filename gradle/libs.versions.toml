@@ -65,6 +65,10 @@ aboutLibraries = "12.1.1"
 filekit = "0.10.0"
 qrcodeKotlin = "4.3.0"
 
+firebaseGradlePlugin = "4.4.3"
+firebaseCrashlyticsGradlePlugin = "3.0.6"
+firebaseCrashlytics = "19.4.4"
+
 [libraries]
 # gradle plugins
 androidGradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidGradlePlugin" }
@@ -80,6 +84,8 @@ buildkonfigGradlePlugin = { module = "com.codingfeline.buildkonfig:buildkonfig-g
 skieGradlePlugin = { module = "co.touchlab.skie:co.touchlab.skie.gradle.plugin", version.ref = "skie" }
 aboutLibrariesGradlePlugin = { module = "com.mikepenz.aboutlibraries.plugin:com.mikepenz.aboutlibraries.plugin.gradle.plugin", version.ref = "aboutLibraries" }
 spotlessGradlePlugin = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
+firebaseGradlePlugin = { module = "com.google.gms:google-services", version.ref = "firebaseGradlePlugin" }
+firebaseCrashlyticsGradlePlugin = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "firebaseCrashlyticsGradlePlugin" }
 
 # ktor and ktorfit
 ktorClientOkhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
@@ -98,6 +104,9 @@ androidxBrowser = { module = "androidx.browser:browser", version.ref = "androidx
 composeBom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
 androidxUiTestJunit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 androidxUiTestManifest = { module = "androidx.compose.ui:ui-test-manifest" }
+
+# firebase
+firebaseCrashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx", version.ref = "firebaseCrashlytics" }
 
 # kotlin
 kotlinTest = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -196,4 +205,6 @@ plugins = [
     "skieGradlePlugin",
     "aboutLibrariesGradlePlugin",
     "spotlessGradlePlugin",
+    "firebaseGradlePlugin",
+    "firebaseCrashlyticsGradlePlugin",
 ]
