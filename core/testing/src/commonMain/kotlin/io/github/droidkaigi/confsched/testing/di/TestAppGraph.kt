@@ -1,6 +1,8 @@
 package io.github.droidkaigi.confsched.testing.di
 
 import dev.zacsweers.metro.Binds
+import dev.zacsweers.metro.Provides
+import io.github.droidkaigi.confsched.data.UseProductionApiBaseUrl
 import io.github.droidkaigi.confsched.data.about.FakeBuildConfigProvider
 import io.github.droidkaigi.confsched.data.about.FakeLicensesJsonReader
 import io.github.droidkaigi.confsched.data.about.LicensesJsonReader
@@ -42,6 +44,10 @@ internal interface TestAppGraph :
 
     @Binds
     val FakeEventMapApiClient.binds: EventMapApiClient
+
+    @UseProductionApiBaseUrl
+    @Provides
+    fun provideUseProductionApiBaseUrl(): Boolean = false
 }
 
 internal expect fun createTestAppGraph(): TestAppGraph
