@@ -21,6 +21,7 @@ import io.github.droidkaigi.confsched.naventry.sessionEntries
 import io.github.droidkaigi.confsched.naventry.settingsEntry
 import io.github.droidkaigi.confsched.naventry.sponsorsEntry
 import io.github.droidkaigi.confsched.naventry.staffEntry
+import io.github.droidkaigi.confsched.navigation.extension.safeRemoveLastOrNull
 import io.github.droidkaigi.confsched.navigation.rememberNavBackStack
 import io.github.droidkaigi.confsched.navigation.sceneStrategy
 import io.github.droidkaigi.confsched.navkey.AboutNavKey
@@ -73,7 +74,7 @@ actual fun KaigiAppUi() {
             sceneStrategy = sceneStrategy(),
             entryProvider = entryProvider {
                 sessionEntries(
-                    onBackClick = { backStack.removeLastOrNull() },
+                    onBackClick = { backStack.safeRemoveLastOrNull() },
                     onAddCalendarClick = externalNavController::navigateToCalendarRegistration,
                     onShareClick = externalNavController::onShareClick,
                     onLinkClick = externalNavController::navigate,
@@ -86,15 +87,15 @@ actual fun KaigiAppUi() {
                     },
                 )
                 contributorsEntry(
-                    onBackClick = { backStack.removeLastOrNull() },
+                    onBackClick = { backStack.safeRemoveLastOrNull() },
                     onContributorClick = externalNavController::navigate,
                 )
                 sponsorsEntry(
-                    onBackClick = { backStack.removeLastOrNull() },
+                    onBackClick = { backStack.safeRemoveLastOrNull() },
                     onSponsorClick = externalNavController::navigate,
                 )
                 staffEntry(
-                    onBackClick = { backStack.removeLastOrNull() },
+                    onBackClick = { backStack.safeRemoveLastOrNull() },
                     onStaffItemClick = externalNavController::navigate,
                 )
                 settingsEntry(
@@ -162,7 +163,7 @@ actual fun KaigiAppUi() {
                             }
                         }
                     },
-                    onBackClick = { backStack.removeLastOrNull() },
+                    onBackClick = { backStack.safeRemoveLastOrNull() },
                 )
                 profileNavEntry(
                     onShareProfileCardClick = externalNavController::onShareProfileCardClick,
