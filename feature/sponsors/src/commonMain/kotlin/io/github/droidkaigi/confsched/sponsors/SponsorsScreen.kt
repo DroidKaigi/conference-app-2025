@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched.sponsors
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,9 +30,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.component.AnimatedMediumTopAppBar
+import io.github.droidkaigi.confsched.droidkaigiui.rememberAsyncImagePainter
 import io.github.droidkaigi.confsched.model.sponsors.Sponsor
 import io.github.droidkaigi.confsched.model.sponsors.SponsorList
 import io.github.droidkaigi.confsched.model.sponsors.SponsorPlan
@@ -157,14 +158,15 @@ fun SponsorItem(
     modifier: Modifier = Modifier,
     onSponsorsItemClick: (url: String) -> Unit,
 ) {
+    val painter = rememberAsyncImagePainter(sponsor.logo)
     Card(
         modifier = modifier.clickable { onSponsorsItemClick(sponsor.link) },
         colors = CardDefaults.cardColors(
             containerColor = Color.White,
         ),
     ) {
-        AsyncImage(
-            model = sponsor.logo,
+        Image(
+            painter = painter,
             contentDescription = stringResource(
                 SponsorsRes.string.content_description_sponsor_logo_format,
                 sponsor.name,
