@@ -9,12 +9,20 @@ import androidx.navigationevent.NavigationEventDispatcher
 import androidx.navigationevent.NavigationEventDispatcherOwner
 import androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner
 import dev.zacsweers.metro.createGraphFactory
+import io.github.droidkaigi.confsched.app_desktop.AppDesktopRes
+import io.github.droidkaigi.confsched.app_desktop.ic_app
+import org.jetbrains.compose.resources.painterResource
 
 fun main() = application {
     val graphFactory = createGraphFactory<JvmAppGraph.Factory>()
     val graph: JvmAppGraph = graphFactory.createJvmAppGraph(JvmLicensesJsonReader())
 
+    // Replace the taskbar icon from Duke when launched via the Gradle command.
+    applyRuntimeDockIconIfDev()
+
     Window(
+        // Icon for the title bar/task switching UI of that window
+        icon = painterResource(AppDesktopRes.drawable.ic_app),
         onCloseRequest = ::exitApplication,
         state = rememberWindowState(
             width = 1200.dp,
