@@ -120,9 +120,7 @@ fun TimetableScreen(
                                     inactiveContainerColor = MaterialTheme.colorScheme.surface,
                                 ),
                                 selected = selectedDay == droidKaigi2025Day,
-                                modifier = Modifier
-                                    .height(TimetableDefaults.dayTabHeight)
-                                    .width(TimetableDefaults.dayTabWidth),
+                                modifier = Modifier.width(TimetableDefaults.dayTabWidth)
                             ) {
                                 Text(droidKaigi2025Day.monthAndDay())
                             }
