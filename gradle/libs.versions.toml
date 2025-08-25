@@ -65,6 +65,8 @@ aboutLibraries = "12.1.1"
 filekit = "0.10.0"
 qrcodeKotlin = "4.3.0"
 
+firebaseGradlePlugin = "4.4.3"
+
 [libraries]
 # gradle plugins
 androidGradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidGradlePlugin" }
@@ -80,6 +82,7 @@ buildkonfigGradlePlugin = { module = "com.codingfeline.buildkonfig:buildkonfig-g
 skieGradlePlugin = { module = "co.touchlab.skie:co.touchlab.skie.gradle.plugin", version.ref = "skie" }
 aboutLibrariesGradlePlugin = { module = "com.mikepenz.aboutlibraries.plugin:com.mikepenz.aboutlibraries.plugin.gradle.plugin", version.ref = "aboutLibraries" }
 spotlessGradlePlugin = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
+firebaseGradlePlugin = { module = "com.google.gms:google-services", version.ref = "firebaseGradlePlugin" }
 
 # ktor and ktorfit
 ktorClientOkhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
@@ -196,4 +199,5 @@ plugins = [
     "skieGradlePlugin",
     "aboutLibrariesGradlePlugin",
     "spotlessGradlePlugin",
+    "firebaseGradlePlugin",
 ]

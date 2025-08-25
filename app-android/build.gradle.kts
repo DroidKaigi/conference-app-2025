@@ -10,6 +10,7 @@ plugins {
     id("droidkaigi.primitive.metro")
     id("droidkaigi.primitive.aboutlibraries")
     id("droidkaigi.primitive.spotless")
+    id("droidkaigi.primitive.firebase")
 }
 
 val keystorePropertiesFile = file("keystore.properties")
