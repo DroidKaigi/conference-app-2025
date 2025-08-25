@@ -10,16 +10,17 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Binds
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.DependencyGraph
-import dev.zacsweers.metro.Named
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
-import dev.zacsweers.metro.createGraph
+import dev.zacsweers.metro.createGraphFactory
 import io.github.droidkaigi.confsched.common.scope.TimetableDetailScope
+import io.github.droidkaigi.confsched.data.ApiBaseUrl
 import io.github.droidkaigi.confsched.data.DataScope
 import io.github.droidkaigi.confsched.data.DataStoreDependencyProviders
 import io.github.droidkaigi.confsched.data.ProfileDataStoreQualifier
 import io.github.droidkaigi.confsched.data.SessionCacheDataStoreQualifier
 import io.github.droidkaigi.confsched.data.SettingsDataStoreQualifier
+import io.github.droidkaigi.confsched.data.UseProductionApiBaseUrl
 import io.github.droidkaigi.confsched.data.UserDataStoreQualifier
 import io.github.droidkaigi.confsched.data.about.DefaultLicensesQueryKey
 import io.github.droidkaigi.confsched.data.annotations.IoDispatcher
@@ -111,10 +112,14 @@ interface IosAppGraph : AppGraph {
     val eventMapRepository: EventMapRepository
     val profileRepository: ProfileRepository
 
-    @Named("apiBaseUrl")
     @Provides
-    fun provideApiBaseUrl(): String {
-        return "https://ssot-api-staging.an.r.appspot.com/"
+    @ApiBaseUrl
+    fun provideApiBaseUrl(
+        @UseProductionApiBaseUrl useProductionApiBaseUrl: Boolean,
+    ): String = if (useProductionApiBaseUrl) {
+        "https://ssot-api.droidkaigi.jp/"
+    } else {
+        "https://ssot-api-staging.an.r.appspot.com/"
     }
 
     @Binds
@@ -183,7 +188,7 @@ interface IosAppGraph : AppGraph {
     @Provides
     fun provideKtorfit(
         httpClient: HttpClient,
-        @Named("apiBaseUrl") apiBaseUrl: String,
+        @ApiBaseUrl apiBaseUrl: String,
     ): Ktorfit {
         return Ktorfit.Builder()
             .httpClient(httpClient)
@@ -284,6 +289,13 @@ interface IosAppGraph : AppGraph {
     fun provideSwrCacheScope(): SwrCacheScope {
         return SwrCacheScope()
     }
+
+    @DependencyGraph.Factory
+    fun interface Factory {
+        fun createIosAppGraph(
+            @Provides @UseProductionApiBaseUrl useProductionApiBaseUrl: Boolean,
+        ): IosAppGraph
+    }
 }
 
 @ContributesTo(TimetableDetailScope::class)
@@ -292,6 +304,9 @@ interface IosTimetableItemDetailGraph {
     val DefaultTimetableItemQueryKey.bind: TimetableItemQueryKey
 }
 
-fun createIosAppGraph(): IosAppGraph {
-    return createGraph()
+fun createIosAppGraph(useProductionApiBaseUrl: Boolean): IosAppGraph {
+    return createGraphFactory<IosAppGraph.Factory>()
+        .createIosAppGraph(
+            useProductionApiBaseUrl = useProductionApiBaseUrl,
+        )
 }

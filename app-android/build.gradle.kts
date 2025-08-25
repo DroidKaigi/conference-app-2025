@@ -46,12 +46,19 @@ android {
         }
     }
 
+    buildFeatures.buildConfig = true
+
     productFlavors {
         create("dev") {
             signingConfig = signingConfigs.getByName("dev")
             isDefault = true
             applicationIdSuffix = ".dev"
             dimension = "network"
+            buildConfigField(
+                type = "Boolean",
+                name = "USE_PRODUCTION_API_BASE_URL",
+                value = "true",
+            )
         }
 
         create("prod") {
@@ -61,6 +68,11 @@ android {
             } else {
                 signingConfigs.getByName("dev")
             }
+            buildConfigField(
+                type = "Boolean",
+                name = "USE_PRODUCTION_API_BASE_URL",
+                value = "false",
+            )
         }
     }
 
