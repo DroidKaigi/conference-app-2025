@@ -105,13 +105,13 @@ fun ProfileEditScreen(
         },
         contentWindowInsets = WindowInsets.safeDrawingWithBottomNavBar,
         modifier = modifier,
-    ) { contentPadding ->
+    ) { contentPaddingg ->
         Column(
             modifier = Modifier
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp)
-                .padding(contentPadding),
+                .padding(contentPaddingg),
             verticalArrangement = Arrangement.spacedBy(32.dp),
         ) {
             Text(
