@@ -5,6 +5,7 @@ ksp = "2.2.0-2.0.2"
 
 jetbrainsCompose = "1.9.0-beta01"
 material3 = "1.9.0-alpha04"
+material3Adaptive = "1.1.2"
 
 kotlinPoet = "2.2.0"
 kotlinxSerialization = "1.9.0"
@@ -149,6 +150,7 @@ coilTest = { module = "io.coil-kt.coil3:coil-test", version.ref = "coil" }
 
 haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
 material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "material3" }
+material3Adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive", version.ref = "material3Adaptive" }
 
 buildkonfigCompiler = { module = "com.codingfeline.buildkonfig:buildkonfig-compiler", version.ref = "buildkonfig" }
 
