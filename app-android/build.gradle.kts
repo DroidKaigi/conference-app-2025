@@ -11,6 +11,7 @@ plugins {
     id("droidkaigi.primitive.aboutlibraries")
     id("droidkaigi.primitive.spotless")
     id("droidkaigi.primitive.firebase")
+    id("droidkaigi.primitive.firebase.crashlytics")
 }
 
 val keystorePropertiesFile = file("keystore.properties")
