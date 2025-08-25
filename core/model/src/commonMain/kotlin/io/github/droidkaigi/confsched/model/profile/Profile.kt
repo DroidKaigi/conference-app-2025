@@ -8,7 +8,7 @@ data class Profile(
     val occupation: String,
     val link: String,
     val imagePath: String,
-    val image: ByteArray,
+    val image: ByteArray
 ) {
     override fun toString(): String {
         return """
