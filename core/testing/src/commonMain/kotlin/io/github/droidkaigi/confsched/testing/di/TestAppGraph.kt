@@ -22,6 +22,7 @@ internal interface TestAppGraph :
     AboutScreenTestGraph,
     ContributorsScreenTestGraph,
     EventMapScreenTestGraph,
+    ProfileScreenTestGraph,
     StaffScreenTestGraph,
     SettingsScreenTestGraph,
     FavoritesScreenTestGraph,
