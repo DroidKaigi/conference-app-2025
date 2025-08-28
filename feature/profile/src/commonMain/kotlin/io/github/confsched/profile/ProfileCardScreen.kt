@@ -33,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import io.github.confsched.profile.components.CardPreviewImageBitmaps
 import io.github.confsched.profile.components.FlippableProfileCard
@@ -48,6 +49,8 @@ import io.github.droidkaigi.confsched.profile.share
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+
+const val ProfileCardCardScreenTestTag = "ProfileCardCardScreenTestTag"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -86,7 +89,8 @@ fun ProfileCardScreen(
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp)
-                .padding(contentPadding),
+                .padding(contentPadding)
+                .testTag(ProfileCardCardScreenTestTag),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {

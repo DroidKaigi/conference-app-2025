@@ -48,6 +48,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -90,6 +91,7 @@ import soil.form.compose.rememberForm
 import soil.form.rule.match
 import soil.form.rule.notBlank
 
+const val ProfileCardEditScreenColumnTestTag = "ProfileCardEditScreenColumnTestTag"
 private val profileSaver: Saver<Profile, Any> = listSaver(
     save = {
         listOf(
@@ -141,7 +143,8 @@ fun ProfileEditScreen(
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp)
-                .padding(contentPadding),
+                .padding(contentPadding)
+                .testTag(ProfileCardEditScreenColumnTestTag),
             verticalArrangement = Arrangement.spacedBy(32.dp),
         ) {
             Text(
@@ -391,6 +394,7 @@ private fun Form<Profile>.Theme() {
 @Composable
 private fun FormField<String>.InputField(
     label: String,
+    modifier: Modifier = Modifier,
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
     keyboardActions: KeyboardActions = KeyboardActions.Default,
 ) {
