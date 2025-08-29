@@ -9,13 +9,13 @@ data class Profile(
     val link: String = "",
     val imagePath: String = "",
     val theme: ProfileCardTheme = ProfileCardTheme.DarkPill,
-) {
-    companion object {
-        val Fake = Profile(
-            nickName = "Yorushika",
-            occupation = "Rock band",
-            link = "https://yorushika.com/",
-            imagePath = "image.png"
-        )
-    }
+)
+
+fun Profile.Companion.fake(): Profile {
+    return Profile(
+        nickName = "User",
+        occupation = "Developer",
+        link = "https://2025.droidkaigi.jp",
+        imagePath = "image.png",
+    )
 }
