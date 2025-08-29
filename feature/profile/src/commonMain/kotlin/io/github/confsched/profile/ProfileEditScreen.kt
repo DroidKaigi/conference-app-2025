@@ -92,6 +92,16 @@ import soil.form.rule.match
 import soil.form.rule.notBlank
 
 const val ProfileCardEditScreenColumnTestTag = "ProfileCardEditScreenColumnTestTag"
+const val ProfileCardEditNameFormTestTag = "ProfileCardEditNameFormTestTag"
+const val ProfileCardEditOccupationFormTestTag = "ProfileCardEditOccupationFormTestTag"
+const val ProfileCardEditLinkFormTestTag = "ProfileCardEditLinkFormTestTag"
+const val ProfileCardEditCreateCardButton = "ProfileCardEditCreateCardButtonTestTag"
+const val ProfileCardEditDescriptionTextTestTag = "ProfileCardEditDescriptionTextTestTag"
+const val ProfileCardEditNameErrorTextTestTag = "ProfileCardEditNameErrorTextTestTag"
+const val ProfileCardEditOccupationErrorTextTestTag = "ProfileCardEditOccupationErrorTextTestTag"
+const val ProfileCardEditLinkErrorTextTestTag = "ProfileCardEditLinkErrorTextTestTag"
+const val ProfileCardEditImageErrorTextTestTag = "ProfileCardEditImageErrorTextTestTag"
+
 private val profileSaver: Saver<Profile, Any> = listSaver(
     save = {
         listOf(
@@ -151,6 +161,7 @@ fun ProfileEditScreen(
                 text = stringResource(ProfileRes.string.profile_card_edit_description),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.testTag(ProfileCardEditDescriptionTextTestTag),
             )
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 form.Name()
@@ -161,7 +172,9 @@ fun ProfileEditScreen(
             form.Theme()
             Button(
                 onClick = { form.handleSubmit() },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag(ProfileCardEditCreateCardButton),
                 contentPadding = PaddingValues(18.dp),
             ) {
                 Text(stringResource(ProfileRes.string.create_card))
@@ -183,10 +196,18 @@ private fun Form<Profile>.Name() {
             notBlank { emptyNameErrorString }
         },
         render = { field ->
-            field.InputField(
-                label = stringResource(ProfileRes.string.nickname),
-            )
-        },
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                InputLabel(
+                    label = stringResource(ProfileRes.string.nickname)
+                )
+                field.InputField(
+                    modifier = Modifier.fillMaxWidth().testTag(ProfileCardEditNameFormTestTag),
+                    errorTextTestTag = ProfileCardEditNameErrorTextTestTag
+                )
+            }
+        }
     )
 }
 
@@ -203,9 +224,15 @@ private fun Form<Profile>.Occupation() {
             notBlank { emptyOccupationErrorString }
         },
         render = { field ->
-            field.InputField(
-                label = stringResource(ProfileRes.string.occupation),
-            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                InputLabel(label = stringResource(ProfileRes.string.occupation))
+                field.InputField(
+                    modifier = Modifier.fillMaxWidth().testTag(ProfileCardEditOccupationFormTestTag),
+                    errorTextTestTag = ProfileCardEditOccupationErrorTextTestTag
+                )
+            }
         },
     )
 }
@@ -228,16 +255,24 @@ private fun Form<Profile>.Link(focusManager: FocusManager) {
             match(linkPattern) { invalidLinkErrorString }
         },
         render = { field ->
-            field.InputField(
-                label = stringResource(ProfileRes.string.link) + stringResource(ProfileRes.string.link_example_text),
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Done,
-                    keyboardType = KeyboardType.Uri,
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = { focusManager.clearFocus() },
-                ),
-            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                InputLabel(
+                    label = stringResource(ProfileRes.string.link) + stringResource(ProfileRes.string.link_example_text)
+                    )
+                field.InputField(
+                    modifier = Modifier.fillMaxWidth().testTag(ProfileCardEditLinkFormTestTag),
+                    errorTextTestTag = ProfileCardEditLinkErrorTextTestTag,
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Done,
+                        keyboardType = KeyboardType.Uri,
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = { focusManager.clearFocus() },
+                    ),
+                )
+            }
         },
     )
 }
@@ -296,6 +331,7 @@ private fun Form<Profile>.Image() {
                         text = field.error.messages.first(),
                         color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.testTag(ProfileCardEditImageErrorTextTestTag),
                     )
                 }
             }
@@ -393,47 +429,43 @@ private fun Form<Profile>.Theme() {
 
 @Composable
 private fun FormField<String>.InputField(
-    label: String,
     modifier: Modifier = Modifier,
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
     keyboardActions: KeyboardActions = KeyboardActions.Default,
+    errorTextTestTag: String? = null
 ) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        InputLabel(label = label)
-        OutlinedTextField(
-            value = value,
-            onValueChange = { onValueChange(it) },
-            isError = hasError,
-            maxLines = 1,
-            keyboardOptions = keyboardOptions,
+    OutlinedTextField(
+        value = value,
+        onValueChange = { onValueChange(it) },
+        isError = hasError,
+        maxLines = 1,
+        keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions,
-            trailingIcon = {
-                if (value.isNotEmpty()) {
-                    IconButton(
-                        onClick = { onValueChange("") },
-                        modifier = Modifier.size(40.dp),
-                    ) {
-                        Icon(
-                            painter = painterResource(ProfileRes.drawable.clear_button_icon),
-                            contentDescription = "clear text",
-                        )
-                    }
-                }
-            },
-            textStyle = MaterialTheme.typography.bodyLarge,
-            supportingText = {
-                if (hasError) {
-                    Text(
-                        text = error.messages.first(),
-                        color = MaterialTheme.colorScheme.error,
+        trailingIcon = {
+            if (value.isNotEmpty()) {
+                IconButton(
+                    onClick = { onValueChange("") },
+                    modifier = Modifier.size(40.dp),
+                ) {
+                    Icon(
+                        painter = painterResource(ProfileRes.drawable.clear_button_icon),
+                        contentDescription = "clear text",
                     )
                 }
-            },
-            modifier = Modifier.fillMaxWidth(),
-        )
-    }
+            }
+        },
+        textStyle = MaterialTheme.typography.bodyLarge,
+        supportingText = {
+            if (hasError) {
+                Text(
+                    text = error.messages.first(),
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = errorTextTestTag?.let { Modifier.testTag(it) } ?: Modifier,
+                )
+            }
+        },
+        modifier = modifier
+    )
 }
 
 @Composable

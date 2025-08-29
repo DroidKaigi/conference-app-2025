@@ -1,6 +1,7 @@
 package io.github.droidkaigi.confsched.profile
 
 import androidx.compose.ui.test.runComposeUiTest
+import io.github.droidkaigi.confsched.model.profile.Profile
 import io.github.droidkaigi.confsched.testing.annotations.ComposeTest
 import io.github.droidkaigi.confsched.testing.annotations.RunWith
 import io.github.droidkaigi.confsched.testing.annotations.UiTestRunner
@@ -33,6 +34,31 @@ class ProfileScreenTest {
             itShould("show profile edit screen") {
                 captureScreenWithChecks {
                     checkEditScreenDisplayed()
+                }
+            }
+            describe("fill out all the forms") {
+                val profile = Profile.Fake
+                doIt {
+                    inputName(profile.nickName)
+                    inputOccupation(profile.occupation)
+                    inputLink(profile.link)
+                }
+                itShould("show the entered information correctly") {
+                    captureScreenWithChecks {
+                        checkName(profile.nickName)
+                        checkOccupation(profile.occupation)
+                        checkLink(profile.link)
+                    }
+                }
+            }
+            describe("click create card button when profile is empty") {
+                doIt {
+                    clickCreateButton()
+                }
+                itShould("show error message") {
+                    captureScreenWithChecks {
+                        checkNameError()
+                    }
                 }
             }
         }
