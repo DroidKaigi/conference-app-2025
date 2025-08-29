@@ -352,7 +352,7 @@ extension Model.Staff {
 
         self.init(
             id: String(shared.id),
-            name: shared.username,
+            name: shared.name,
             iconUrl: iconURL,
             profileUrl: shared.profileUrl.flatMap { URL(string: $0) },
             role: nil  // KMP Staff doesn't have role field
@@ -371,7 +371,7 @@ extension Model.Contributor {
 
         self.init(
             id: String(shared.id),
-            name: shared.username,
+            name: shared.name,
             url: profileURL ?? fallbackURL,
             iconUrl: iconURL
         )
