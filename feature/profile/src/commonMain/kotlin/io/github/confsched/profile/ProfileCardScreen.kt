@@ -66,6 +66,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 const val ProfileCardCardScreenTestTag = "ProfileCardCardScreenTestTag"
+const val ProfileCardEditButtonTestTag = "ProfileCardEditButtonTestTag"
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -137,13 +138,13 @@ fun ProfileCardScreen(
                     .verticalScroll(rememberScrollState())
                     .padding(horizontal = 16.dp)
                     .padding(contentPadding)
-                .testTag(ProfileCardCardScreenTestTag),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-        ) {
-            FlippableProfileCard(
-                uiState = uiState,
-                modifier = Modifier.alpha(if (isShareReady) 1f else 0f),
+                    .testTag(ProfileCardCardScreenTestTag),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+            ) {
+                FlippableProfileCard(
+                    uiState = uiState,
+                    modifier = Modifier.alpha(if (isShareReady) 1f else 0f),
                 )
                 Spacer(Modifier.height(32.dp))
                 Button(
@@ -182,7 +183,7 @@ fun ProfileCardScreen(
                 OutlinedButton(
                     onClick = onEditClick,
                     shapes = ButtonDefaults.shapes(),
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().testTag(ProfileCardEditButtonTestTag),
                     border = null,
                     contentPadding = PaddingValues(18.dp),
                 ) {
