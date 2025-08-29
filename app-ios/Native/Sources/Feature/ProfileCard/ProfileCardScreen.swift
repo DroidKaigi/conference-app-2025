@@ -136,58 +136,6 @@ public struct ProfileCardScreen: View {
         .padding(.horizontal, 16)
         .padding(.vertical, 20)
     }
-    
-    private var shapeSelector: some View {
-        VStack(spacing: 12) {
-            Text("Profile Shape")
-                .foregroundStyle(AssetColors.onSurface.swiftUIColor)
-                .typographyStyle(.titleMedium)
-            
-            HStack(spacing: 20) {
-                ForEach(Material3ShapeType.allCases, id: \.self) { shape in
-                    Button {
-                        selectedShape = shape
-                    } label: {
-                        VStack(spacing: 8) {
-                            Material3ClippedImage(
-                                systemImageName: "person.circle.fill",
-                                shapeType: shape,
-                                size: 60
-                            )
-                            .scaleEffect(selectedShape == shape ? 1.1 : 1.0)
-                            .animation(.easeInOut(duration: 0.2), value: selectedShape)
-                            
-                            Text(shape.rawValue.capitalized)
-                                .font(.caption)
-                                .foregroundStyle(
-                                    selectedShape == shape 
-                                    ? AssetColors.primary.swiftUIColor 
-                                    : AssetColors.onSurfaceVariant.swiftUIColor
-                                )
-                        }
-                        .padding(.vertical, 8)
-                        .padding(.horizontal, 12)
-                        .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(selectedShape == shape 
-                                      ? AssetColors.primaryContainer.swiftUIColor.opacity(0.3)
-                                      : Color.clear)
-                        )
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(selectedShape == shape 
-                                        ? AssetColors.primary.swiftUIColor 
-                                        : Color.clear, 
-                                        lineWidth: 2)
-                        )
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 20)
-    }
 
     private var shareButton: some View {
         let uiImage = OGPProfileShareImage(profile: presenter.profile.profile!).render()!
