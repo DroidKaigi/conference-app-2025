@@ -354,7 +354,7 @@ extension Model.Staff {
             id: String(shared.id),
             name: shared.username,
             iconUrl: iconURL,
-            profileUrl: URL(string: shared.profileUrl),
+            profileUrl: shared.profileUrl.flatMap { URL(string: $0) },
             role: nil  // KMP Staff doesn't have role field
         )
     }
