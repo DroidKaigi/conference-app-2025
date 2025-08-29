@@ -25,20 +25,20 @@ jobs:
     name: Build XCFramework
     runs-on: macos-15
     timeout-minutes: 30
-    
+
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-    
+
     - name: Setup Java
       uses: ./.github/actions/setup-java
-    
+
     - name: Build XCFramework
       run: |
         ./gradlew :app-shared:assembleSharedDebugXCFramework \
         -Papp.ios.shared.arch=arm64SimulatorDebug \
         --stacktrace
-    
+
     - name: Upload XCFramework
       uses: actions/upload-artifact@v4
       with:
@@ -51,20 +51,20 @@ jobs:
     needs: build-xcframework
     runs-on: macos-15
     timeout-minutes: 30
-    
+
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-    
+
     - name: Download XCFramework
       uses: actions/download-artifact@v4
       with:
         name: app-ios-shared-xcframework
         path: app-shared/build/XCFrameworks
-    
+
     - name: Select Xcode
-      run: sudo xcode-select -s /Applications/Xcode_16.4.app
-    
+      run: sudo xcode-select -s /Applications/Xcode_26.0.app
+
     - name: Cache SPM dependencies
       uses: actions/cache@v3
       with:
@@ -75,14 +75,14 @@ jobs:
         key: ${{ runner.os }}-spm-${{ hashFiles('app-ios/Core/Package.swift', 'app-ios/Native/Package.swift') }}
         restore-keys: |
           ${{ runner.os }}-spm-
-    
+
     - name: Resolve Package Dependencies
       working-directory: app-ios
       run: |
         xcodebuild -resolvePackageDependencies \
           -project DroidKaigi2025.xcodeproj \
           -scheme DroidKaigi2025
-    
+
     - name: Build iOS App
       working-directory: app-ios
       env:
@@ -93,7 +93,7 @@ jobs:
           -project DroidKaigi2025.xcodeproj \
           -scheme DroidKaigi2025 \
           -configuration Debug \
-          -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
+          -destination 'id=765F79A8-5081-4432-B274-242CF7E8506A' \
           -derivedDataPath ./DerivedData \
           -skipPackagePluginValidation \
           -skipMacroValidation \
@@ -101,7 +101,7 @@ jobs:
           CODE_SIGN_IDENTITY="" \
           CODE_SIGNING_REQUIRED=NO \
           CODE_SIGNING_ALLOWED=NO
-    
+
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
