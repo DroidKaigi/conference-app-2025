@@ -61,7 +61,10 @@ public struct RootScreen: View {
             } else {
                 ZStack(alignment: .bottom) {
                     tabContent
+                        .padding(.bottom, 80)
                     tabBar
+                        .allowsHitTesting(true)
+                        .zIndex(1)
                 }
             }
         }
@@ -342,6 +345,7 @@ public struct RootScreen: View {
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                             .contentShape(Rectangle())
                     }
+                    .buttonStyle(.plain)
                     .frame(
                         maxWidth: geometry.size.width / CGFloat(TabType.allCases.count),
                         maxHeight: .infinity,
@@ -356,8 +360,10 @@ public struct RootScreen: View {
         .padding(.horizontal, 12)
         .background(.ultraThinMaterial, in: Capsule())
         .overlay(Capsule().stroke(AssetColors.outline.swiftUIColor, lineWidth: 1))
+        .contentShape(Capsule())
         .environment(\.colorScheme, .dark)
         .padding(.horizontal, 48)
+        .allowsHitTesting(true)
     }
 }
 
