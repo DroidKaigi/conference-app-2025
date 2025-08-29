@@ -26,6 +26,7 @@ kotlin {
             implementation(projects.core.data)
             implementation(projects.feature.sessions)
             implementation(projects.feature.about)
+            implementation(projects.feature.profile)
             implementation(projects.feature.contributors)
             implementation(projects.feature.eventmap)
             implementation(projects.feature.staff)
