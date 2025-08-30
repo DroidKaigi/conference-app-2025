@@ -3,7 +3,7 @@ package io.github.droidkaigi.confsched.droidkaigiui.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,79 +17,74 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
-import io.github.droidkaigi.confsched.droidkaigiui.extension.toResDrawable
-import io.github.droidkaigi.confsched.model.core.RoomIcon
+import io.github.droidkaigi.confsched.droidkaigiui.extension.icon
+import io.github.droidkaigi.confsched.droidkaigiui.extension.roomTheme
+import io.github.droidkaigi.confsched.model.core.RoomType
+import io.github.droidkaigi.confsched.model.core.toRoom
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun TimetableItemTag(
-    tagText: String,
-    modifier: Modifier = Modifier,
-) {
-    TimetableItemTag(
-        tagText = tagText,
-        contentTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-        borderColor = MaterialTheme.colorScheme.outline,
-        modifier = modifier,
-    )
-}
-
-@Composable
-fun TimetableItemTag(
-    tagText: String,
-    tagColor: Color,
+fun RoomToolTip(
     icon: DrawableResource?,
+    text: String,
+    color: Color,
     modifier: Modifier = Modifier,
 ) {
-    TimetableItemTag(
-        tagText = tagText,
-        contentTextColor = tagColor,
-        borderColor = tagColor,
+    ToolTip(
         icon = icon,
-        modifier = modifier,
+        text = text,
+        contentColor = MaterialTheme.colorScheme.surface,
+        modifier = modifier
+            .background(
+                color = color,
+                shape = RoundedCornerShape(6.dp),
+            ),
     )
 }
 
 @Composable
-fun TimetableItemTag(
-    tagText: String,
-    contentTextColor: Color,
-    borderColor: Color,
-    contentBackgroundColor: Color? = null,
+fun OutlinedToolTip(
+    text: String,
+    modifier: Modifier = Modifier,
+) {
+    ToolTip(
+        text = text,
+        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        modifier = modifier
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.outline,
+                shape = RoundedCornerShape(6.dp),
+            ),
+    )
+}
+
+@Composable
+private fun ToolTip(
+    text: String,
+    contentColor: Color,
     modifier: Modifier = Modifier,
     icon: DrawableResource? = null,
-    contentPadding: PaddingValues = PaddingValues(horizontal = 6.dp, vertical = 4.dp),
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .border(
-                width = 1.dp,
-                color = borderColor,
-                shape = RoundedCornerShape(5.dp),
-            )
-            .then(
-                Modifier.background(
-                    color = contentBackgroundColor ?: Color.Transparent,
-                    shape = RoundedCornerShape(5.dp),
-                ).takeIf { contentBackgroundColor != null } ?: Modifier,
-            )
-            .padding(contentPadding),
+            .padding(horizontal = 6.dp, vertical = 2.dp),
     ) {
         icon?.let { icon ->
             Icon(
                 imageVector = vectorResource(icon),
                 contentDescription = null,
-                tint = contentTextColor,
+                tint = contentColor,
             )
         }
         Text(
-            text = tagText,
+            text = text,
             style = MaterialTheme.typography.labelMedium,
-            color = contentTextColor,
+            color = contentColor,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
@@ -98,12 +93,20 @@ fun TimetableItemTag(
 
 @Preview
 @Composable
-fun TimeTableItemTagPreview() {
+private fun ToolTipPreview() {
     KaigiPreviewContainer {
-        TimetableItemTag(
-            tagText = "tag",
-            tagColor = MaterialTheme.colorScheme.outline,
-            icon = RoomIcon.Diamond.toResDrawable(),
-        )
+        Column(
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            OutlinedToolTip("JA")
+            OutlinedToolTip("9/11")
+            RoomType.entries.forEach { roomType ->
+                RoomToolTip(
+                    icon = roomType.toRoom().icon,
+                    text = roomType.toRoom().name.enTitle,
+                    color = roomType.toRoom().roomTheme.primaryColor,
+                )
+            }
+        }
     }
 }

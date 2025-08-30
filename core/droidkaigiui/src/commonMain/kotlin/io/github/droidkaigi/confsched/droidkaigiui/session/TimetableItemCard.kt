@@ -47,6 +47,8 @@ import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.DroidkaigiuiRes
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.bookmarked
+import io.github.droidkaigi.confsched.droidkaigiui.component.OutlinedToolTip
+import io.github.droidkaigi.confsched.droidkaigiui.component.RoomToolTip
 import io.github.droidkaigi.confsched.droidkaigiui.extension.icon
 import io.github.droidkaigi.confsched.droidkaigiui.extension.roomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.not_bookmarked
@@ -103,19 +105,19 @@ fun TimetableItemCard(
                 FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(4.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp),
+                    itemVerticalAlignment = Alignment.CenterVertically,
                 ) {
-                    TimetableItemRoomTag(
+                    RoomToolTip(
                         icon = timetableItem.room.icon,
                         text = timetableItem.room.name.currentLangTitle.toUpperCase(Locale.current),
                         color = LocalRoomTheme.current.primaryColor,
-                        modifier = Modifier.background(LocalRoomTheme.current.containerColor),
                     )
                     timetableItem.language.labels.forEach { label ->
-                        TimetableItemLangTag(label)
+                        OutlinedToolTip(label)
                     }
                     if (isDateTagVisible) {
                         timetableItem.day?.let {
-                            TimetableItemDateTag("${it.month}/${it.dayOfMonth}")
+                            OutlinedToolTip("${it.month}/${it.dayOfMonth}")
                         }
                     }
                 }
