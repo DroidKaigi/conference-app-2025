@@ -26,7 +26,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalHapticFeedback
 import io.github.droidkaigi.confsched.designsystem.theme.LocalRoomTheme
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
@@ -98,6 +100,7 @@ private fun TimetableItemDetailFloatingActionButtonMenu(
         delay(100) // small debounce delay to wait until transition stabilizes
         childMenuIsBookmarked = latestIsBookmarked
     }
+    val haptic = LocalHapticFeedback.current
 
     val roomTheme = LocalRoomTheme.current
     // TODO: This color is temporary. We should define a proper color once the official Figma definitions are available.
@@ -130,6 +133,9 @@ private fun TimetableItemDetailFloatingActionButtonMenu(
     ) {
         FloatingActionButtonMenuItem(
             onClick = {
+                if (!isBookmarked) {
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                }
                 onBookmarkClick(!isBookmarked)
                 onExpandedChange(false)
             },
