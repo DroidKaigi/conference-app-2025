@@ -4,11 +4,14 @@ import Theme
 public struct ProfileCardInputTextField: View {
     var title: String
     var placeholder: String = ""
+    var keyboardType: UIKeyboardType = .default
     @Binding var text: String
 
-    public init(title: String, placeholder: String = "", text: Binding<String>) {
+    public init(title: String, placeholder: String = "", keyboardType: UIKeyboardType = .default, text: Binding<String>)
+    {
         self.title = title
         self.placeholder = placeholder
+        self.keyboardType = keyboardType
         self._text = text
     }
 
@@ -19,6 +22,7 @@ public struct ProfileCardInputTextField: View {
                 .foregroundStyle(.white)
 
             TextField(placeholder, text: $text)
+                .keyboardType(keyboardType)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 4)
                 .frame(height: 56)

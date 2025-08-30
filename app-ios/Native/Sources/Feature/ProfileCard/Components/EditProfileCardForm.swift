@@ -45,6 +45,7 @@ struct EditProfileCardForm: View {
             ProfileCardInputTextField(
                 title: String(localized: "Link（ex.X、Instagram...）", bundle: .module),
                 placeholder: "https://",
+                keyboardType: .URL,
                 text: .init(
                     get: {
                         presenter.formState.urlString

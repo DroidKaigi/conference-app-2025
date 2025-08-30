@@ -44,6 +44,12 @@ public struct ProfileCardInputImage: View {
                 }
             } else {
                 Button {
+                    UIApplication.shared.sendAction(
+                        #selector(UIResponder.resignFirstResponder),
+                        to: nil,
+                        from: nil,
+                        for: nil
+                    )
                     isPickerPresented = true
                 } label: {
                     HStack {
