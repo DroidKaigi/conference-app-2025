@@ -3,7 +3,6 @@ import Model
 import SwiftUI
 import Theme
 
-// TODO: add varidation
 struct EditProfileCardForm: View {
     @Binding var presenter: ProfileCardPresenter
 
@@ -26,8 +25,10 @@ struct EditProfileCardForm: View {
                     },
                     set: {
                         presenter.setName($0)
+                        presenter.formState.nameError = nil
                     }
                 ),
+                errorMessage: presenter.formState.nameError
             )
 
             ProfileCardInputTextField(
@@ -38,8 +39,10 @@ struct EditProfileCardForm: View {
                     },
                     set: {
                         presenter.setOccupation($0)
+                        presenter.formState.occupationError = nil
                     }
                 ),
+                errorMessage: presenter.formState.occupationError
             )
 
             ProfileCardInputTextField(
@@ -51,8 +54,10 @@ struct EditProfileCardForm: View {
                     },
                     set: {
                         presenter.setLink($0)
+                        presenter.formState.urlError = nil
                     }
-                )
+                ),
+                errorMessage: presenter.formState.urlError
             )
 
             ProfileCardInputImage(
@@ -62,9 +67,11 @@ struct EditProfileCardForm: View {
                     },
                     set: {
                         presenter.setImage($0)
+                        presenter.formState.imageError = nil
                     }
                 ),
-                title: String(localized: "Image", bundle: .module)
+                title: String(localized: "Image", bundle: .module),
+                errorMessage: presenter.formState.imageError
             )
 
             ProfileCardInputCardVariant(

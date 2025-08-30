@@ -106,6 +106,56 @@
           }
         }
       }
+    },
+    "Nickname is required" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ニックネームを入力してください"
+          }
+        }
+      }
+    },
+    "Occupation is required" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "職種を入力してください"
+          }
+        }
+      }
+    },
+    "Link is required" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "リンクを入力してください"
+          }
+        }
+      }
+    },
+    "Invalid URL format" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正しいURL形式で入力してください"
+          }
+        }
+      }
+    },
+    "Image is required" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "画像を追加してください"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
