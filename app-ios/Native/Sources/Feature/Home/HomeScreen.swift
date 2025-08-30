@@ -8,9 +8,6 @@ import Theme
 
 public struct HomeScreen: View {
     @State private var presenter = HomePresenter()
-    @State private var animationProgress: CGFloat = 0
-    @State private var targetTimetableItemId: String?
-    @State private var targetLocationPoint: CGPoint?
     @State private var timetableMode: TimetableMode = .list
     @State private var selectedDay: DayTab = .day1
 
@@ -36,9 +33,6 @@ public struct HomeScreen: View {
                         onFavoriteTap: { item, _ in
                             presenter.timetable.toggleFavorite(item)
                         },
-                        animationTrigger: { timetableItem, location in
-                            toggleFavorite(timetableItem: timetableItem, adjustedLocationPoint: location)
-                        }
                     )
                 case .grid:
                     TimetableGridView(
@@ -51,12 +45,6 @@ public struct HomeScreen: View {
                     )
                 }
             }
-
-            FavoriteAnimationView(
-                targetTimetableItemId: targetTimetableItemId,
-                targetLocationPoint: targetLocationPoint,
-                animationProgress: animationProgress
-            )
         }
         .background(
             Image("background_night", bundle: .module)
@@ -98,23 +86,6 @@ public struct HomeScreen: View {
         }
         .onAppear {
             presenter.loadInitial()
-        }
-    }
-
-    private func toggleFavorite(timetableItem: any TimetableItem, adjustedLocationPoint: CGPoint?) {
-        targetLocationPoint = adjustedLocationPoint
-        targetTimetableItemId = timetableItem.id.value
-
-        if targetTimetableItemId != nil {
-            withAnimation(.easeOut(duration: 1)) {
-                animationProgress = 1
-            }
-            Task {
-                try await Task.sleep(nanoseconds: 1_000_000_000)
-                targetTimetableItemId = nil
-                targetLocationPoint = nil
-                self.animationProgress = 0
-            }
         }
     }
 }
