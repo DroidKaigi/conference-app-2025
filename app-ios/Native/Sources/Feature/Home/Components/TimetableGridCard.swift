@@ -52,7 +52,6 @@ struct TimetableGridCard: View {
             .cornerRadius(8)
         }
         .buttonStyle(PlainButtonStyle())
-        .frame(width: CGFloat(192 * cellCount + 4 * (cellCount - 1)), height: 153)
     }
 }
 
