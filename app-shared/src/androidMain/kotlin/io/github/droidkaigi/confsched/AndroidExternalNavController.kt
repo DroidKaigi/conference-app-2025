@@ -178,6 +178,7 @@ class AndroidExternalNavController(
         return try {
             CustomTabsIntent.Builder()
                 .setShowTitle(true)
+                .setColorScheme(CustomTabsIntent.COLOR_SCHEME_DARK)
                 .build()
                 .launchUrl(context, uri)
             true
