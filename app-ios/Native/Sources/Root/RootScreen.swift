@@ -211,7 +211,8 @@ public struct RootScreen: View {
                             .renderingMode(.template)
                             .tint(
                                 isSelected
-                                    ? AssetColors.primary40.swiftUIColor : AssetColors.onSurfaceVariant.swiftUIColor
+                                ? AssetColors.primary40.swiftUIColor
+                                : AssetColors.onSurfaceVariant.swiftUIColor
                             )
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                             .contentShape(Rectangle())
@@ -224,14 +225,40 @@ public struct RootScreen: View {
                 }
             }
             .frame(width: geometry.size.width, height: geometry.size.height)
+            .padding(.horizontal, 12)
+            .modifier(TabBarBackground())
         }
         .frame(height: 64)
         .frame(maxWidth: .infinity)
-        .padding(.horizontal, 12)
-        .background(.ultraThinMaterial, in: Capsule())
-        .overlay(Capsule().stroke(AssetColors.outline.swiftUIColor, lineWidth: 1))
         .environment(\.colorScheme, .dark)
         .padding(.horizontal, 48)
+    }
+    
+    /// 背景用のカスタム Modifier
+    private struct TabBarBackground: ViewModifier {
+        @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+        
+        func body(content: Content) -> some View {
+            if reduceTransparency {
+                // 透明度を下げる設定が有効 → 単色背景
+                content
+                    .background(AssetColors.surface.swiftUIColor, in: Capsule())
+                    .overlay(
+                        Capsule().stroke(AssetColors.outline.swiftUIColor, lineWidth: 1)
+                    )
+            } else {
+                if #available(iOS 26.0, *) {
+                    content
+                        .glassEffect(in: Capsule())
+                } else {
+                    content
+                        .background(.ultraThinMaterial, in: Capsule())
+                        .overlay(
+                            Capsule().stroke(AssetColors.outline.swiftUIColor, lineWidth: 1)
+                        )
+                }
+            }
+        }
     }
 }
 
