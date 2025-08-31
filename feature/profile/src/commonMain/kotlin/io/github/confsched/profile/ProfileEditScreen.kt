@@ -452,7 +452,7 @@ private fun ImagePicker(
     onClear: () -> Unit,
 ) {
     val launcher = rememberFilePickerLauncher(
-        type = FileKitType.Image,
+        type = FileKitType.File(extensions = listOf("png", "jpg", "jpeg", "gif", "bmp")),
     ) { file ->
         file?.let { file ->
             onImageChange(file)
