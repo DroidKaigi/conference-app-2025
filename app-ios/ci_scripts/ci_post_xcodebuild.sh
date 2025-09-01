@@ -22,7 +22,7 @@ if [ "$CI_XCODEBUILD_ACTION" = "test-without-building" ] || [ "$CI_XCODEBUILD_AC
     # Run SwiftLint checks
     if command -v swiftlint &> /dev/null; then
         echo "Running SwiftLint..."
-        cd "$CI_WORKSPACE/app-ios"
+        cd "$CI_PRIMARY_REPOSITORY_PATH/app-ios"
         swiftlint lint --reporter json > swiftlint-report.json || true
         
         # Count violations
@@ -49,7 +49,7 @@ if [ "$CI_XCODEBUILD_ACTION" = "archive" ]; then
         ls -la "$CI_ARCHIVE_PATH"
         
         # Create a backup of the archive
-        ARCHIVE_BACKUP_DIR="$CI_WORKSPACE/archive-backup"
+        ARCHIVE_BACKUP_DIR="$CI_WORKSPACE_PATH/archive-backup"
         mkdir -p "$ARCHIVE_BACKUP_DIR"
         cp -R "$CI_ARCHIVE_PATH" "$ARCHIVE_BACKUP_DIR/"
         echo "Archive backed up to: $ARCHIVE_BACKUP_DIR"
@@ -78,12 +78,12 @@ fi
 echo "Cleaning up temporary files..."
 if [ -d "$CI_DERIVED_DATA_PATH/Logs" ]; then
     echo "Compressing build logs..."
-    tar -czf "$CI_WORKSPACE/build-logs.tar.gz" -C "$CI_DERIVED_DATA_PATH" Logs
-    echo "Build logs compressed to: $CI_WORKSPACE/build-logs.tar.gz"
+    tar -czf "$CI_WORKSPACE_PATH/build-logs.tar.gz" -C "$CI_DERIVED_DATA_PATH" Logs
+    echo "Build logs compressed to: $CI_WORKSPACE_PATH/build-logs.tar.gz"
 fi
 
 # Generate build report
-BUILD_REPORT="$CI_WORKSPACE/build-report.txt"
+BUILD_REPORT="$CI_WORKSPACE_PATH/build-report.txt"
 cat > "$BUILD_REPORT" <<EOF
 DroidKaigi 2025 iOS Build Report
 ================================

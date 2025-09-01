@@ -12,10 +12,25 @@ echo "============================"
 
 # Print environment info
 echo "Current directory: $(pwd)"
-echo "CI Workspace: $CI_WORKSPACE"
+echo "CI Primary Repository Path: $CI_PRIMARY_REPOSITORY_PATH"
+echo "CI Workspace Path: $CI_WORKSPACE_PATH"
+echo "CI Project File Path: $CI_PROJECT_FILE_PATH"
 
 # Navigate to repository root
-cd "$CI_WORKSPACE"
+# CI_PRIMARY_REPOSITORY_PATH points to /Volumes/workspace/repository
+cd "$CI_PRIMARY_REPOSITORY_PATH"
+REPO_ROOT="$CI_PRIMARY_REPOSITORY_PATH"
+
+# Verify gradlew exists
+if [ ! -f "./gradlew" ]; then
+    echo "❌ Error: gradlew not found in repository root"
+    echo "Current directory: $(pwd)"
+    echo "Directory contents:"
+    ls -la
+    exit 1
+fi
+
+echo "Repository root: $REPO_ROOT"
 
 # Install Java (required for Gradle)
 echo "Installing Java..."

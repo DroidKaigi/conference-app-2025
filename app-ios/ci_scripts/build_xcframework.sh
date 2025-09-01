@@ -18,12 +18,15 @@ echo "Build Configuration: $BUILD_CONFIG"
 echo "Architecture: $ARCHITECTURE"
 
 # Navigate to project root
-if [ -n "$CI_WORKSPACE" ]; then
-    cd "$CI_WORKSPACE"
+if [ -n "$CI_PRIMARY_REPOSITORY_PATH" ]; then
+    # CI environment - use CI_PRIMARY_REPOSITORY_PATH
+    cd "$CI_PRIMARY_REPOSITORY_PATH"
+    echo "Using CI repository path: $CI_PRIMARY_REPOSITORY_PATH"
 else
     # Local build - go to repository root
     SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
     cd "$SCRIPT_DIR/../.."
+    echo "Using local repository path"
 fi
 
 echo "Working directory: $(pwd)"
