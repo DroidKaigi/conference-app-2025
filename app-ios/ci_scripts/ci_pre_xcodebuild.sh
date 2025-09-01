@@ -14,10 +14,25 @@ echo "============================"
 echo "Current directory: $(pwd)"
 echo "Xcode version: $(xcodebuild -version)"
 echo "Swift version: $(swift --version)"
+echo "CI Primary Repository Path: $CI_PRIMARY_REPOSITORY_PATH"
+echo "CI Workspace Path: $CI_WORKSPACE_PATH"
+echo "CI Project File Path: $CI_PROJECT_FILE_PATH"
 
 # Navigate to repository root
-cd "$CI_WORKSPACE"
-echo "CI Workspace: $CI_WORKSPACE"
+# CI_PRIMARY_REPOSITORY_PATH points to /Volumes/workspace/repository
+cd "$CI_PRIMARY_REPOSITORY_PATH"
+REPO_ROOT="$CI_PRIMARY_REPOSITORY_PATH"
+
+# Verify gradlew exists
+if [ ! -f "./gradlew" ]; then
+    echo "❌ Error: gradlew not found in repository root"
+    echo "Current directory: $(pwd)"
+    echo "Directory contents:"
+    ls -la
+    exit 1
+fi
+
+echo "Repository root: $REPO_ROOT"
 
 # Build XCFramework for the shared module
 echo "Building XCFramework..."
@@ -59,7 +74,8 @@ fi
 
 # Install Swift Package Manager dependencies
 echo "Resolving SPM dependencies..."
-cd "$CI_WORKSPACE/app-ios"
+# Navigate to app-ios directory from repository root
+cd "$REPO_ROOT/app-ios"
 xcodebuild -resolvePackageDependencies \
     -project DroidKaigi2025.xcodeproj \
     -scheme DroidKaigi2025 \
