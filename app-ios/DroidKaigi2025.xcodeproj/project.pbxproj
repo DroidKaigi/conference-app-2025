@@ -12,9 +12,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		BF0C90882E66181000B63159 /* build_xcframework.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = build_xcframework.sh; sourceTree = "<group>"; };
 		BF0C90892E66181000B63159 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
-		BF0C908A2E66181000B63159 /* ci_post_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_xcodebuild.sh; sourceTree = "<group>"; };
 		BF0C908B2E66181000B63159 /* ci_pre_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_pre_xcodebuild.sh; sourceTree = "<group>"; };
 		BF0C908C2E66181000B63159 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BF770BE62E461C6B0000E5E2 /* DroidKaigi2025-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "DroidKaigi2025-Info.plist"; sourceTree = "<group>"; };
@@ -47,9 +45,7 @@
 		BF0C908D2E66181000B63159 /* ci_scripts */ = {
 			isa = PBXGroup;
 			children = (
-				BF0C90882E66181000B63159 /* build_xcframework.sh */,
 				BF0C90892E66181000B63159 /* ci_post_clone.sh */,
-				BF0C908A2E66181000B63159 /* ci_post_xcodebuild.sh */,
 				BF0C908B2E66181000B63159 /* ci_pre_xcodebuild.sh */,
 				BF0C908C2E66181000B63159 /* README.md */,
 			);
