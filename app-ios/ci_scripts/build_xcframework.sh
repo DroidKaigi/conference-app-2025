@@ -45,16 +45,24 @@ echo "Cleaning previous XCFramework builds..."
 rm -rf app-shared/build/XCFrameworks
 
 # Build XCFramework based on configuration
+# Note: Using --no-configuration-cache to avoid Kotlin Multiplatform metadata caching issues
+# Reference: https://youtrack.jetbrains.com/issue/KT-51970
 if [ "$BUILD_CONFIG" = "Release" ]; then
     echo "Building Release XCFramework..."
-    if ! ./gradlew :app-shared:assembleSharedReleaseXCFramework --stacktrace; then
+    if ! ./gradlew :app-shared:assembleSharedReleaseXCFramework \
+        --no-configuration-cache \
+        --no-daemon \
+        --stacktrace; then
         echo "❌ XCFramework build failed for Release configuration"
         echo "Build command: ./gradlew :app-shared:assembleSharedReleaseXCFramework"
         exit 1
     fi
 else
     echo "Building Debug XCFramework..."
-    if ! ./gradlew :app-shared:assembleSharedDebugXCFramework --stacktrace; then
+    if ! ./gradlew :app-shared:assembleSharedDebugXCFramework \
+        --no-configuration-cache \
+        --no-daemon \
+        --stacktrace; then
         echo "❌ XCFramework build failed for Debug configuration"
         echo "Build command: ./gradlew :app-shared:assembleSharedDebugXCFramework"
         exit 1

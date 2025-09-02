@@ -84,15 +84,22 @@ echo "Building XCFramework"
 echo "============================"
 
 # Determine build configuration based on CI action
+# Note: --no-configuration-cache is used to avoid Kotlin Multiplatform metadata caching issues
 if [ "$CI_XCODEBUILD_ACTION" = "archive" ]; then
     echo "Building XCFramework for distribution (Release configuration)..."
-    if ! ./gradlew :app-shared:assembleSharedReleaseXCFramework --stacktrace; then
+    if ! ./gradlew :app-shared:assembleSharedReleaseXCFramework \
+        --no-configuration-cache \
+        --no-daemon \
+        --stacktrace; then
         echo "❌ XCFramework build failed for Release configuration"
         exit 1
     fi
 else
     echo "Building XCFramework for development/testing (Debug configuration)..."
-    if ! ./gradlew :app-shared:assembleSharedDebugXCFramework --stacktrace; then
+    if ! ./gradlew :app-shared:assembleSharedDebugXCFramework \
+        --no-configuration-cache \
+        --no-daemon \
+        --stacktrace; then
         echo "❌ XCFramework build failed for Debug configuration"
         exit 1
     fi
