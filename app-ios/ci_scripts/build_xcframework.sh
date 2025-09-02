@@ -61,13 +61,47 @@ else
     fi
 fi
 
-# Verify build output
-if [ -d "app-shared/build/XCFrameworks" ]; then
+# Debug: Check build output
+echo "============================"
+echo "Checking build output..."
+echo "============================"
+
+echo "Current directory: $(pwd)"
+echo "Checking app-shared/build structure:"
+if [ -d "app-shared/build" ]; then
+    echo "Contents of app-shared/build:"
+    ls -la app-shared/build/
+    
+    # Search for XCFramework in various locations
+    echo "Searching for .xcframework files:"
+    find app-shared/build -name "*.xcframework" -type d 2>/dev/null || echo "No .xcframework found in app-shared/build"
+fi
+
+# Check common output locations
+XCFRAMEWORK_FOUND=false
+XCFRAMEWORK_PATH=""
+
+# Check multiple possible locations
+for dir in "app-shared/build/XCFrameworks" "app-shared/build/bin" "app-shared/build"; do
+    if [ -d "$dir" ]; then
+        FOUND_XCFRAMEWORK=$(find "$dir" -name "*.xcframework" -type d -print -quit 2>/dev/null)
+        if [ -n "$FOUND_XCFRAMEWORK" ]; then
+            XCFRAMEWORK_FOUND=true
+            XCFRAMEWORK_PATH=$(dirname "$FOUND_XCFRAMEWORK")
+            echo "✅ Found XCFramework at: $FOUND_XCFRAMEWORK"
+            break
+        fi
+    fi
+done
+
+if [ "$XCFRAMEWORK_FOUND" = true ]; then
     echo "✅ XCFramework built successfully"
-    echo "Contents:"
-    ls -la app-shared/build/XCFrameworks/
+    echo "XCFramework location: $XCFRAMEWORK_PATH"
+    ls -la "$XCFRAMEWORK_PATH/"
 else
-    echo "❌ XCFramework build failed - directory not found"
+    echo "❌ XCFramework build failed - no .xcframework found"
+    echo "Checking all build outputs:"
+    find . -name "*.xcframework" -type d 2>/dev/null | head -20
     exit 1
 fi
 
