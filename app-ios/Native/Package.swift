@@ -277,7 +277,7 @@ let package = Package(
             ]
         ),
         // Please run ./gradlew app-shared:assembleSharedDebugXCFramework first
-        .binaryTarget(name: "KMPFramework", path: "../../app-shared/build/XCFrameworks/debug/shared.xcframework"),
+        .binaryTarget(name: "KMPFramework", path: "../../app-shared/build/XCFrameworks/release/shared.xcframework"),
     ],
     swiftLanguageModes: [.v6]
 )
