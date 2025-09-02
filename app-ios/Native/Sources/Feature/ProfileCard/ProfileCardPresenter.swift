@@ -96,9 +96,19 @@ final class ProfileCardPresenter {
         if !formState.validate() { return }
 
         Task {
-            let profileData = try await formState.createProfile()
-            profile.saveProfile(profileData)
-            self.isEditing = false
+            do {
+                let profileData = try await formState.createProfile()
+                print("ProfileCardPresenter.createCard: Created profile with cardVariant = \(profileData.cardVariant)")
+                await MainActor.run {
+                    profile.saveProfile(profileData)
+                }
+            } catch {
+                print("ProfileCardPresenter.createCard: Error creating profile: \(error)")
+                await MainActor.run {
+                    // If there's an error, go back to editing mode
+                    self.isEditing = true
+                }
+            }
         }
     }
 
@@ -119,6 +129,8 @@ final class ProfileCardPresenter {
     }
 
     func setCardVariant(_ variant: ProfileCardVariant) {
+        print("ProfileCardPresenter.setCardVariant: Setting cardVariant from \(formState.cardVariant) to \(variant)")
         formState.cardVariant = variant
+        print("ProfileCardPresenter.setCardVariant: Updated formState.cardVariant = \(formState.cardVariant)")
     }
 }

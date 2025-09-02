@@ -351,8 +351,12 @@ public struct RootScreen: View {
                         maxHeight: .infinity,
                         alignment: .center
                     )
+                    .contentShape(Rectangle())
+                    .allowsHitTesting(true)
                 }
             }
+            .contentShape(Rectangle())
+            .allowsHitTesting(true)
             .frame(width: geometry.size.width, height: geometry.size.height)
         }
         .frame(height: 64)

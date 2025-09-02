@@ -82,6 +82,7 @@ kotlin {
                 implementation(libs.molecule)
                 api(projects.feature.sessions)
                 api(projects.feature.contributors)
+                api(projects.feature.profile)
                 api(projects.core.model)
                 api(projects.core.data)
             }
@@ -135,6 +136,7 @@ kotlin {
 
                     export(projects.feature.sessions)
                     export(projects.feature.contributors)
+                    export(projects.feature.profile)
                     export(projects.core.model)
                     export(projects.core.data)
                     export(CommonComponentsDependencies.resources)

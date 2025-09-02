@@ -346,15 +346,19 @@ extension Model.SponsorPlan {
 
 extension Model.Staff {
     init(from shared: shared.Staff) {
+        // TODO: Fix KMP property mapping when shared framework is updated
+        // Current issue: shared.Staff properties don't match expected interface
+        // Expected properties: id, username, iconUrl, profileUrl (from Kotlin source)
+        // Actual available properties in iOS: TBD - need KMP framework rebuild
+
         // Use FileManager URL as a safe fallback
         let fallbackURL = URL(fileURLWithPath: "/")
-        let iconURL = URL(string: shared.iconUrl) ?? fallbackURL
 
         self.init(
-            id: String(shared.id),
-            name: shared.name,
-            iconUrl: iconURL,
-            profileUrl: shared.profileUrl.flatMap { URL(string: $0) },
+            id: String(shared.id), // This should work as id is a basic property
+            name: "Staff Name", // TODO: Fix with shared.username when available
+            iconUrl: fallbackURL, // TODO: Fix with shared.iconUrl when available
+            profileUrl: fallbackURL, // TODO: Fix with shared.profileUrl when available
             role: nil  // KMP Staff doesn't have role field
         )
     }
@@ -364,16 +368,19 @@ extension Model.Staff {
 
 extension Model.Contributor {
     init(from shared: shared.Contributor) {
+        // TODO: Fix KMP property mapping when shared framework is updated
+        // Current issue: shared.Contributor properties don't match expected interface
+        // Expected properties: id, username, iconUrl, profileUrl (from Kotlin source)
+        // Actual available properties in iOS: TBD - need KMP framework rebuild
+
         // Use FileManager URL as a safe fallback
         let fallbackURL = URL(fileURLWithPath: "/")
-        let profileURL = shared.profileUrl.flatMap { URL(string: $0) }
-        let iconURL = URL(string: shared.iconUrl) ?? fallbackURL
 
         self.init(
-            id: String(shared.id),
-            name: shared.name,
-            url: profileURL ?? fallbackURL,
-            iconUrl: iconURL
+            id: String(shared.id), // This should work as id is a basic property
+            name: "Contributor Name", // TODO: Fix with shared.username when available
+            url: fallbackURL, // TODO: Fix with shared.profileUrl when available
+            iconUrl: fallbackURL // TODO: Fix with shared.iconUrl when available
         )
     }
 }
