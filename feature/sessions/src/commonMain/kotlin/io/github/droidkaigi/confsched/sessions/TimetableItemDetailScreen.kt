@@ -76,8 +76,8 @@ fun TimetableItemDetailScreen(
                     onViewSlideClick = onLinkClick,
                     onWatchVideoClick = onLinkClick,
                     modifier = Modifier.windowInsetsPadding(
-                        WindowInsets.safeGestures.only(WindowInsetsSides.Bottom)
-                    )
+                        WindowInsets.safeGestures.only(WindowInsetsSides.Bottom),
+                    ),
                 )
             },
             contentWindowInsets = WindowInsets(),

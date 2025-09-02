@@ -49,7 +49,7 @@ fun TimetableItemDetailFloatingToolbar(
             FloatingToolbarDefaults.StandardFloatingActionButton(
                 onClick = {
                     onBookmarkClick(!isBookmarked)
-                }
+                },
             ) {
                 Icon(
                     imageVector = if (isBookmarked) Icons.Default.Favorite else Icons.Outlined.FavoriteBorder,
