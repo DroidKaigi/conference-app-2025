@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
@@ -7,7 +10,12 @@ plugins {
     id("droidkaigi.primitive.metro")
     id("droidkaigi.primitive.aboutlibraries")
     id("droidkaigi.primitive.spotless")
+    id("droidkaigi.primitive.firebase")
+    id("droidkaigi.primitive.firebase.crashlytics")
 }
+
+val keystorePropertiesFile = file("keystore.properties")
+val keystoreExists = keystorePropertiesFile.exists()
 
 android {
     namespace = "io.github.droidkaigi.confsched"
@@ -17,6 +25,7 @@ android {
 
     defaultConfig {
         applicationId = "io.github.droidkaigi.confsched2025"
+        versionCode = 1
         minSdk = 24
         targetSdk = 36
     }
@@ -28,7 +37,19 @@ android {
             keyAlias = "androiddebugkey"
             keyPassword = "android"
         }
+        if (keystoreExists) {
+            val keystoreProperties = Properties()
+            keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+            create("prod") {
+                keyAlias = keystoreProperties["keyAlias"] as String?
+                keyPassword = keystoreProperties["keyPassword"] as String?
+                storeFile = keystoreProperties["storeFile"]?.let { file(it) }
+                storePassword = keystoreProperties["storePassword"] as String?
+            }
+        }
     }
+
+    buildFeatures.buildConfig = true
 
     productFlavors {
         create("dev") {
@@ -36,12 +57,41 @@ android {
             isDefault = true
             applicationIdSuffix = ".dev"
             dimension = "network"
+            buildConfigField(
+                type = "Boolean",
+                name = "USE_PRODUCTION_API",
+                value = "false",
+            )
+        }
+
+        create("prod") {
+            dimension = "network"
+            signingConfig = if (keystoreExists) {
+                signingConfigs.getByName("prod")
+            } else {
+                signingConfigs.getByName("dev")
+            }
+            buildConfigField(
+                type = "Boolean",
+                name = "USE_PRODUCTION_API",
+                value = "true",
+            )
         }
     }
 
     buildTypes {
+        release {
+            isMinifyEnabled = true
+            isShrinkResources = true
+        }
         debug {
             signingConfig = null
+        }
+    }
+
+    packaging {
+        resources {
+            excludes += "META-INF/{AL2.0,LGPL2.1}"
         }
     }
 }

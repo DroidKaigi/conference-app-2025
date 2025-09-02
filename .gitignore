@@ -18,3 +18,8 @@ local.properties
 /.idea/dictionaries/*
 !/.idea/dictionaries/dictionary.xml
 bin
+
+# Avoid unintentional commit of secrets
+keystore.properties
+droidkaigi2025.keystore
+app-android/src/prod/google-services.json

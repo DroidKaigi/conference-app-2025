@@ -64,6 +64,7 @@ fun FavoritesScreen(
                 scrollBehavior = scrollBehavior,
             )
         },
+        contentWindowInsets = WindowInsets(),
         modifier = modifier
             .testTag(FavoritesScreenTestTag),
     ) { innerPadding ->

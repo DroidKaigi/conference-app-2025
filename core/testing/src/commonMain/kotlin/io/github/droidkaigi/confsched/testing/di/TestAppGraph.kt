@@ -1,6 +1,8 @@
 package io.github.droidkaigi.confsched.testing.di
 
 import dev.zacsweers.metro.Binds
+import dev.zacsweers.metro.Provides
+import io.github.droidkaigi.confsched.data.UseProductionApi
 import io.github.droidkaigi.confsched.data.about.FakeBuildConfigProvider
 import io.github.droidkaigi.confsched.data.about.FakeLicensesJsonReader
 import io.github.droidkaigi.confsched.data.about.LicensesJsonReader
@@ -21,7 +23,9 @@ internal interface TestAppGraph :
     ContributorsScreenTestGraph,
     EventMapScreenTestGraph,
     StaffScreenTestGraph,
-    FavoritesScreenTestGraph {
+    SettingsScreenTestGraph,
+    FavoritesScreenTestGraph,
+    SearchScreenTestGraph {
 
     @Binds
     val FakeSessionsApiClient.binds: SessionsApiClient
@@ -40,6 +44,10 @@ internal interface TestAppGraph :
 
     @Binds
     val FakeEventMapApiClient.binds: EventMapApiClient
+
+    @UseProductionApi
+    @Provides
+    fun provideUseProductionApiBaseUrl(): Boolean = false
 }
 
 internal expect fun createTestAppGraph(): TestAppGraph

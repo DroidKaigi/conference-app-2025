@@ -1,22 +1,21 @@
 package io.github.droidkaigi.confsched.droidkaigiui
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.graphics.painter.Painter
-import coil3.request.ImageRequest
+import org.jetbrains.compose.resources.painterResource
+import coil3.compose.rememberAsyncImagePainter as coilRememberAsyncImagePainter
 
 @Composable
-fun rememberAsyncImagePainter(url: String): Painter {
-    return coil3.compose.rememberAsyncImagePainter(
-        model = url,
-    )
-}
-
-@Composable
-fun rememberAsyncImagePainter(model: ImageRequest): Painter {
-    val requestModel = remember(model) { model }
-
-    return coil3.compose.rememberAsyncImagePainter(
-        model = requestModel,
+fun rememberAsyncImagePainter(
+    model: Any?,
+    placeholder: Painter = ColorPainter(Color.Gray),
+    error: Painter = painterResource(DroidkaigiuiRes.drawable.error_mascot),
+): Painter {
+    return coilRememberAsyncImagePainter(
+        model = model,
+        placeholder = placeholder,
+        error = error,
     )
 }

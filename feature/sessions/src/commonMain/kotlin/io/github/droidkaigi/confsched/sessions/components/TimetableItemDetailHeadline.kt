@@ -28,6 +28,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.intl.Locale
+import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.designsystem.theme.LocalRoomTheme
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
@@ -66,8 +68,10 @@ fun TimetableItemDetailHeadline(
         FlowRow {
             TimetableItemTag(
                 modifier = Modifier.align(Alignment.CenterVertically),
-                tagText = timetableItem.room.name.currentLangTitle,
-                tagColor = roomTheme.primaryColor,
+                tagText = timetableItem.room.name.currentLangTitle.toUpperCase(Locale.current),
+                contentTextColor = MaterialTheme.colorScheme.surface,
+                contentBackgroundColor = roomTheme.primaryColor,
+                borderColor = roomTheme.primaryColor,
                 icon = timetableItem.room.icon,
             )
             timetableItem.language.labels.forEach { label ->

@@ -2,6 +2,7 @@ package io.github.droidkaigi.confsched
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.ImageBitmap
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import java.awt.Desktop
 import java.net.URI
@@ -51,6 +52,10 @@ class JvmExternalNavController : ExternalNavController {
     }
 
     override fun onShareClick(timetableItem: TimetableItem) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onShareProfileCardClick(shareText: String, imageBitmap: ImageBitmap) {
         TODO("Not yet implemented")
     }
 }

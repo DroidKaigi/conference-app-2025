@@ -288,8 +288,8 @@ private fun TimetableGridRoomsPreview() {
         Room(
             id = 1,
             name = MultiLangText(
-                enTitle = "Room A",
-                jaTitle = "ルームA",
+                enTitle = "Room J",
+                jaTitle = "ルームJ",
             ),
             type = RoomType.RoomJ,
             sort = 1,
@@ -297,19 +297,19 @@ private fun TimetableGridRoomsPreview() {
         Room(
             id = 2,
             name = MultiLangText(
-                enTitle = "Room B",
-                jaTitle = "ルームB",
+                enTitle = "Room K",
+                jaTitle = "ルームK",
             ),
-            type = RoomType.RoomF,
+            type = RoomType.RoomK,
             sort = 2,
         ),
         Room(
             id = 3,
             name = MultiLangText(
-                enTitle = "Room C",
-                jaTitle = "ルームC",
+                enTitle = "Room L",
+                jaTitle = "ルームL",
             ),
-            type = RoomType.RoomH,
+            type = RoomType.RoomL,
             sort = 3,
         ),
     )

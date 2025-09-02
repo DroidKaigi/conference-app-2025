@@ -289,9 +289,8 @@ private fun TimetableItem.toLayout(
         )
         dayStartLocalTime.toInstant(timeZone)
     }
-    val displayEndsAt = endsAt.minus(1, DateTimeUnit.MINUTE)
     val height =
-        ((displayEndsAt - startsAt).inWholeMinutes * minutePx).roundToInt()
+        ((endsAt - startsAt).inWholeMinutes * minutePx).roundToInt()
     val width = with(density) { TimetableGridDefaults.columnWidth.roundToPx() }
     val left = rooms.indexOf(room) * width
     val top = ((startsAt - dayStart).inWholeMinutes * minutePx).toInt()

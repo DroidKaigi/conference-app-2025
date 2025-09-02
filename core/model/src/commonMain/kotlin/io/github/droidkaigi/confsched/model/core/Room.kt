@@ -24,13 +24,11 @@ val Room.nameAndFloor: String
         val basementFloorString = MultiLangText(jaTitle = "地下1階", enTitle = "B1F")
         val floor1FString = MultiLangText(jaTitle = "1階", enTitle = "1F")
         val floor = when (type) {
-            RoomType.RoomF -> floor1FString.currentLangTitle
-            RoomType.RoomG -> floor1FString.currentLangTitle
-            RoomType.RoomH -> basementFloorString.currentLangTitle
-            RoomType.RoomI -> basementFloorString.currentLangTitle
-            RoomType.RoomJ -> basementFloorString.currentLangTitle
-            // Assume the room on the first day.
-            RoomType.RoomIJ -> basementFloorString.currentLangTitle
+            RoomType.RoomJ -> floor1FString.currentLangTitle
+            RoomType.RoomK -> floor1FString.currentLangTitle
+            RoomType.RoomL -> basementFloorString.currentLangTitle
+            RoomType.RoomM -> basementFloorString.currentLangTitle
+            RoomType.RoomN -> basementFloorString.currentLangTitle
         }
         return "${name.currentLangTitle} ($floor)"
     }

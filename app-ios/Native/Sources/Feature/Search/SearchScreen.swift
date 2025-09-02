@@ -29,13 +29,13 @@ public struct SearchScreen: View {
     }
 
     private var searchBar: some View {
-        HStack {
+        HStack(spacing: 12) {
             Image(systemName: "magnifyingglass")
                 .foregroundStyle(AssetColors.onSurfaceVariant.swiftUIColor)
                 .accessibilityLabel(String(localized: "Search icon", bundle: .module))
 
             TextField(String(localized: "Search sessions", bundle: .module), text: $presenter.searchWord)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .font(.body)
                 .focused($isSearchFieldFocused)
                 .submitLabel(.search)
                 .onSubmit {
@@ -47,8 +47,14 @@ public struct SearchScreen: View {
             }
         }
         .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(AssetColors.surfaceVariant.swiftUIColor)
+                .stroke(AssetColors.outline.swiftUIColor.opacity(0.2), lineWidth: 1)
+        )
+        .padding(.horizontal, 16)
         .padding(.vertical, 8)
-        .background(AssetColors.surfaceVariant.swiftUIColor)
     }
 
     private var clearButton: some View {
@@ -64,28 +70,52 @@ public struct SearchScreen: View {
     }
 
     private var filterAndResultsScrollView: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
-                categorySection
-                languageSection
-                daySection
-                roomSection
-                searchResultsSection
+        VStack {
+            filterMenusSection
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    searchResultsSection
+                }
+                .padding(.top, 0)
             }
+        }
+        .frame(maxHeight: .infinity)
+    }
+
+    private var filterMenusSection: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 12) {
+                dayFilterMenu
+                categoryFilterMenu
+                languageFilterMenu
+            }
+            .padding(.horizontal, 16)
         }
     }
 
     @ViewBuilder
     private var searchResultsSection: some View {
         if shouldShowResults {
-            Divider()
-                .padding(.vertical, 8)
+            VStack(alignment: .leading, spacing: 16) {
+                Divider()
+                    .padding(.vertical, 4)
 
-            Text("Results")
-                .font(.headline)
+                HStack {
+                    Text("Results")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(AssetColors.onSurface.swiftUIColor)
+
+                    Spacer()
+
+                    Text("\(presenter.filteredTimetableItems.count)")
+                        .font(.subheadline)
+                        .foregroundColor(AssetColors.onSurfaceVariant.swiftUIColor)
+                }
                 .padding(.horizontal, 16)
 
-            searchResultsList
+                searchResultsList
+            }
         }
     }
 
@@ -95,7 +125,7 @@ public struct SearchScreen: View {
     }
 
     private var searchResultsList: some View {
-        LazyVStack(spacing: 12) {
+        LazyVStack(spacing: 16) {
             ForEach(presenter.filteredTimetableItems) { item in
                 TimetableCard(
                     timetableItem: item.timetableItem,
@@ -107,113 +137,109 @@ public struct SearchScreen: View {
                         presenter.toggleFavorite(item.timetableItem.id)
                     }
                 )
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(AssetColors.surface.swiftUIColor)
+                        .shadow(color: AssetColors.onSurface.swiftUIColor.opacity(0.05), radius: 2, x: 0, y: 1)
+                )
             }
         }
         .padding(.horizontal, 16)
-        .padding(.vertical, 16)
         .padding(.bottom, 80)  // Tab bar padding
     }
 
-    @ViewBuilder
-    private var categorySection: some View {
-        if let timetable = presenter.timetable.timetable {
-            let uniqueCategories = Set(timetable.timetableItems.map { $0.category })
-            let categories = Array(uniqueCategories).sorted { $0.id < $1.id }
-
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Category")
-                    .font(.caption)
-                    .foregroundStyle(AssetColors.onSurfaceVariant.swiftUIColor)
-                    .padding(.horizontal, 16)
-
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 8) {
-                        SearchFilterChip<TimetableCategory>(
-                            title: "All",
-                            isSelected: presenter.selectedCategory == nil,
-                            onTap: {
-                                presenter.selectedCategory = nil
-                            }
-                        )
-
-                        ForEach(categories) { category in
-                            SearchFilterChip<TimetableCategory>(
-                                title: category.title.jaTitle,
-                                isSelected: presenter.selectedCategory == category,
-                                onTap: {
-                                    presenter.selectedCategory = presenter.selectedCategory == category ? nil : category
-                                }
-                            )
-                        }
+    private var categoryFilterMenu: some View {
+        Menu {
+            Button("All") {
+                presenter.selectedCategory = nil
+            }
+            if let timetable = presenter.timetable.timetable {
+                let uniqueCategories = Set(timetable.timetableItems.map { $0.category })
+                let categories = Array(uniqueCategories).sorted { $0.id < $1.id }
+                ForEach(categories) { category in
+                    Button(category.title.jaTitle) {
+                        presenter.selectedCategory = category
                     }
-                    .padding(.horizontal, 16)
                 }
             }
-        }
-    }
-
-    @ViewBuilder
-    private var languageSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Language")
-                .font(.caption)
-                .foregroundColor(.secondary)
-                .padding(.horizontal, 16)
-
-            languageFilterChips
-        }
-    }
-
-    private var languageFilterChips: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
+        } label: {
             HStack(spacing: 8) {
-                allLanguagesChip
-                japaneseChip
-                englishChip
-                mixedChip
+                Text("カテゴリ")
+                    .font(.subheadline)
+                    .foregroundStyle(AssetColors.onSurface.swiftUIColor)
+
+                Text(categoryFilterDisplayText)
+                    .font(.subheadline)
+                    .foregroundStyle(AssetColors.primary.swiftUIColor)
+
+                Image(systemName: "chevron.down")
+                    .font(.caption)
+                    .foregroundStyle(AssetColors.onSurfaceVariant.swiftUIColor)
             }
-            .padding(.horizontal, 16)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(AssetColors.surfaceVariant.swiftUIColor)
+                    .stroke(AssetColors.outline.swiftUIColor.opacity(0.2), lineWidth: 1)
+            )
         }
     }
 
-    private var allLanguagesChip: some View {
-        SearchFilterChip<TimetableLanguage>(
-            title: "All",
-            isSelected: presenter.selectedLanguage == nil,
-            onTap: {
+    private var categoryFilterDisplayText: String {
+        presenter.selectedCategory?.title.jaTitle ?? "全て"
+    }
+
+    private var languageFilterMenu: some View {
+        Menu {
+            Button("All") {
                 presenter.selectedLanguage = nil
             }
-        )
-    }
-
-    private var japaneseChip: some View {
-        SearchFilterChip<TimetableLanguage>(
-            title: "Japanese",
-            isSelected: presenter.selectedLanguage?.langOfSpeaker == "JA",
-            onTap: {
+            Button("Japanese") {
                 toggleLanguage("JA")
             }
-        )
-    }
-
-    private var englishChip: some View {
-        SearchFilterChip<TimetableLanguage>(
-            title: "English",
-            isSelected: presenter.selectedLanguage?.langOfSpeaker == "EN",
-            onTap: {
+            Button("English") {
                 toggleLanguage("EN")
             }
-        )
-    }
-
-    private var mixedChip: some View {
-        SearchFilterChip<TimetableLanguage>(
-            title: "Mixed",
-            isSelected: presenter.selectedLanguage?.langOfSpeaker == "MIXED",
-            onTap: {
+            Button("Mixed") {
                 toggleLanguage("MIXED")
             }
-        )
+        } label: {
+            HStack(spacing: 8) {
+                Text("言語")
+                    .font(.subheadline)
+                    .foregroundStyle(AssetColors.onSurface.swiftUIColor)
+
+                Text(languageFilterDisplayText)
+                    .font(.subheadline)
+                    .foregroundStyle(AssetColors.primary.swiftUIColor)
+
+                Image(systemName: "chevron.down")
+                    .font(.caption)
+                    .foregroundStyle(AssetColors.onSurfaceVariant.swiftUIColor)
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(AssetColors.surfaceVariant.swiftUIColor)
+                    .stroke(AssetColors.outline.swiftUIColor.opacity(0.2), lineWidth: 1)
+            )
+        }
+    }
+
+    private var languageFilterDisplayText: String {
+        guard let language = presenter.selectedLanguage else { return "全て" }
+        switch language.langOfSpeaker {
+        case "JA":
+            return "Japanese"
+        case "EN":
+            return "English"
+        case "MIXED":
+            return "Mixed"
+        default:
+            return "全て"
+        }
     }
 
     private func toggleLanguage(_ lang: String) {
@@ -225,44 +251,52 @@ public struct SearchScreen: View {
         }
     }
 
-    @ViewBuilder
-    private var daySection: some View {
-        if presenter.timetable.timetable != nil {
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Day")
+    private var dayFilterMenu: some View {
+        Menu {
+            Button("All") {
+                presenter.selectedDay = nil
+            }
+            Button("9/11") {
+                presenter.selectedDay = .conferenceDay1
+            }
+            Button("9/12") {
+                presenter.selectedDay = .conferenceDay2
+            }
+        } label: {
+            HStack(spacing: 8) {
+                Text("開催日")
+                    .font(.subheadline)
+                    .foregroundStyle(AssetColors.onSurface.swiftUIColor)
+
+                Text(dayFilterDisplayText)
+                    .font(.subheadline)
+                    .foregroundStyle(AssetColors.primary.swiftUIColor)
+
+                Image(systemName: "chevron.down")
                     .font(.caption)
                     .foregroundStyle(AssetColors.onSurfaceVariant.swiftUIColor)
-                    .padding(.horizontal, 16)
-
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 8) {
-                        SearchFilterChip<DroidKaigi2025Day>(
-                            title: "All",
-                            isSelected: presenter.selectedDay == nil,
-                            onTap: {
-                                presenter.selectedDay = nil
-                            }
-                        )
-
-                        ForEach([DroidKaigi2025Day.conferenceDay1, .conferenceDay2], id: \.self) { day in
-                            SearchFilterChip<DroidKaigi2025Day>(
-                                title: day == .conferenceDay1 ? "Day 1" : "Day 2",
-                                isSelected: presenter.selectedDay == day,
-                                onTap: {
-                                    presenter.selectedDay = presenter.selectedDay == day ? nil : day
-                                }
-                            )
-                        }
-                    }
-                    .padding(.horizontal, 16)
-                }
             }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(AssetColors.surfaceVariant.swiftUIColor)
+                    .stroke(AssetColors.outline.swiftUIColor.opacity(0.2), lineWidth: 1)
+            )
         }
     }
 
-    @ViewBuilder
-    private var roomSection: some View {
-        EmptyView()  // TODO: Implement room filter when room data is available
+    private var dayFilterDisplayText: String {
+        switch presenter.selectedDay {
+        case .conferenceDay1:
+            return "9/11"
+        case .conferenceDay2:
+            return "9/12"
+        case nil:
+            return "全て"
+        default:
+            return "全て"
+        }
     }
 }
 

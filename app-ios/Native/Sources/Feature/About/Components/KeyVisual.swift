@@ -12,9 +12,9 @@ struct KeyVisual: View {
                 .padding(.bottom, 16)
 
             // Conference description text
-            Text("DroidKaigi is a conference for Android developers")
+            Text(String(localized: "DroidKaigi is a conference for Android developers", bundle: .module))
                 .foregroundStyle(AssetColors.onSurface.swiftUIColor)
-                .typographyStyle(.titleMedium)
+                .font(Typography.titleMedium)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 16)
                 .padding(.bottom, 20)
@@ -28,12 +28,12 @@ struct KeyVisual: View {
                         .frame(width: 16, height: 16)
                         .foregroundStyle(AssetColors.onSurface.swiftUIColor)
 
-                    Text("Date:")
+                    Text(String(localized: "Date", bundle: .module))
                         .foregroundStyle(AssetColors.onSurface.swiftUIColor)
                         .typographyStyle(.titleSmall)
                         .padding(.trailing, 4)
 
-                    Text("2025.09.11(Thu) - 12(Fri)")
+                    Text(String(localized: "2025.09.10(Wed) - 12(Fri)", bundle: .module))
                         .foregroundStyle(AssetColors.onSurface.swiftUIColor)
                         .typographyStyle(.titleSmall)
                 }
@@ -46,19 +46,19 @@ struct KeyVisual: View {
                         .frame(width: 16, height: 16)
                         .foregroundStyle(AssetColors.onSurface.swiftUIColor)
 
-                    Text("Location:")
+                    Text(String(localized: "Location", bundle: .module))
                         .foregroundStyle(AssetColors.onSurface.swiftUIColor)
                         .typographyStyle(.titleSmall)
                         .padding(.trailing, 4)
 
-                    Text("Bellesalle Shibuya Garden")
+                    Text(String(localized: "Bellesalle Shibuya Garden", bundle: .module))
                         .foregroundStyle(AssetColors.onSurface.swiftUIColor)
-                        .font(.system(size: 14, weight: .regular))
+                        .font(Typography.titleSmall)
                         .lineSpacing(-6)
 
                     if let mapURL = URL(string: "https://goo.gl/maps/vv9sE19JvRjYKtSP9") {
                         Link(destination: mapURL) {
-                            Text("Check Map")
+                            Text(String(localized: "Check Map", bundle: .module))
                                 .typographyStyle(.titleSmall)
                                 .foregroundStyle(AssetColors.jellyfish.swiftUIColor)
                                 .underline()
@@ -70,12 +70,7 @@ struct KeyVisual: View {
             .frame(maxWidth: .infinity)
             .padding(.vertical, 20)
             .padding(.horizontal, 16)
-            .background(AssetColors.surfaceContainerLow.swiftUIColor, in: RoundedRectangle(cornerRadius: 10))
-            .overlay(
-                RoundedRectangle(cornerRadius: 10)
-                    .stroke(style: StrokeStyle(lineWidth: 1, dash: [2, 2]))
-                    .foregroundStyle(AssetColors.onSurfaceVariant.swiftUIColor)
-            )
+            .background(AssetColors.surfaceContainerLow.swiftUIColor, in: RoundedRectangle(cornerRadius: 24))
             .padding(.horizontal, 16)
         }
     }

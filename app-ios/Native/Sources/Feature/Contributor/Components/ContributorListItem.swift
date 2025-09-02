@@ -1,16 +1,23 @@
+import Model
 import SwiftUI
 import Theme
 
 struct ContributorListItem: View {
-    let contributor: Contributor
+    let contributor: Model.Contributor
 
     var body: some View {
         HStack(spacing: 16) {
-            // TODO: Replace with actual contributor avatar when available
-            Image(systemName: "person.circle.fill")
-                .resizable()
-                .frame(width: 56, height: 56)
-                .foregroundColor(AssetColors.onSurface.swiftUIColor.opacity(0.6))
+            AsyncImage(url: contributor.iconUrl) { image in
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            } placeholder: {
+                Image(systemName: "person.circle.fill")
+                    .resizable()
+                    .foregroundColor(AssetColors.onSurface.swiftUIColor.opacity(0.6))
+            }
+            .frame(width: 56, height: 56)
+            .clipShape(Circle())
 
             Text(contributor.name)
                 .font(.body)

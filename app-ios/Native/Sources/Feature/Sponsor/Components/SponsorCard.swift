@@ -22,27 +22,17 @@ struct SponsorCard: View {
     }
 
     var body: some View {
-        RoundedRectangle(cornerRadius: 8)
-            .fill(AssetColors.surface.swiftUIColor)
-            .frame(height: cardHeight)
-            .overlay(
-                VStack(spacing: 8) {
-                    // TODO: Replace with actual sponsor logo when available
-                    Image(systemName: "building.2.crop.circle.fill")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(height: cardHeight * 0.3)
-                        .foregroundColor(.secondary.opacity(0.3))
-
-                    Text(sponsor.name)
-                        .font(.system(size: tier == .platinum ? 14 : 12))
-                        .foregroundColor(.black)
-                        .lineLimit(1)
-                        .truncationMode(.tail)
-                        .padding(.horizontal, 8)
-                }
-                .padding(.vertical, 8)
-            )
+        AsyncImage(url: sponsor.logoUrl) { image in
+            image
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+        } placeholder: {
+            Color.white
+        }
+        .frame(maxWidth: .infinity)
+        .frame(height: cardHeight)
+        .background(Color.white)
+        .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 }
 

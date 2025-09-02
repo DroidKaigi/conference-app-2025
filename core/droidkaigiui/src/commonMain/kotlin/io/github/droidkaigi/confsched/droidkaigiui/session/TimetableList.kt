@@ -7,8 +7,11 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -27,6 +30,8 @@ import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiWindowSizeClassConstants
 import io.github.droidkaigi.confsched.droidkaigiui.component.TimetableTimeSlot
+import io.github.droidkaigi.confsched.droidkaigiui.extension.enableMouseDragScroll
+import io.github.droidkaigi.confsched.droidkaigiui.extension.plus
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import io.github.droidkaigi.confsched.model.sessions.TimetableItemId
 import io.github.droidkaigi.confsched.model.sessions.fake
@@ -57,8 +62,8 @@ fun TimetableList(
         LazyColumn(
             state = lazyListState,
             verticalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = contentPadding,
-            modifier = modifier,
+            contentPadding = contentPadding + WindowInsets.navigationBars.asPaddingValues(),
+            modifier = modifier.enableMouseDragScroll(lazyListState),
         ) {
             itemsIndexed(
                 items = timetableItemMap.toList(),

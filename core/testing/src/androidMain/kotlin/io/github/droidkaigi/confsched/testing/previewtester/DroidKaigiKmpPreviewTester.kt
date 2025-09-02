@@ -9,6 +9,7 @@ import com.github.takahirom.roborazzi.ExperimentalRoborazziApi
 import com.github.takahirom.roborazzi.RoborazziActivity
 import com.github.takahirom.roborazzi.captureRoboImage
 import com.github.takahirom.roborazzi.registerRoborazziActivityToRobolectricIfNeeded
+import io.github.droidkaigi.confsched.testing.rule.CoilRule
 import org.junit.rules.RuleChain
 import org.junit.rules.TestWatcher
 import sergio.sastre.composable.preview.scanner.jvm.common.CommonComposablePreviewScanner
@@ -57,7 +58,9 @@ class DroidKaigiKmpPreviewTester : ComposePreviewTester<ComposePreviewTester.Tes
                             registerRoborazziActivityToRobolectricIfNeeded()
                         }
                     },
-                ).around(composeTestRule)
+                )
+                    .around(composeTestRule)
+                    .around(CoilRule())
             },
         ),
     )

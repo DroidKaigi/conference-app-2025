@@ -23,9 +23,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import io.github.droidkaigi.confsched.designsystem.theme.KaigiTheme
 import io.github.droidkaigi.confsched.designsystem.theme.LocalRoomTheme
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
+import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.extension.icon
 import io.github.droidkaigi.confsched.droidkaigiui.extension.roomTheme
 import io.github.droidkaigi.confsched.eventmap.EventmapRes
@@ -56,8 +56,8 @@ fun EventMapItem(
                 ToolTip(
                     text = eventMapEvent.room.name.currentLangTitle,
                     roomIcon = eventMapEvent.room.icon,
-                    color = LocalRoomTheme.current.primaryColor,
-                    backgroundColor = LocalRoomTheme.current.containerColor,
+                    color = MaterialTheme.colorScheme.surface,
+                    backgroundColor = LocalRoomTheme.current.primaryColor,
                 )
                 Spacer(Modifier.width(12.dp))
                 Text(
@@ -100,7 +100,7 @@ fun EventMapItem(
 @Composable
 @Preview
 fun EventMapItemPreview() {
-    KaigiTheme {
+    KaigiPreviewContainer {
         Surface {
             EventMapItem(
                 eventMapEvent = EventMapEvent.fakes().first(),

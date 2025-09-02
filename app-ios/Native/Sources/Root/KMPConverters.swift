@@ -46,18 +46,16 @@ extension Model.MultiLangText {
 extension Model.RoomType {
     init(from shared: shared.RoomType) {
         switch shared {
-        case .roomF:
-            self = .roomF
-        case .roomG:
-            self = .roomG
-        case .roomH:
-            self = .roomH
-        case .roomI:
-            self = .roomI
         case .roomJ:
             self = .roomJ
-        case .roomIj:
-            self = .roomIJ
+        case .roomK:
+            self = .roomK
+        case .roomL:
+            self = .roomL
+        case .roomM:
+            self = .roomM
+        case .roomN:
+            self = .roomN
         }
     }
 }
@@ -224,7 +222,7 @@ extension Model.TimetableItemWithFavorite {
                 room: Model.Room(
                     id: 0,
                     name: Model.MultiLangText(jaTitle: "未定", enTitle: "TBD"),
-                    type: .roomIJ,
+                    type: .roomJ,
                     sort: 999
                 ),
                 targetAudience: "All",
@@ -248,7 +246,7 @@ extension Model.TimetableItemWithFavorite {
 // MARK: - Timetable Converters
 
 extension Model.Timetable {
-    init(from shared: shared.Timetable) {
+    public init(from shared: shared.Timetable) {
         let timetableItems: [any Model.TimetableItem] = shared.timetableItems.map { item in
             if let session = item as? shared.TimetableItem.Session {
                 return Model.TimetableItemSession(from: session)
@@ -269,7 +267,7 @@ extension Model.Timetable {
                     room: Model.Room(
                         id: 0,
                         name: Model.MultiLangText(jaTitle: "未定", enTitle: "TBD"),
-                        type: .roomIJ,
+                        type: .roomJ,
                         sort: 999
                     ),
                     targetAudience: "All",
@@ -350,13 +348,13 @@ extension Model.Staff {
     init(from shared: shared.Staff) {
         // Use FileManager URL as a safe fallback
         let fallbackURL = URL(fileURLWithPath: "/")
-        let iconURL = URL(string: shared.icon) ?? fallbackURL
+        let iconURL = URL(string: shared.iconUrl) ?? fallbackURL
 
         self.init(
-            id: shared.id,
-            name: shared.name,
+            id: String(shared.id),
+            name: shared.username,
             iconUrl: iconURL,
-            profileUrl: shared.profileUrl.flatMap { URL(string: $0) },
+            profileUrl: URL(string: shared.profileUrl),
             role: nil  // KMP Staff doesn't have role field
         )
     }

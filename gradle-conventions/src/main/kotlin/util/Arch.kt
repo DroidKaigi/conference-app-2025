@@ -13,7 +13,7 @@ enum class Arch(val arch: String?) {
     companion object {
         fun findByArch(arch: String?): Arch {
             println("input arch: $arch")
-            return values().firstOrNull { it.arch == arch } ?: ALL
+            return entries.firstOrNull { it.arch == arch } ?: ALL
         }
     }
 }

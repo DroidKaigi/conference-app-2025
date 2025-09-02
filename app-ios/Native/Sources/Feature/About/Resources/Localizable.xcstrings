@@ -1,23 +1,65 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "2025.09.11(Thu) - 12(Fri)" : {
-
+    "2025.09.10(Wed) - 12(Fri)" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2025.09.10(水) 〜 12(金) "
+          }
+        }
+      }
     },
-    "About" : {
-
+    "About DroidKaigi" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DroidKaigiについて"
+          }
+        }
+      }
     },
     "App Version" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アプリバージョン"
+          }
+        }
+      }
     },
     "Bellesalle Shibuya Garden" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ベルサール渋谷ガーデン"
+          }
+        }
+      }
     },
     "Cancel" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キャンセル"
+          }
+        }
+      }
     },
     "Check Map" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "地図を見る"
+          }
+        }
+      }
     },
     "Code of Conduct" : {
       "extractionState" : "manual",
@@ -87,11 +129,25 @@
         }
       }
     },
-    "Date:" : {
-
+    "Date" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "日時"
+          }
+        }
+      }
     },
     "DroidKaigi is a conference for Android developers" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DroidKaigiはAndroid技術情報の共有とコミュニケーションを目的に開催されるエンジニアが主役のAndroidカンファレンスです。"
+          }
+        }
+      }
     },
     "Licenses" : {
       "extractionState" : "manual",
@@ -110,8 +166,15 @@
         }
       }
     },
-    "Location:" : {
-
+    "Location" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "場所"
+          }
+        }
+      }
     },
     "Others" : {
       "extractionState" : "manual",
@@ -216,7 +279,14 @@
       }
     },
     "Switch" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "切り替え"
+          }
+        }
+      }
     },
     "Switch to Compose Multiplatform" : {
       "extractionState" : "manual",
@@ -253,7 +323,14 @@
       }
     },
     "Switch UI from SwiftUI to Compose Multiplatform. Are you sure you want to do this?" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UIをSwiftUIからCompose Multiplatformに切り替えます。よろしいですか？"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

@@ -39,7 +39,7 @@ fun AboutDroidKaigiSummaryCard(
     onViewMapClick: () -> Unit,
 ) {
     Card(
-        shape = RoundedCornerShape(4.dp),
+        shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surfaceContainerLow),
         modifier = modifier,
     ) {
@@ -95,6 +95,8 @@ private fun AboutDroidKaigiSummaryCardRow(
             style = MaterialTheme.typography.titleSmall,
             content = content,
             onLinkClick = onLinkClick,
+            hasUnderLine = false,
+            underLineColor = MaterialTheme.colorScheme.surfaceTint,
             regex = stringResource(AboutRes.string.place_link).toRegex(),
         )
     }

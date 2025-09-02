@@ -34,9 +34,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.SemanticsPropertyKey
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.designsystem.theme.LocalRoomTheme
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
@@ -47,7 +51,6 @@ import io.github.droidkaigi.confsched.droidkaigiui.extension.icon
 import io.github.droidkaigi.confsched.droidkaigiui.extension.roomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.not_bookmarked
 import io.github.droidkaigi.confsched.droidkaigiui.rememberAsyncImagePainter
-import io.github.droidkaigi.confsched.model.core.Room
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import io.github.droidkaigi.confsched.model.sessions.TimetableSpeaker
 import io.github.droidkaigi.confsched.model.sessions.fake
@@ -55,7 +58,9 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 const val TimetableItemCardTestTag = "TimetableItemCard"
+const val TimetableItemCardTitleTextTestTag = "TimetableItemCardTitleText"
 const val TimetableItemCardBookmarkButtonTestTag = "TimetableItemCardBookmarkButton"
+val TimetableItemCardSemanticsKey = SemanticsPropertyKey<TimetableItem>("TimetableItem")
 
 @Composable
 fun TimetableItemCard(
@@ -73,6 +78,10 @@ fun TimetableItemCard(
         Row(
             verticalAlignment = Alignment.Top,
             modifier = modifier
+                .testTag(TimetableItemCardTestTag)
+                .semantics {
+                    this[TimetableItemCardSemanticsKey] = timetableItem
+                }
                 .clip(RoundedCornerShape(16.dp))
                 .clickable { onTimetableItemClick() }
                 .background(Color.Transparent)
@@ -97,7 +106,7 @@ fun TimetableItemCard(
                 ) {
                     TimetableItemRoomTag(
                         icon = timetableItem.room.icon,
-                        text = timetableItem.room.name.currentLangTitle,
+                        text = timetableItem.room.name.currentLangTitle.toUpperCase(Locale.current),
                         color = LocalRoomTheme.current.primaryColor,
                         modifier = Modifier.background(LocalRoomTheme.current.containerColor),
                     )
@@ -215,6 +224,7 @@ private fun TimetableItemTitle(
     }
 
     Text(
+        modifier = Modifier.testTag(TimetableItemCardTitleTextTestTag),
         text = highlightedTitle,
         style = MaterialTheme.typography.titleLarge,
     )

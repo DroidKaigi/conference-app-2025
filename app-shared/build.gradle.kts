@@ -44,6 +44,7 @@ kotlin {
             implementation(libs.androidxDatastorePreferencesCore)
             implementation(libs.haze)
             implementation(libs.filekitCoil)
+            implementation(libs.material3Adaptive)
         }
 
         androidMain.dependencies {

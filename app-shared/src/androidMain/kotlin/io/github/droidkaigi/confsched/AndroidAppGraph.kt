@@ -5,6 +5,7 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.Provides
 import io.github.droidkaigi.confsched.data.DataScope
+import io.github.droidkaigi.confsched.data.UseProductionApi
 import io.github.droidkaigi.confsched.data.about.LicensesJsonReader
 
 @DependencyGraph(
@@ -18,6 +19,7 @@ interface AndroidAppGraph : AppGraph {
         fun createAndroidAppGraph(
             @Provides applicationContext: Context,
             @Provides licensesJsonReader: LicensesJsonReader,
+            @Provides @UseProductionApi useProductionApi: Boolean,
         ): AndroidAppGraph
     }
 }

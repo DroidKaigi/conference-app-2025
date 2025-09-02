@@ -5,6 +5,7 @@ ksp = "2.2.0-2.0.2"
 
 jetbrainsCompose = "1.9.0-beta01"
 material3 = "1.9.0-alpha04"
+material3Adaptive = "1.1.2"
 
 kotlinPoet = "2.2.0"
 kotlinxSerialization = "1.9.0"
@@ -63,6 +64,11 @@ navigationCompose = "2.9.0-beta04"
 aboutLibraries = "12.1.1"
 
 filekit = "0.10.0"
+qrcodeKotlin = "4.3.0"
+
+firebaseGradlePlugin = "4.4.3"
+firebaseCrashlyticsGradlePlugin = "3.0.6"
+firebaseCrashlytics = "19.4.4"
 
 [libraries]
 # gradle plugins
@@ -79,6 +85,8 @@ buildkonfigGradlePlugin = { module = "com.codingfeline.buildkonfig:buildkonfig-g
 skieGradlePlugin = { module = "co.touchlab.skie:co.touchlab.skie.gradle.plugin", version.ref = "skie" }
 aboutLibrariesGradlePlugin = { module = "com.mikepenz.aboutlibraries.plugin:com.mikepenz.aboutlibraries.plugin.gradle.plugin", version.ref = "aboutLibraries" }
 spotlessGradlePlugin = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
+firebaseGradlePlugin = { module = "com.google.gms:google-services", version.ref = "firebaseGradlePlugin" }
+firebaseCrashlyticsGradlePlugin = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "firebaseCrashlyticsGradlePlugin" }
 
 # ktor and ktorfit
 ktorClientOkhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
@@ -97,6 +105,9 @@ androidxBrowser = { module = "androidx.browser:browser", version.ref = "androidx
 composeBom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
 androidxUiTestJunit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 androidxUiTestManifest = { module = "androidx.compose.ui:ui-test-manifest" }
+
+# firebase
+firebaseCrashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx", version.ref = "firebaseCrashlytics" }
 
 # kotlin
 kotlinTest = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -148,6 +159,7 @@ coilTest = { module = "io.coil-kt.coil3:coil-test", version.ref = "coil" }
 
 haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
 material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "material3" }
+material3Adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive", version.ref = "material3Adaptive" }
 
 buildkonfigCompiler = { module = "com.codingfeline.buildkonfig:buildkonfig-compiler", version.ref = "buildkonfig" }
 
@@ -159,6 +171,8 @@ aboutLibrariesComposeM3 = { module = "com.mikepenz:aboutlibraries-compose-m3", v
 
 filekitDialogsCompose = { module = "io.github.vinceglb:filekit-dialogs-compose", version.ref = "filekit" }
 filekitCoil = { module = "io.github.vinceglb:filekit-coil", version.ref = "filekit" }
+
+qrcodeKotlin = { module = "io.github.g0dkar:qrcode-kotlin", version.ref = "qrcodeKotlin" }
 
 [plugins]
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
@@ -193,4 +207,6 @@ plugins = [
     "skieGradlePlugin",
     "aboutLibrariesGradlePlugin",
     "spotlessGradlePlugin",
+    "firebaseGradlePlugin",
+    "firebaseCrashlyticsGradlePlugin",
 ]

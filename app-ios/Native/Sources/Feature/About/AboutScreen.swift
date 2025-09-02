@@ -27,7 +27,6 @@ public struct AboutScreen: View {
         ScrollView {
             VStack(spacing: 32) {
                 KeyVisual()
-                    .padding(.top, 28)
 
                 VStack(spacing: 32) {
                     creditsSection
@@ -43,7 +42,7 @@ public struct AboutScreen: View {
             .padding(.bottom, 80)  // Tab bar padding
         }
         .background(AssetColors.surface.swiftUIColor)
-        .navigationTitle("About")
+        .navigationTitle(String(localized: "About DroidKaigi", bundle: .module))
         #if os(iOS)
             .navigationBarTitleDisplayMode(.large)
         #endif
@@ -62,7 +61,6 @@ public struct AboutScreen: View {
                     title: String(localized: "Contributors", bundle: .module),
                     image: AssetImages.icDiversity1.swiftUIImage
                 ) {
-                    presenter.contributorsTapped()
                     onNavigate(.contributors)
                 }
 
@@ -73,7 +71,6 @@ public struct AboutScreen: View {
                     title: String(localized: "Staffs", bundle: .module),
                     image: AssetImages.icSentimentVerySatisfied.swiftUIImage
                 ) {
-                    presenter.staffsTapped()
                     onNavigate(.staff)
                 }
 
@@ -84,7 +81,6 @@ public struct AboutScreen: View {
                     title: String(localized: "Sponsors", bundle: .module),
                     image: AssetImages.icApartment.swiftUIImage
                 ) {
-                    presenter.sponsorsTapped()
                     onNavigate(.sponsors)
                 }
 
@@ -108,7 +104,6 @@ public struct AboutScreen: View {
                     title: String(localized: "Code of Conduct", bundle: .module),
                     image: AssetImages.icGavel.swiftUIImage
                 ) {
-                    presenter.codeOfConductTapped()
                     Task {
                         await safari(URL(string: String(localized: "CodeOfConductURL", bundle: .module))!)
                     }
@@ -121,7 +116,6 @@ public struct AboutScreen: View {
                     title: String(localized: "Licenses", bundle: .module),
                     image: AssetImages.icFileCopy.swiftUIImage
                 ) {
-                    presenter.licensesTapped()
                     onNavigate(.licenses)
                 }
 
@@ -132,7 +126,6 @@ public struct AboutScreen: View {
                     title: String(localized: "Privacy Policy", bundle: .module),
                     image: AssetImages.icPrivacyTip.swiftUIImage
                 ) {
-                    presenter.privacyPolicyTapped()
                     Task {
                         await safari(URL(string: String(localized: "PrivacyPolicyURL", bundle: .module))!)
                     }
@@ -145,7 +138,6 @@ public struct AboutScreen: View {
                     title: String(localized: "Settings", bundle: .module),
                     image: AssetImages.icSettings.swiftUIImage
                 ) {
-                    presenter.settingsTapped()
                     onNavigate(.settings)
                 }
 
@@ -157,17 +149,20 @@ public struct AboutScreen: View {
                     systemName: "switch.2",
                 ) {
                     showSwitchToComposeMultiplatformAlert = true
-                    presenter.switchToComposeMultiplatformTapped()
                 }
                 .alert(
                     String(localized: "Switch UI", bundle: .module), isPresented: $showSwitchToComposeMultiplatformAlert
                 ) {
-                    Button("Cancel", role: .cancel) {}
-                    Button("Switch") {
+                    Button(String(localized: "Cancel", bundle: .module), role: .cancel) {}
+                    Button(String(localized: "Switch", bundle: .module)) {
                         onEnableComposeMultiplatform()
                     }
                 } message: {
-                    Text("Switch UI from SwiftUI to Compose Multiplatform. Are you sure you want to do this?")
+                    Text(
+                        String(
+                            localized:
+                                "Switch UI from SwiftUI to Compose Multiplatform. Are you sure you want to do this?",
+                            bundle: .module))
                 }
 
                 Divider()
@@ -182,22 +177,25 @@ public struct AboutScreen: View {
             SocialButton(
                 imageName: "ic_youtube_logo"
             ) {
-                presenter.youtubeTapped()
-                // TODO: Open in Safari when implemented
+                Task {
+                    await safari(URL(string: "https://www.youtube.com/c/DroidKaigi")!)
+                }
             }
 
             SocialButton(
                 imageName: "ic_xcom_logo"
             ) {
-                presenter.xcomTapped()
-                // TODO: Open in Safari when implemented
+                Task {
+                    await safari(URL(string: "https://twitter.com/DroidKaigi")!)
+                }
             }
 
             SocialButton(
                 imageName: "ic_medium_logo"
             ) {
-                presenter.mediumTapped()
-                // TODO: Open in Safari when implemented
+                Task {
+                    await safari(URL(string: "https://medium.com/droidkaigi")!)
+                }
             }
         }
     }
@@ -205,7 +203,7 @@ public struct AboutScreen: View {
     @ViewBuilder
     private var versionSection: some View {
         VStack(spacing: 0) {
-            Text("App Version")
+            Text(String(localized: "App Version", bundle: .module))
                 .font(.caption)
 
             Text(version)

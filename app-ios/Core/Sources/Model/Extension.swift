@@ -46,18 +46,16 @@ extension Model.TimetableAsset {
 extension Model.Room {
     public func getThemeKey() -> String {
         switch type {
-        case .roomF:
-            return "roomF"
-        case .roomG:
-            return "roomG"
-        case .roomH:
-            return "roomH"
-        case .roomI:
-            return "roomI"
         case .roomJ:
             return "roomJ"
-        case .roomIJ:
-            return "roomIJ"
+        case .roomK:
+            return "roomK"
+        case .roomL:
+            return "roomL"
+        case .roomM:
+            return "roomM"
+        case .roomN:
+            return "roomN"
         }
     }
 }

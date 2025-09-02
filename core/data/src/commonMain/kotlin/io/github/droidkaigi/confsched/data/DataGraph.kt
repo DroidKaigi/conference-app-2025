@@ -2,29 +2,39 @@ package io.github.droidkaigi.confsched.data
 
 import de.jensklingenberg.ktorfit.Ktorfit
 import dev.zacsweers.metro.ContributesTo
-import dev.zacsweers.metro.Named
 import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.Qualifier
 import io.github.droidkaigi.confsched.data.core.defaultJson
 import io.ktor.client.HttpClient
 import kotlinx.serialization.json.Json
 
 public abstract class DataScope private constructor()
 
+@Qualifier
+public annotation class UseProductionApi
+
+@Qualifier
+public annotation class ApiBaseUrl
+
 @ContributesTo(DataScope::class)
 public interface DataGraph {
-    @Named("apiBaseUrl")
-    public val apiBaseUrl: String
+    @UseProductionApi
+    public val useProductionApi: Boolean
 
-    @Named("apiBaseUrl")
     @Provides
-    public fun provideApiBaseUrl(): String {
-        return "https://ssot-api-staging.an.r.appspot.com/"
+    @ApiBaseUrl
+    public fun provideApiBaseUrl(
+        @UseProductionApi useProductionApi: Boolean,
+    ): String = if (useProductionApi) {
+        "https://ssot-api.droidkaigi.jp/"
+    } else {
+        "https://ssot-api-staging.an.r.appspot.com/"
     }
 
     @Provides
     public fun provideKtorfit(
         httpClient: HttpClient,
-        @Named("apiBaseUrl") apiBaseUrl: String,
+        @ApiBaseUrl apiBaseUrl: String,
     ): Ktorfit {
         return Ktorfit.Builder()
             .httpClient(httpClient)

@@ -36,8 +36,8 @@ public class DefaultStaffApiClient(
 private fun StaffItemResponse.toStaff(): Staff {
     return Staff(
         id = id,
-        name = name,
-        icon = icon,
+        username = username,
+        iconUrl = iconUrl,
         profileUrl = profileUrl,
     )
 }

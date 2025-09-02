@@ -5,6 +5,7 @@ plugins {
 kotlin {
     sourceSets {
         commonMain.dependencies {
+            implementation(libs.qrcodeKotlin)
             implementation(libs.soilForm)
             implementation(libs.filekitDialogsCompose)
         }

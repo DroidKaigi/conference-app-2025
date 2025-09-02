@@ -4,19 +4,30 @@ import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap.CompressFormat.PNG
 import android.net.Uri
 import android.os.Build
 import android.provider.CalendarContract
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ShareCompat
+import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
+import io.github.droidkaigi.confsched.app_shared.R
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import java.io.File
+import java.io.FileOutputStream
+import kotlin.time.Clock
 
 @Composable
 actual fun rememberExternalNavController(): ExternalNavController {
@@ -41,7 +52,10 @@ class AndroidExternalNavController(
         }
         if (nativeAppLaunched) return
 
-        navigateToCustomTab(context = context, uri = uri)
+        val customTabLaunched = navigateToCustomTab(context = context, uri = uri)
+        if (customTabLaunched.not()) {
+            Toast.makeText(context, R.string.no_compatible_browser_found, Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun navigateToCalendarRegistration(timetableItem: TimetableItem) {
@@ -77,6 +91,24 @@ class AndroidExternalNavController(
                 .startChooser()
         } catch (e: ActivityNotFoundException) {
             Log.e("ExternalNavController", "ActivityNotFoundException Fail startActivity", e)
+        }
+    }
+
+    override fun onShareProfileCardClick(shareText: String, imageBitmap: ImageBitmap) {
+        val imageAbsolutePath = imageBitmap.saveToDisk(context)
+
+        try {
+            val file = File(imageAbsolutePath)
+            val uri = FileProvider.getUriForFile(context, "${context.packageName}.provider", file)
+
+            ShareCompat.IntentBuilder(context)
+                .setStream(uri)
+                .setText(shareText)
+                .setType("image/png")
+                .startChooser()
+        } catch (e: ActivityNotFoundException) {
+            // TODO: consider logging
+            e.printStackTrace()
         }
     }
 
@@ -153,5 +185,25 @@ class AndroidExternalNavController(
             Log.e("ExternalNavController", "ActivityNotFoundException in navigateToCustomTab", e)
             false
         }
+    }
+
+    fun ImageBitmap.saveToDisk(context: Context): String {
+        val timestamp = Clock.System.now()
+            .toLocalDateTime(TimeZone.UTC)
+            .toString()
+            .replace(":", "")
+            .replace(".", "")
+        val fileName = "shared_image_$timestamp.png"
+
+        val cachePath = File(context.cacheDir, "images")
+        cachePath.mkdirs()
+        val file = File(cachePath, fileName)
+        val outputStream = FileOutputStream(file)
+
+        this.asAndroidBitmap().compress(PNG, 100, outputStream)
+        outputStream.flush()
+        outputStream.close()
+
+        return file.absolutePath
     }
 }

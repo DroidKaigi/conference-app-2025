@@ -14,12 +14,12 @@ public data class RoomResponse(
 
 public fun RoomResponse.toRoom(): Room {
     val roomType = when (name.en.lowercase()) {
-        "meerkat" -> RoomType.RoomF
-        "ladybug" -> RoomType.RoomG
-        "koala" -> RoomType.RoomH
-        "jellyfish" -> RoomType.RoomI
-        "narwhal" -> RoomType.RoomJ
-        else -> RoomType.RoomIJ // TODO: investigate what RoomIJ is later on
+        "jellyfish" -> RoomType.RoomJ
+        "koala" -> RoomType.RoomK
+        "ladybug" -> RoomType.RoomL
+        "meerkat" -> RoomType.RoomM
+        "narwhal" -> RoomType.RoomN
+        else -> throw IllegalArgumentException("This is an unexpected RoomType.")
     }
 
     return Room(

@@ -9,5 +9,22 @@
 		<string>en</string>
 		<string>ja</string>
 	</array>
+	<key>NSUserNotificationsUsageDescription</key>
+	<string>DroidKaigi would like to send you notifications to remind you about upcoming sessions you've favorited.</string>
+	<key>UNNotificationCategory</key>
+	<array>
+		<dict>
+			<key>UNNotificationCategoryIdentifier</key>
+			<string>SESSION_REMINDER</string>
+			<key>UNNotificationCategoryHiddenPreviewsBodyPlaceholder</key>
+			<string>Session Reminder</string>
+			<key>UNNotificationCategoryOptions</key>
+			<integer>2</integer>
+		</dict>
+	</array>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>io.github.droidkaigi.dk2025.notification-refresh</string>
+	</array>
 </dict>
 </plist>

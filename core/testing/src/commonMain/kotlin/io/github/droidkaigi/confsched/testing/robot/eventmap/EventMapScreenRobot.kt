@@ -9,6 +9,8 @@ import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
+import androidx.compose.ui.text.intl.Locale
+import androidx.compose.ui.text.toUpperCase
 import dev.zacsweers.metro.Inject
 import io.github.droidkaigi.confsched.droidkaigiui.architecture.DefaultErrorFallbackContentRetryTestTag
 import io.github.droidkaigi.confsched.droidkaigiui.architecture.DefaultErrorFallbackContentTestTag
@@ -97,7 +99,7 @@ class EventMapScreenRobot(
     ) {
         composeUiTest
             .onNodeWithTag(EventMapLazyColumnTestTag)
-            .performScrollToNode(hasTestTag(EventMapItemTestTag.plus(roomType.name)))
+            .performScrollToNode(hasTestTag(EventMapItemTestTag.plus(roomType.name.toUpperCase(Locale.current))))
         waitFor5Seconds()
     }
 
@@ -165,7 +167,7 @@ class EventMapScreenRobot(
         roomType: RoomType,
     ) {
         composeUiTest
-            .onAllNodesWithTag(EventMapItemTestTag.plus(roomType.name))
+            .onAllNodesWithTag(EventMapItemTestTag.plus(roomType.name.toUpperCase(Locale.current)))
             .onFirst()
             .assertExists()
     }

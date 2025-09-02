@@ -1,6 +1,16 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Create Card" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カードを作成する"
+          }
+        }
+      }
+    },
     "Edit" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -8,6 +18,57 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "編集する"
+          }
+        }
+      }
+    },
+    "Image" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "画像"
+          }
+        }
+      }
+    },
+    "Let's create a profile card to introduce yourself at events or on social media!" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "会場やSNSで自分を紹介できるプロフィールカードを作ってみましょう！"
+          }
+        }
+      }
+    },
+    "Link（ex.X、Instagram...）" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "リンク（ex.X、Instagram...）"
+          }
+        }
+      }
+    },
+    "Nickname" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ニックネーム"
+          }
+        }
+      }
+    },
+    "Occupation" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "職種"
           }
         }
       }
@@ -25,6 +86,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "共有する"
+          }
+        }
+      }
+    },
+    "Share Message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check out my DroidKaigi Profile Card! Let's connect at the event. #DroidKaigi"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DroidKaigiのプロフィールカードを作成しました！イベントでつながりましょう。 #DroidKaigi"
           }
         }
       }

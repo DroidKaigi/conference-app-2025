@@ -8,7 +8,6 @@ struct TimetableListView: View {
     let timetableItems: [TimetableTimeGroupItems]
     let onItemTap: (TimetableItemWithFavorite) -> Void
     let onFavoriteTap: (TimetableItemWithFavorite, CGPoint?) -> Void
-    let animationTrigger: (any TimetableItem, CGPoint?) -> Void
 
     var body: some View {
         ScrollView {
@@ -24,10 +23,6 @@ struct TimetableListView: View {
                         },
                         onFavoriteTap: { item, location in
                             onFavoriteTap(item, location)
-
-                            if !item.isFavorited {
-                                animationTrigger(item.timetableItem, location)
-                            }
                         }
                     )
                 }

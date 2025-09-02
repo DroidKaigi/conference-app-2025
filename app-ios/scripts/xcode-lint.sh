@@ -12,6 +12,12 @@ if [ -z "$SRCROOT" ]; then
     exit 1
 fi
 
+# Skip linting in CI environment
+if [ -n "$CI" ] || [ -n "$GITHUB_ACTIONS" ]; then
+    echo "Skipping SwiftLint in CI environment"
+    exit 0
+fi
+
 # Path to SwiftLint - check multiple possible locations
 SWIFTLINT_PATH=""
 

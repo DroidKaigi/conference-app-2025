@@ -34,7 +34,6 @@ struct InformationRow: View {
                 Text(title)
                     .font(Typography.titleSmall)
                     .foregroundStyle(titleColor)
-                    .frame(width: 53, alignment: .leading)
             }
 
             Text(content)

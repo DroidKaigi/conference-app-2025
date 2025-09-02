@@ -1,2 +1,4 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+# Normalize line endings to LF for Kotlin files
+*.kt text eol=lf

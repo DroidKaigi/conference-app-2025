@@ -1,14 +1,7 @@
 package io.github.droidkaigi.confsched.component
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -16,20 +9,15 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.RoundRect
@@ -42,14 +30,10 @@ import androidx.compose.ui.graphics.PathMeasure
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import dev.chrisbanes.haze.HazeDefaults
 import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.hazeEffect
 import dev.chrisbanes.haze.rememberHazeState
 import io.github.droidkaigi.confsched.common.graphics.isBlurSupported
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
-import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -57,24 +41,11 @@ fun GlassLikeBottomNavigationBar(
     hazeState: HazeState,
     currentTab: MainScreenTab,
     onTabSelected: (MainScreenTab) -> Unit,
+    animatedSelectedTabIndex: Float,
+    animatedColor: Color,
     modifier: Modifier = Modifier,
 ) {
     val navigationItemsContentPadding = PaddingValues(horizontal = 12.dp)
-
-    val animatedSelectedTabIndex by animateFloatAsState(
-        targetValue = currentTab.ordinal.toFloat(),
-        label = "animatedSelectedTabIndex",
-        animationSpec = spring(
-            stiffness = Spring.StiffnessLow,
-            dampingRatio = Spring.DampingRatioLowBouncy,
-        ),
-    )
-
-    val animatedColor by animateColorAsState(
-        targetValue = MaterialTheme.colorScheme.primaryFixed,
-        label = "animatedColor",
-        animationSpec = spring(stiffness = Spring.StiffnessLow),
-    )
 
     Box(
         modifier = modifier
@@ -91,18 +62,7 @@ fun GlassLikeBottomNavigationBar(
                 shape = CircleShape,
             )
             .clip(CircleShape)
-            .then(
-                if (isBlurSupported()) {
-                    Modifier.hazeEffect(
-                        state = hazeState,
-                        style = HazeDefaults.style(
-                            backgroundColor = MaterialTheme.colorScheme.background,
-                        ),
-                    )
-                } else {
-                    Modifier.background(MaterialTheme.colorScheme.background.copy(alpha = .95f))
-                },
-            ),
+            .glassEffect(hazeState),
         contentAlignment = Alignment.Center,
     ) {
         BottomNavigationBarItems(
@@ -137,37 +97,12 @@ private fun BottomNavigationBarItems(
         modifier = modifier.selectableGroup(),
     ) {
         MainScreenTab.entries.forEach { tab ->
-            val selected = currentTab == tab
-
-            val scale by animateFloatAsState(
-                targetValue = if (selected) 1f else .98f,
-                visibilityThreshold = .000001f,
-                animationSpec = spring(
-                    stiffness = Spring.StiffnessLow,
-                    dampingRatio = Spring.DampingRatioMediumBouncy,
-                ),
-                label = "scale",
+            NavigationTabItem(
+                tab = tab,
+                selected = currentTab == tab,
+                onTabSelected = onTabSelected,
+                modifier = Modifier.weight(1f).fillMaxHeight(),
             )
-
-            Box(
-                modifier = Modifier
-                    .scale(scale)
-                    .weight(1f)
-                    .fillMaxHeight()
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        onClick = { onTabSelected(tab) },
-                        indication = null,
-                    ),
-                contentAlignment = Alignment.Center,
-            ) {
-                Icon(
-                    imageVector = if (selected) vectorResource(tab.iconOn) else vectorResource(tab.iconOff),
-                    contentDescription = stringResource(tab.label),
-                    tint = if (selected) MaterialTheme.colorScheme.primaryFixed else MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = modifier.size(24.dp),
-                )
-            }
         }
     }
 }
@@ -196,26 +131,11 @@ private fun SelectedTabCircleBlurredBackground(
         )
         val radius = size.height / 2
 
-        if (isBlurSupported()) {
-            drawCircle(
-                color = color.copy(alpha = .6f),
-                radius = radius,
-                center = selectedTabCenter,
-            )
-        } else {
-            drawCircle(
-                brush = Brush.radialGradient(
-                    colors = listOf(
-                        color.copy(alpha = 0.5f),
-                        color.copy(alpha = 0.1f),
-                    ),
-                    center = selectedTabCenter,
-                    radius = radius,
-                ),
-                center = selectedTabCenter,
-                radius = radius,
-            )
-        }
+        drawSelectedTabCircle(
+            color = color,
+            center = selectedTabCenter,
+            radius = radius,
+        )
     }
 }
 
@@ -263,6 +183,8 @@ private fun GlassLikeBottomNavigationBarPreview() {
             hazeState = rememberHazeState(),
             currentTab = MainScreenTab.Timetable,
             onTabSelected = {},
+            animatedSelectedTabIndex = 0f,
+            animatedColor = MaterialTheme.colorScheme.primaryFixed,
         )
     }
 }

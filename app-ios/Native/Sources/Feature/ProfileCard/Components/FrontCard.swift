@@ -5,7 +5,21 @@ struct FrontCard: View {
     let userRole: String
     let userName: String
     let cardType: ProfileCardType
+    let image: Data
     let normal: (Float, Float, Float)
+    let effectEnabled: Bool
+
+    init(
+        userRole: String, userName: String, cardType: ProfileCardType, image: Data,
+        normal: (Float, Float, Float) = (0, 0, 0), effectEnabled: Bool = true
+    ) {
+        self.userRole = userRole
+        self.userName = userName
+        self.cardType = cardType
+        self.image = image
+        self.normal = normal
+        self.effectEnabled = effectEnabled
+    }
 
     let shaderFunction = ShaderFunction(library: .bundle(.module), name: "kiraEffect")
 
@@ -19,7 +33,8 @@ struct FrontCard: View {
                 .kiraEffect(
                     function: shaderFunction,
                     normal: normal,
-                    monochromeImage: Image("front_effect", bundle: .module)
+                    monochromeImage: Image("front_effect", bundle: .module),
+                    isEnabled: effectEnabled
                 )
             VStack(alignment: .center, spacing: 20) {
                 Image("\(cardType.rawValue)_card_title", bundle: .module)
@@ -67,9 +82,8 @@ struct FrontCard: View {
         .clipped(antialiased: true)
     }
 
-    // TODO: Replace user image
     private var avatarImage: some View {
-        Image(systemName: "person.circle.fill")
+        Image(uiImage: UIImage(data: image)!)
             .resizable()
             .frame(width: 131, height: 131)
             .foregroundColor(.accentColor)

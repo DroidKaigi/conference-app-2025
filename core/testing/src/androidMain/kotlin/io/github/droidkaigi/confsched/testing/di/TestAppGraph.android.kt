@@ -29,19 +29,11 @@ import kotlinx.coroutines.CoroutineDispatcher
     ],
 )
 internal interface AndroidTestAppGraph : TestAppGraph {
-    val context: Context
 
     @SingleIn(AppScope::class)
     @Provides
     fun provideContext(): Context {
-        val testContext = ApplicationProvider.getApplicationContext<Context>()
-        // Workaround for "Android context is not initialized"
-        // FYI: https://youtrack.jetbrains.com/issue/CMP-6676/Android-context-is-not-initialized-when-removing-AndroidContextProvider
-        val providerClass = Class.forName("org.jetbrains.compose.resources.AndroidContextProvider")
-        val provider = providerClass.getDeclaredConstructor().newInstance()
-        providerClass.getMethod("access\$setANDROID_CONTEXT\$cp", Context::class.java)
-            .invoke(provider, testContext)
-        return testContext
+        return ApplicationProvider.getApplicationContext()
     }
 
     @Provides
@@ -51,9 +43,18 @@ internal interface AndroidTestAppGraph : TestAppGraph {
     fun provideFakeLicensesJsonReader(): FakeLicensesJsonReader = FakeLicensesJsonReader()
 }
 
+private fun initializeAndroidContext() {
+    val testContext = ApplicationProvider.getApplicationContext<Context>()
+    // Workaround for "Android context is not initialized"
+    // FYI: https://youtrack.jetbrains.com/issue/CMP-6676/Android-context-is-not-initialized-when-removing-AndroidContextProvider
+    val providerClass = Class.forName("org.jetbrains.compose.resources.AndroidContextProvider")
+    val provider = providerClass.getDeclaredConstructor().newInstance()
+    providerClass.getMethod("access\$setANDROID_CONTEXT\$cp", Context::class.java)
+        .invoke(provider, testContext)
+}
+
 internal actual fun createTestAppGraph(): TestAppGraph {
-    return createGraph<AndroidTestAppGraph>().also {
-        // Ensure context is initialized before Compose UI tests
-        it.context
-    }
+    // Ensure context is initialized before Compose UI tests
+    initializeAndroidContext()
+    return createGraph<AndroidTestAppGraph>()
 }

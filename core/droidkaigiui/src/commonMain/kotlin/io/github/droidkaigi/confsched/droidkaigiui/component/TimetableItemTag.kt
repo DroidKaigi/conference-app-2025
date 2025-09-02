@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched.droidkaigiui.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -29,7 +30,7 @@ fun TimetableItemTag(
 ) {
     TimetableItemTag(
         tagText = tagText,
-        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        contentTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
         borderColor = MaterialTheme.colorScheme.outline,
         modifier = modifier,
     )
@@ -44,7 +45,7 @@ fun TimetableItemTag(
 ) {
     TimetableItemTag(
         tagText = tagText,
-        contentColor = tagColor,
+        contentTextColor = tagColor,
         borderColor = tagColor,
         icon = icon,
         modifier = modifier,
@@ -54,8 +55,9 @@ fun TimetableItemTag(
 @Composable
 fun TimetableItemTag(
     tagText: String,
-    contentColor: Color,
+    contentTextColor: Color,
     borderColor: Color,
+    contentBackgroundColor: Color? = null,
     modifier: Modifier = Modifier,
     icon: DrawableResource? = null,
     contentPadding: PaddingValues = PaddingValues(horizontal = 6.dp, vertical = 4.dp),
@@ -67,7 +69,13 @@ fun TimetableItemTag(
             .border(
                 width = 1.dp,
                 color = borderColor,
-                shape = RoundedCornerShape(8.dp),
+                shape = RoundedCornerShape(5.dp),
+            )
+            .then(
+                Modifier.background(
+                    color = contentBackgroundColor ?: Color.Transparent,
+                    shape = RoundedCornerShape(5.dp),
+                ).takeIf { contentBackgroundColor != null } ?: Modifier,
             )
             .padding(contentPadding),
     ) {
@@ -75,13 +83,13 @@ fun TimetableItemTag(
             Icon(
                 imageVector = vectorResource(icon),
                 contentDescription = null,
-                tint = contentColor,
+                tint = contentTextColor,
             )
         }
         Text(
             text = tagText,
             style = MaterialTheme.typography.labelMedium,
-            color = contentColor,
+            color = contentTextColor,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )

@@ -48,10 +48,9 @@ private fun RoomType.toRoom(): Room = Room(
 )
 
 private fun RoomType.toRoomName(): MultiLangText = when (this) {
-    RoomType.RoomF -> MultiLangText("Meerkat", "Meerkat")
-    RoomType.RoomG -> MultiLangText("Ladybug", "Ladybug")
-    RoomType.RoomH -> MultiLangText("Koala", "Koala")
-    RoomType.RoomI -> MultiLangText("Jellyfish", "Jellyfish")
-    RoomType.RoomJ -> MultiLangText("Narwhal", "Narwhal")
-    RoomType.RoomIJ -> MultiLangText("Jellyfish and Narwhal", "Jellyfish and Narwhal")
+    RoomType.RoomJ -> MultiLangText("JELLYFISH", "JELLYFISH")
+    RoomType.RoomK -> MultiLangText("KOALA", "KOALA")
+    RoomType.RoomL -> MultiLangText("LADYBUG", "LADYBUG")
+    RoomType.RoomM -> MultiLangText("MEERKAT", "MEERKAT")
+    RoomType.RoomN -> MultiLangText("NARWHAL", "NARWHAL")
 }

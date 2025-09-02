@@ -16,7 +16,7 @@ let package = Package(
             targets: ["Presentation"]
         ),
         .library(name: "Model", targets: ["Model"]),
-        .library(name: "UseCase", targets: ["UseCase"])
+        .library(name: "UseCase", targets: ["UseCase"]),
     ],
     dependencies: [
         .package(url: "https://github.com/pointfreeco/swift-dependencies.git", exact: "1.9.2"),
@@ -54,7 +54,7 @@ let package = Package(
         .testTarget(
             name: "UseCaseTests",
             dependencies: ["UseCase"]
-        ),
+        )
     ],
     swiftLanguageModes: [.v6]
 )

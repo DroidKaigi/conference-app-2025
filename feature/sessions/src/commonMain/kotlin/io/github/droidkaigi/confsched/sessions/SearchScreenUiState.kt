@@ -34,10 +34,10 @@ data class SearchScreenUiState(
     }
 
     data class Filters(
-        val selectedDay: DroidKaigi2025Day? = null,
-        val selectedCategory: TimetableCategory? = null,
-        val selectedSessionType: TimetableSessionType? = null,
-        val selectedLanguage: Lang? = null,
+        val selectedDays: List<DroidKaigi2025Day> = emptyList(),
+        val selectedCategories: List<TimetableCategory> = emptyList(),
+        val selectedSessionTypes: List<TimetableSessionType> = emptyList(),
+        val selectedLanguages: List<Lang> = emptyList(),
         val availableDays: List<DroidKaigi2025Day> = emptyList(),
         val availableCategories: List<TimetableCategory> = emptyList(),
         val availableSessionTypes: List<TimetableSessionType> = emptyList(),

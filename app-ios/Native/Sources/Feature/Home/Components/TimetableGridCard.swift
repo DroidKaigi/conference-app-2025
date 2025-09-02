@@ -7,7 +7,6 @@ import Theme
 
 struct TimetableGridCard: View {
     let timetableItem: any TimetableItem
-    let cellCount: Int
     let onTap: (any TimetableItem) -> Void
 
     var body: some View {
@@ -52,24 +51,15 @@ struct TimetableGridCard: View {
             .cornerRadius(8)
         }
         .buttonStyle(PlainButtonStyle())
-        .frame(width: CGFloat(192 * cellCount + 4 * (cellCount - 1)), height: 153)
     }
 }
 
 #Preview {
     TimetableGridCard(
         timetableItem: PreviewData.timetableItemSession,
-        cellCount: 1,
         onTap: { _ in }
     )
-}
-
-#Preview("Multiple Cells") {
-    TimetableGridCard(
-        timetableItem: PreviewData.timetableItemSession,
-        cellCount: 2,
-        onTap: { _ in }
-    )
+    .frame(width: 200, height: 100)
 }
 
 private enum PreviewData {
@@ -85,8 +75,8 @@ private enum PreviewData {
         sessionType: .regular,
         room: Room(
             id: 1,
-            name: MultiLangText(jaTitle: "ルームF", enTitle: "Room F"),
-            type: .roomF,
+            name: MultiLangText(jaTitle: "ルームJ", enTitle: "Room J"),
+            type: .roomJ,
             sort: 1
         ),
         targetAudience: "All levels",

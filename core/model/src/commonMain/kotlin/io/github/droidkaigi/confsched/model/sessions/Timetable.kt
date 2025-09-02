@@ -104,11 +104,11 @@ fun Timetable?.orEmptyContents(): Timetable = this ?: Timetable()
 
 fun Timetable.Companion.fake(): Timetable {
     val rooms = mutableListOf(
-        Room(1, MultiLangText("Meerkat", "Meerkat"), RoomType.RoomF, 4),
-        Room(2, MultiLangText("Ladybug", "Ladybug"), RoomType.RoomG, 5),
-        Room(3, MultiLangText("Koala", "Koala"), RoomType.RoomH, 1),
-        Room(4, MultiLangText("Jellyfish", "Jellyfish"), RoomType.RoomI, 2),
-        Room(5, MultiLangText("Narwhal", "Narwhal"), RoomType.RoomJ, 3),
+        Room(1, MultiLangText("JELLYFISH", "JELLYFISH"), RoomType.RoomJ, 4),
+        Room(2, MultiLangText("KOALA", "KOALA"), RoomType.RoomK, 5),
+        Room(3, MultiLangText("LADYBUG", "LADYBUG"), RoomType.RoomL, 1),
+        Room(4, MultiLangText("MEERKAT", "MEERKAT"), RoomType.RoomM, 2),
+        Room(5, MultiLangText("NARWHAL", "NARWHAL"), RoomType.RoomN, 3),
     )
     repeat(10) {
         rooms += rooms

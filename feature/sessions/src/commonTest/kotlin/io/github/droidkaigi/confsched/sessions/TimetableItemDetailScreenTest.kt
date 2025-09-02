@@ -1,6 +1,7 @@
 package io.github.droidkaigi.confsched.sessions
 
 import androidx.compose.ui.test.runComposeUiTest
+import io.github.droidkaigi.confsched.sessions.components.SummaryCardTextTag
 import io.github.droidkaigi.confsched.testing.annotations.ComposeTest
 import io.github.droidkaigi.confsched.testing.annotations.RunWith
 import io.github.droidkaigi.confsched.testing.annotations.UiTestRunner
@@ -89,7 +90,7 @@ class TimetableItemDetailScreenTest {
                 doIt {
                     setFontScale(1.5f)
                     setupTimetableItemDetailScreenContent()
-                    scrollLazyColumnByIndex(1)
+                    scrollLazyColumnByTestTag(SummaryCardTextTag.plus("Category"))
                 }
                 itShould("show large font session detail") {
                     captureScreenWithChecks(
@@ -103,12 +104,36 @@ class TimetableItemDetailScreenTest {
                 doIt {
                     setFontScale(2.0f)
                     setupTimetableItemDetailScreenContent()
-                    scrollLazyColumnByIndex(1)
+                    scrollLazyColumnByTestTag(SummaryCardTextTag.plus("Date/Time"))
                 }
-                itShould("show huge font session detail") {
+                itShould("show huge font session detail(top)") {
                     captureScreenWithChecks(
                         checks = {
-                            checkSummaryCardTexts()
+                            checkSummaryCardTexts(
+                                titles = listOf(
+                                    "Date/Time",
+                                ),
+                            )
+                        },
+                    )
+                }
+            }
+            describe("when font scale is huge") {
+                doIt {
+                    setFontScale(2.0f)
+                    setupTimetableItemDetailScreenContent()
+                    scrollLazyColumnByTestTag(SummaryCardTextTag.plus("Category"))
+                }
+                itShould("show huge font session detail(bottom)") {
+                    captureScreenWithChecks(
+                        checks = {
+                            checkSummaryCardTexts(
+                                titles = listOf(
+                                    "Location",
+                                    "Supported Languages",
+                                    "Category",
+                                ),
+                            )
                         },
                     )
                 }

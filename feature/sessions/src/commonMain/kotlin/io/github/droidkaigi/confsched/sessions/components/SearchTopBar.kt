@@ -22,7 +22,10 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
+
+const val SearchTopBarTextFieldTestTag = "SearchTopBarTextFieldTestTag"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,7 +60,8 @@ fun SearchTopBar(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .focusRequester(focusRequester),
+                    .focusRequester(focusRequester)
+                    .testTag(SearchTopBarTextFieldTestTag),
             )
         },
         navigationIcon = {

@@ -40,7 +40,7 @@ fun StaffItem(
 ) {
     Row(
         modifier = modifier
-            .clickable(enabled = !staff.profileUrl.isNullOrBlank()) {
+            .clickable(enabled = staff.profileUrl.isNotBlank()) {
                 onStaffItemClick()
             }
             .padding(horizontal = 16.dp, vertical = 10.dp),
@@ -50,9 +50,9 @@ fun StaffItem(
         Image(
             painter = previewOverridePainter(
                 previewPainter = { rememberVectorPainter(image = Icons.Default.Person) },
-                painter = { rememberAsyncImagePainter(staff.icon) },
+                painter = { rememberAsyncImagePainter(staff.iconUrl) },
             ),
-            contentDescription = staff.name,
+            contentDescription = staff.username,
             modifier = Modifier
                 .size(52.dp)
                 .clip(staffIconShape)
@@ -64,7 +64,7 @@ fun StaffItem(
                 .testTag(StaffItemImageTestTag.plus(staff.id)),
         )
         Text(
-            text = staff.name,
+            text = staff.username,
             style = MaterialTheme.typography.bodyLarge,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,

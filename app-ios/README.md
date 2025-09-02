@@ -135,9 +135,9 @@ graph LR
 
 ### Prerequisites
 
-- **Xcode**: 16.0 or later
+- **Xcode**: 16.4 or later
 - **Swift**: 6.1.2
-- **macOS**: 15.0 or later
+- **macOS**: 15.3 or later
 - **iOS Deployment Target**: 18.0
 
 ### Setup
@@ -149,7 +149,7 @@ git clone https://github.com/DroidKaigi/conference-app-2025.git
 
 2. Assemble the shared KMP framework:
 ```bash
-./gradlew app-shared:assembleSharedXCFramework
+./gradlew app-shared:assembleSharedDebugXCFramework
 ```
 
 3. Setup the project:
@@ -157,6 +157,19 @@ git clone https://github.com/DroidKaigi/conference-app-2025.git
 cd app-ios && make setup
 ```
 Note: This installs SwiftLint via nest. Make sure nest is installed first (`curl -s https://raw.githubusercontent.com/mtj0928/nest/main/Scripts/install.sh | bash`) and confirm `~/.nest/bin` is added to PATH.
+
+__【Example】__
+
+```bash
+# Open .zshrc
+vim ~/.zshrc
+
+# Write the following line and save
+export PATH="$PATH:~/.nest/bin"
+
+# Apply the changes
+source ~/.zshrc
+```
 
 4. Open the project:
 ```bash

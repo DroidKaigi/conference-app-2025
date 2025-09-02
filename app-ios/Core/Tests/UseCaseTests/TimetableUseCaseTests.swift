@@ -16,7 +16,7 @@ struct TimetableUseCaseTests {
                 endsAt: Date().addingTimeInterval(3600),
                 category: TimetableCategory(id: 1, title: MultiLangText(jaTitle: "Development", enTitle: "Development")),
                 sessionType: .regular,
-                room: Room(id: 1, name: MultiLangText(jaTitle: "Room A", enTitle: "Room A"), type: .roomF, sort: 1),
+                room: Room(id: 1, name: MultiLangText(jaTitle: "Room J", enTitle: "Room J"), type: .roomJ, sort: 1),
                 targetAudience: "All",
                 language: TimetableLanguage(langOfSpeaker: "JA", isInterpretationTarget: false),
                 asset: TimetableAsset(videoUrl: nil, slideUrl: nil),
@@ -34,7 +34,7 @@ struct TimetableUseCaseTests {
         )
         
         // Act
-        let result = try await withDependencies {
+        let result = await withDependencies {
             $0.timetableUseCase.load = {
                 AsyncStream { continuation in
                     continuation.yield(expectedTimetable)
@@ -66,7 +66,7 @@ struct TimetableUseCaseTests {
         )
         
         // Act
-        let result = try await withDependencies {
+        let result = await withDependencies {
             $0.timetableUseCase.load = {
                 AsyncStream { continuation in
                     continuation.yield(emptyTimetable)
@@ -100,7 +100,7 @@ struct TimetableUseCaseTests {
         )
         
         // Act
-        let results = try await withDependencies {
+        let results = await withDependencies {
             $0.timetableUseCase.load = {
                 AsyncStream { continuation in
                     continuation.yield(firstTimetable)
@@ -135,7 +135,7 @@ struct TimetableUseCaseTests {
                 endsAt: Date().addingTimeInterval(3600),
                 category: TimetableCategory(id: 1, title: MultiLangText(jaTitle: "Development", enTitle: "Development")),
                 sessionType: .regular,
-                room: Room(id: 1, name: MultiLangText(jaTitle: "Room A", enTitle: "Room A"), type: .roomF, sort: 1),
+                room: Room(id: 1, name: MultiLangText(jaTitle: "Room J", enTitle: "Room J"), type: .roomJ, sort: 1),
                 targetAudience: "All",
                 language: TimetableLanguage(langOfSpeaker: "JA", isInterpretationTarget: true),
                 asset: TimetableAsset(videoUrl: "https://example.com/video", slideUrl: "https://example.com/slide"),
@@ -154,7 +154,7 @@ struct TimetableUseCaseTests {
                 endsAt: Date().addingTimeInterval(10800),
                 category: TimetableCategory(id: 99, title: MultiLangText(jaTitle: "Other", enTitle: "Other")),
                 sessionType: .lunch,
-                room: Room(id: 6, name: MultiLangText(jaTitle: "Lunch Room", enTitle: "Lunch Room"), type: .roomIJ, sort: 6),
+                room: Room(id: 6, name: MultiLangText(jaTitle: "Lunch Room", enTitle: "Lunch Room"), type: .roomJ, sort: 6),
                 targetAudience: "All",
                 language: TimetableLanguage(langOfSpeaker: "JA", isInterpretationTarget: false),
                 asset: TimetableAsset(videoUrl: nil, slideUrl: nil),
@@ -170,7 +170,7 @@ struct TimetableUseCaseTests {
         let timetable = Timetable(timetableItems: mixedItems, bookmarks: bookmarks)
         
         // Act
-        let result = try await withDependencies {
+        let result = await withDependencies {
             $0.timetableUseCase.load = {
                 AsyncStream { continuation in
                     continuation.yield(timetable)
@@ -208,7 +208,7 @@ struct TimetableUseCaseTests {
         )
         
         // Act
-        let result = try await withDependencies {
+        let result = await withDependencies {
             $0.timetableUseCase.load = {
                 AsyncStream { continuation in
                     continuation.yield(expectedTimetable)
@@ -245,7 +245,7 @@ struct TimetableUseCaseTests {
         )
         
         // Act
-        let result = try await withDependencies {
+        let result = await withDependencies {
             $0.timetableUseCase.load = {
                 AsyncStream { continuation in
                     continuation.yield(timetable)

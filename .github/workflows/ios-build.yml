@@ -1,0 +1,111 @@
+name: iOS Build
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'app-ios/**'
+      - 'app-shared/**'
+      - 'core/model/**'
+      - '.github/workflows/ios-build.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'app-ios/**'
+      - 'app-shared/**'
+      - 'core/model/**'
+      - '.github/workflows/ios-build.yml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-xcframework:
+    name: Build XCFramework
+    runs-on: macos-15
+    timeout-minutes: 30
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Setup Java
+      uses: ./.github/actions/setup-java
+    
+    - name: Build XCFramework
+      run: |
+        ./gradlew :app-shared:assembleSharedDebugXCFramework \
+        -Papp.ios.shared.arch=arm64SimulatorDebug \
+        --stacktrace
+    
+    - name: Upload XCFramework
+      uses: actions/upload-artifact@v4
+      with:
+        name: app-ios-shared-xcframework
+        path: app-shared/build/XCFrameworks
+        retention-days: 1
+
+  build-ios:
+    name: Build iOS App
+    needs: build-xcframework
+    runs-on: macos-15
+    timeout-minutes: 30
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Download XCFramework
+      uses: actions/download-artifact@v4
+      with:
+        name: app-ios-shared-xcframework
+        path: app-shared/build/XCFrameworks
+    
+    - name: Select Xcode
+      run: sudo xcode-select -s /Applications/Xcode_16.4.app
+    
+    - name: Cache SPM dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/Library/Developer/Xcode/DerivedData/*/SourcePackages
+          app-ios/Core/.build
+          app-ios/Native/.build
+        key: ${{ runner.os }}-spm-${{ hashFiles('app-ios/Core/Package.swift', 'app-ios/Native/Package.swift') }}
+        restore-keys: |
+          ${{ runner.os }}-spm-
+    
+    - name: Resolve Package Dependencies
+      working-directory: app-ios
+      run: |
+        xcodebuild -resolvePackageDependencies \
+          -project DroidKaigi2025.xcodeproj \
+          -scheme DroidKaigi2025
+    
+    - name: Build iOS App
+      working-directory: app-ios
+      env:
+        CI: true
+        GITHUB_ACTIONS: true
+      run: |
+        xcodebuild build \
+          -project DroidKaigi2025.xcodeproj \
+          -scheme DroidKaigi2025 \
+          -configuration Debug \
+          -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
+          -derivedDataPath ./DerivedData \
+          -skipPackagePluginValidation \
+          -skipMacroValidation \
+          ONLY_ACTIVE_ARCH=YES \
+          CODE_SIGN_IDENTITY="" \
+          CODE_SIGNING_REQUIRED=NO \
+          CODE_SIGNING_ALLOWED=NO
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ios-app-build
+        path: |
+          app-ios/DerivedData/Build/Products/Debug-iphonesimulator/*.app
+        retention-days: 7

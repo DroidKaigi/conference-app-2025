@@ -75,6 +75,7 @@ fun TimetableGridItem(
             modifier = modifier
                 .width(TimetableGridItemDefaults.width)
                 .height(scaledHeight)
+                .padding(all = TimetableGridItemDefaults.contentMargin)
                 .border(1.dp, LocalRoomTheme.current.primaryColor, shape)
                 .clip(shape)
                 .background(LocalRoomTheme.current.containerColor)
@@ -186,14 +187,14 @@ private fun TimetableSpeaker(
         )
         Text(
             text = speaker.name,
-            style = MaterialTheme.typography.titleSmall,
+            style = MaterialTheme.typography.labelMedium,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             autoSize = TextAutoSize.StepBased(
                 minFontSize = TimetableGridItemDefaults.minTitleFontSize,
                 maxFontSize = TimetableGridItemDefaults.maxTitleFontSize,
             ),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .padding(start = 8.dp),
@@ -225,6 +226,7 @@ private fun TimetableTitle(
 private object TimetableGridItemDefaults {
     val width = 192.dp
     val unitOfHeight = 4.dp // 1 minute = 4dp
+    val contentMargin = 1.dp
     val contentPadding = 12.dp
     val scheduleToTitleSpace = 6.dp
     val scheduleHeight = 16.dp
@@ -275,8 +277,8 @@ private fun TimetableGridItemPreview_WelcomeTalk() {
                 speakers = persistentListOf(),
                 room = Room(
                     id = 1,
-                    name = MultiLangText("Jellyfish", "Jellyfish"),
-                    type = RoomType.RoomJ,
+                    name = MultiLangText("NARWHAL", "NARWHAL"),
+                    type = RoomType.RoomN,
                     sort = 1,
                 ),
             ),

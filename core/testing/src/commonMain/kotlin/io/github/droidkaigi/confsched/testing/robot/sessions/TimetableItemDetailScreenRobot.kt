@@ -99,6 +99,15 @@ class TimetableItemDetailScreenRobot(
     }
 
     context(composeUiTest: ComposeUiTest)
+    fun scrollLazyColumnByTestTag(
+        testTag: String,
+    ) {
+        composeUiTest
+            .onNodeWithTag(TimetableItemDetailScreenLazyColumnTestTag)
+            .performScrollToNode(hasTestTag(testTag))
+    }
+
+    context(composeUiTest: ComposeUiTest)
     fun scrollToReadMoreButton() {
         composeUiTest
             .onNodeWithTag(TimetableItemDetailScreenLazyColumnTestTag)
@@ -159,13 +168,14 @@ class TimetableItemDetailScreenRobot(
     }
 
     context(composeUiTest: ComposeUiTest)
-    fun checkSummaryCardTexts() {
-        val titles = listOf(
+    fun checkSummaryCardTexts(
+        titles: List<String> = listOf(
             "Date/Time",
             "Location",
             "Supported Languages",
             "Category",
-        )
+        ),
+    ) {
         titles.forEach { title ->
             composeUiTest
                 .onNodeWithTag(SummaryCardTextTag.plus(title))

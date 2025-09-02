@@ -14,22 +14,20 @@ import org.jetbrains.compose.resources.DrawableResource
 
 val Room.icon: DrawableResource?
     get() = when (type) {
-        RoomType.RoomF -> RoomIcon.Rhombus
-        RoomType.RoomG -> RoomIcon.Circle
-        RoomType.RoomH -> RoomIcon.Diamond
-        RoomType.RoomI -> RoomIcon.Square
-        RoomType.RoomJ -> RoomIcon.Triangle
-        RoomType.RoomIJ -> RoomIcon.None
+        RoomType.RoomJ -> RoomIcon.Square
+        RoomType.RoomK -> RoomIcon.Diamond
+        RoomType.RoomL -> RoomIcon.Circle
+        RoomType.RoomM -> RoomIcon.Rhombus
+        RoomType.RoomN -> RoomIcon.Triangle
     }.toResDrawable()
 
 val Room.roomTheme: RoomTheme
     get() = when (type) {
-        RoomType.RoomF -> RoomTheme.Meerkat
-        RoomType.RoomG -> RoomTheme.Ladybug
-        RoomType.RoomH -> RoomTheme.Koala
-        RoomType.RoomI -> RoomTheme.Jellyfish
-        RoomType.RoomJ -> RoomTheme.Narwhal
-        RoomType.RoomIJ -> RoomTheme.Jellyfish
+        RoomType.RoomJ -> RoomTheme.Jellyfish
+        RoomType.RoomK -> RoomTheme.Koala
+        RoomType.RoomL -> RoomTheme.Ladybug
+        RoomType.RoomM -> RoomTheme.Meerkat
+        RoomType.RoomN -> RoomTheme.Narwhal
     }
 
 fun RoomIcon.toResDrawable(): DrawableResource? {

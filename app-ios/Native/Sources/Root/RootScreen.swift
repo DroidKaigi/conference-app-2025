@@ -7,11 +7,13 @@ import HomeFeature
 import Model
 import ProfileCardFeature
 import SearchFeature
+import SettingsFeature
 import SponsorFeature
 import StaffFeature
 import SwiftUI
 import Theme
 import TimetableDetailFeature
+import UseCase
 
 private enum TabType: CaseIterable, Hashable {
     case timetable
@@ -45,6 +47,7 @@ public struct RootScreen: View {
     @State private var composeMultiplatformEnabled = false
     @State private var favoriteScreenUiMode: FavoriteScreenUiModePicker.UiMode = .swiftui
     private let presenter = RootPresenter()
+    @State private var notificationCoordinator: NotificationNavigationCoordinator?
 
     public init() {
         UITabBar.appearance().unselectedItemTintColor = UIColor(named: "tab_inactive")
@@ -67,7 +70,44 @@ public struct RootScreen: View {
             // Register custom fonts from Theme bundle so Font.custom can resolve them.
             ThemeFonts.registerAll()
             presenter.prepareWindow()
+            setupNotificationHandling()
+
+            // Handle notification if app was launched from terminated state
+            handleLaunchNotificationIfNeeded()
         }
+        .onChange(of: scenePhase) { _, newPhase in
+            ScenePhaseHandler.handle(newPhase)
+        }
+    }
+
+    private func setupNotificationHandling() {
+        @Dependency(\.notificationUseCase) var notificationUseCase
+
+        // Initialize notification coordinator if not already done
+        if notificationCoordinator == nil {
+            notificationCoordinator = NotificationNavigationCoordinator(
+                navigateToTimetableDetail: { itemId in
+                    // Handle notification navigation
+                    // Note: Since this is a struct, we don't need weak references
+                    Task { @MainActor in
+                        await navigateToSessionFromNotification(itemId: itemId)
+                    }
+                }
+            )
+        }
+
+        // Set up notification navigation handler using the dependency-injected instance
+        if let coordinator = notificationCoordinator {
+            setNavigationHandler(coordinator)
+        }
+    }
+
+    @MainActor
+    private func setNavigationHandler(_ coordinator: NotificationNavigationCoordinator) {
+        // Use the shared NotificationUseCaseManager to set the navigation handler
+        // This ensures the notification delegate is properly configured on the actual
+        // NotificationUseCaseImpl instance that handles all notification operations
+        NotificationUseCaseManager.shared.setNavigationHandler(coordinator)
     }
 
     @ViewBuilder
@@ -159,8 +199,7 @@ public struct RootScreen: View {
             Text("Licenses")
                 .navigationTitle("Licenses")
         case .settings:
-            Text("Settings")
-                .navigationTitle("Settings")
+            SettingsScreen()
         }
     }
 
@@ -196,6 +235,93 @@ public struct RootScreen: View {
 
     private func handleEnableComposeMultiplatform() {
         composeMultiplatformEnabled = true
+    }
+
+    @MainActor
+    private func navigateToSessionFromNotification(itemId: String) async {
+        // Switch to timetable tab first
+        selectedTab = .timetable
+
+        // Find the timetable item with the matching ID
+        do {
+            let timetableItem = try await findTimetableItemById(itemId)
+
+            // Clear existing navigation path and navigate to detail
+            navigationPath = NavigationPath()
+
+            // Add a small delay to ensure tab switch is complete
+            try await Task.sleep(nanoseconds: 100_000_000)  // 0.1 seconds
+
+            // Navigate to the timetable detail
+            navigationPath.append(NavigationDestination.timetableDetail(timetableItem))
+
+            print("Successfully navigated to session: \(timetableItem.timetableItem.title.currentLangTitle)")
+        } catch {
+            // At least we switched to the timetable tab so user can manually find the session
+            print(
+                "Failed to find session with ID \(itemId): \(error.localizedDescription). User switched to Timetable tab."
+            )
+        }
+    }
+
+    private func findTimetableItemById(_ itemId: String) async throws -> TimetableItemWithFavorite {
+        @Dependency(\.timetableUseCase) var timetableUseCase
+
+        // Get the latest timetable data with timeout to avoid infinite waiting
+        let timetableSequence = timetableUseCase.load()
+
+        // Use AsyncSequence.first to get only the first result and avoid infinite loop
+        guard let timetable = await timetableSequence.first(where: { @Sendable _ in true }) else {
+            throw NotificationNavigationError.navigationFailed("No timetable data available")
+        }
+
+        // Use first(where:) for more efficient search instead of manual loop
+        guard let item = timetable.timetableItems.first(where: { $0.id.value == itemId }) else {
+            throw NotificationNavigationError.itemNotFound(itemId)
+        }
+
+        let isFavorited = timetable.bookmarks.contains(item.id)
+        return TimetableItemWithFavorite(timetableItem: item, isFavorited: isFavorited)
+    }
+
+    private func handleLaunchNotificationIfNeeded() {
+        // When app is launched from terminated state by tapping a notification,
+        // the notification delegate might not be called immediately.
+        // We need to check for launch notification stored by AppDelegate.
+        Task { @MainActor in
+            // Wait for UI to be ready
+            try? await Task.sleep(nanoseconds: 500_000_000)  // 0.5 seconds
+
+            // Check for launch notification and handle it
+            await checkForLaunchNotification()
+        }
+    }
+
+    @MainActor
+    private func checkForLaunchNotification() async {
+        // Check if there's a launch notification stored by AppDelegate
+        guard let notificationUserInfo = NotificationLaunchHandler.shared.consumeLaunchNotification() else {
+            // Also check UserDefaults as a secondary fallback mechanism
+            let userDefaults = UserDefaults.standard
+            if let pendingItemId = userDefaults.string(forKey: "pending_notification_item_id") {
+                print("Found pending notification navigation for item: \(pendingItemId)")
+                userDefaults.removeObject(forKey: "pending_notification_item_id")
+                await navigateToSessionFromNotification(itemId: pendingItemId)
+            }
+            return
+        }
+
+        print("Processing launch notification: \(notificationUserInfo)")
+
+        // Extract itemId from notification userInfo
+        if let itemId = notificationUserInfo["itemId"] as? String {
+            print("Found itemId in launch notification: \(itemId)")
+
+            // Navigate to the session
+            await navigateToSessionFromNotification(itemId: itemId)
+        } else {
+            print("No itemId found in launch notification userInfo")
+        }
     }
 
     @ViewBuilder
@@ -237,4 +363,18 @@ public struct RootScreen: View {
 
 #Preview {
     RootScreen()
+}
+
+enum NotificationNavigationError: Error, LocalizedError {
+    case itemNotFound(String)
+    case navigationFailed(String)
+
+    var errorDescription: String? {
+        switch self {
+        case .itemNotFound(let itemId):
+            return "Session with ID '\(itemId)' not found"
+        case .navigationFailed(let reason):
+            return "Navigation failed: \(reason)"
+        }
+    }
 }

@@ -9,6 +9,7 @@ import io.github.droidkaigi.confsched.favorites.FavoritesScreenContext
 import io.github.droidkaigi.confsched.sessions.SearchScreenContext
 import io.github.droidkaigi.confsched.sessions.TimetableItemDetailScreenContext
 import io.github.droidkaigi.confsched.sessions.TimetableScreenContext
+import io.github.droidkaigi.confsched.settings.SettingsScreenContext
 import io.github.droidkaigi.confsched.sponsors.SponsorsScreenContext
 import io.github.droidkaigi.confsched.staff.StaffScreenContext
 
@@ -23,4 +24,5 @@ interface AppGraph :
     StaffScreenContext.Factory,
     ProfileScreenContext.Factory,
     LicensesScreenContext.Factory,
-    EventMapScreenContext.Factory
+    EventMapScreenContext.Factory,
+    SettingsScreenContext.Factory

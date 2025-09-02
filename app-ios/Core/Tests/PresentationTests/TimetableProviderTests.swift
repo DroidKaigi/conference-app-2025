@@ -145,11 +145,11 @@ struct TimetableProviderTest {
         let provider = TimetableProvider()
         
         let items: [any TimetableItem] = [
-            TestData.createTimetableItemSession(id: "1", room: .roomF),
-            TestData.createTimetableItemSession(id: "2", room: .roomG),
-            TestData.createTimetableItemSession(id: "3", room: .roomF), // duplicate
-            TestData.createTimetableItemSession(id: "4", room: .roomH),
-            TestData.createTimetableItemSession(id: "5", room: .roomG) // duplicate
+            TestData.createTimetableItemSession(id: "1", room: .roomJ),
+            TestData.createTimetableItemSession(id: "2", room: .roomK),
+            TestData.createTimetableItemSession(id: "3", room: .roomJ), // duplicate
+            TestData.createTimetableItemSession(id: "4", room: .roomL),
+            TestData.createTimetableItemSession(id: "5", room: .roomK) // duplicate
         ]
         
         provider.timetable = Timetable(timetableItems: items, bookmarks: Set())
@@ -159,9 +159,9 @@ struct TimetableProviderTest {
         #expect(rooms.count == 3)
         
         let roomTypes = Set(rooms.map { $0.type })
-        #expect(roomTypes.contains(.roomF))
-        #expect(roomTypes.contains(.roomG))
-        #expect(roomTypes.contains(.roomH))
+        #expect(roomTypes.contains(.roomJ))
+        #expect(roomTypes.contains(.roomK))
+        #expect(roomTypes.contains(.roomL))
         
         // Verify sort order
         for i in 0..<rooms.count - 1 {
@@ -230,9 +230,9 @@ struct TimetableProviderTest {
         let endTime = startTime.addingTimeInterval(3600)
         
         let items: [any TimetableItem] = [
-            TestData.createTimetableItemSession(id: "1", startsAt: startTime, endsAt: endTime, room: .roomF),
-            TestData.createTimetableItemSession(id: "2", startsAt: startTime, endsAt: endTime, room: .roomG),
-            TestData.createTimetableItemSession(id: "3", startsAt: startTime, endsAt: endTime, room: .roomH)
+            TestData.createTimetableItemSession(id: "1", startsAt: startTime, endsAt: endTime, room: .roomJ),
+            TestData.createTimetableItemSession(id: "2", startsAt: startTime, endsAt: endTime, room: .roomK),
+            TestData.createTimetableItemSession(id: "3", startsAt: startTime, endsAt: endTime, room: .roomL)
         ]
         
         let timetable = Timetable(timetableItems: items, bookmarks: Set())
@@ -302,17 +302,17 @@ enum TestData {
     
     static func createTimetableWithMultipleTimeSlots() -> Timetable {
         let items: [any TimetableItem] = [
-            createTimetableItemSession(id: "1", day: .conferenceDay1, startsAt: createDate(hour: 10, minute: 0), endsAt: createDate(hour: 11, minute: 0), room: .roomF),
-            createTimetableItemSession(id: "2", day: .conferenceDay1, startsAt: createDate(hour: 10, minute: 0), endsAt: createDate(hour: 11, minute: 0), room: .roomG),
-            createTimetableItemSession(id: "3", day: .conferenceDay1, startsAt: createDate(hour: 10, minute: 0), endsAt: createDate(hour: 11, minute: 0), room: .roomH),
+            createTimetableItemSession(id: "1", day: .conferenceDay1, startsAt: createDate(hour: 10, minute: 0), endsAt: createDate(hour: 11, minute: 0), room: .roomJ),
+            createTimetableItemSession(id: "2", day: .conferenceDay1, startsAt: createDate(hour: 10, minute: 0), endsAt: createDate(hour: 11, minute: 0), room: .roomK),
+            createTimetableItemSession(id: "3", day: .conferenceDay1, startsAt: createDate(hour: 10, minute: 0), endsAt: createDate(hour: 11, minute: 0), room: .roomL),
             
-            createTimetableItemSession(id: "4", day: .conferenceDay1, startsAt: createDate(hour: 11, minute: 30), endsAt: createDate(hour: 12, minute: 30), room: .roomF),
-            createTimetableItemSession(id: "5", day: .conferenceDay1, startsAt: createDate(hour: 11, minute: 30), endsAt: createDate(hour: 12, minute: 30), room: .roomG),
+            createTimetableItemSession(id: "4", day: .conferenceDay1, startsAt: createDate(hour: 11, minute: 30), endsAt: createDate(hour: 12, minute: 30), room: .roomJ),
+            createTimetableItemSession(id: "5", day: .conferenceDay1, startsAt: createDate(hour: 11, minute: 30), endsAt: createDate(hour: 12, minute: 30), room: .roomK),
             
             createTimetableItemSpecial(id: "6", day: .conferenceDay1, startsAt: createDate(hour: 12, minute: 30), endsAt: createDate(hour: 13, minute: 30), sessionType: .lunch),
             
-            createTimetableItemSession(id: "7", day: .conferenceDay2, startsAt: createDate(hour: 10, minute: 0), endsAt: createDate(hour: 11, minute: 0), room: .roomF),
-            createTimetableItemSession(id: "8", day: .conferenceDay2, startsAt: createDate(hour: 10, minute: 0), endsAt: createDate(hour: 11, minute: 0), room: .roomG)
+            createTimetableItemSession(id: "7", day: .conferenceDay2, startsAt: createDate(hour: 10, minute: 0), endsAt: createDate(hour: 11, minute: 0), room: .roomJ),
+            createTimetableItemSession(id: "8", day: .conferenceDay2, startsAt: createDate(hour: 10, minute: 0), endsAt: createDate(hour: 11, minute: 0), room: .roomK)
         ]
         
         return Timetable(timetableItems: items, bookmarks: Set())
@@ -331,7 +331,7 @@ enum TestData {
         day: DroidKaigi2025Day = .conferenceDay1,
         startsAt: Date = Date(),
         endsAt: Date = Date().addingTimeInterval(3_600),
-        room: RoomType = .roomF
+        room: RoomType = .roomJ
     ) -> TimetableItemSession {
         TimetableItemSession(
             id: TimetableItemId(value: id),
@@ -366,7 +366,7 @@ enum TestData {
             endsAt: endsAt,
             category: TimetableCategory(id: 99, title: MultiLangText(jaTitle: "その他", enTitle: "Other")),
             sessionType: sessionType,
-            room: createRoom(type: .roomIJ),
+            room: createRoom(type: .roomJ),
             targetAudience: "All",
             language: TimetableLanguage(langOfSpeaker: "JA", isInterpretationTarget: false),
             asset: TimetableAsset(videoUrl: nil, slideUrl: nil),
@@ -381,18 +381,16 @@ enum TestData {
     static func createRoom(type: RoomType) -> Room {
         let id: Int32
         switch type {
-        case .roomF:
-            id = 1
-        case .roomG:
-            id = 2
-        case .roomH:
-            id = 3
-        case .roomI:
-            id = 4
         case .roomJ:
+            id = 1
+        case .roomK:
+            id = 2
+        case .roomL:
+            id = 3
+        case .roomM:
+            id = 4
+        case .roomN:
             id = 5
-        case .roomIJ:
-            id = 6
         }
         
         return Room(

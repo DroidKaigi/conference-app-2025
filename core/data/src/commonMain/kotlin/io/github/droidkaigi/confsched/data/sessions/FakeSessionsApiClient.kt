@@ -146,18 +146,18 @@ public fun SessionsAllResponse.Companion.messageExistsFake(): SessionsAllRespons
 )
 
 private fun RoomResponse.Companion.fakes(): List<RoomResponse> = listOf(
-    RoomResponse(name = LocaledResponse(ja = "Hedgehog ja", en = "Hedgehog"), id = 1, sort = 1),
+    RoomResponse(name = LocaledResponse(ja = "JELLYFISH JA", en = "JELLYFISH"), id = 1, sort = 1),
     RoomResponse(
-        name = LocaledResponse(ja = "Flamingo ja", en = "Flamingo"),
+        name = LocaledResponse(ja = "KOALA JA", en = "KOALA"),
         id = 2,
         sort = 2,
     ),
     RoomResponse(
-        name = LocaledResponse(ja = "Giraffe ja", en = "Giraffe"),
+        name = LocaledResponse(ja = "LADYBUG JA", en = "LADYBUG"),
         id = 3,
         sort = 3,
     ),
-    RoomResponse(name = LocaledResponse(ja = "Iguana ja", en = "Iguana"), id = 4, sort = 3),
+    RoomResponse(name = LocaledResponse(ja = "MEERKAT JA", en = "MEERKAT"), id = 4, sort = 3),
 )
 
 private fun CategoryResponse.Companion.fakes(): List<CategoryResponse> = listOf(

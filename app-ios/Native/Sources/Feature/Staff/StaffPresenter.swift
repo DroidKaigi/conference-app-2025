@@ -17,14 +17,17 @@ final class StaffPresenter {
     var staffList: [Model.Staff] = []
     var isLoading = false
 
-    private var staffTask: Task<Void, Never>?
+    private var staffTask: Task<Void, Never>? {
+        willSet {
+            staffTask?.cancel()
+        }
+    }
 
     init() {}
 
     func loadStaff() async {
         isLoading = true
 
-        staffTask?.cancel()
         staffTask = Task {
             for await staffList in staffProvider.loadStaff() {
                 guard !Task.isCancelled else { break }
@@ -44,7 +47,6 @@ final class StaffPresenter {
     }
 
     func cleanup() {
-        staffTask?.cancel()
         staffTask = nil
     }
 }

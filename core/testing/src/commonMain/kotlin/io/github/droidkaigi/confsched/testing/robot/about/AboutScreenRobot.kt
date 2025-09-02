@@ -6,6 +6,7 @@ import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipeDown
 import androidx.compose.ui.test.swipeUp
 import dev.zacsweers.metro.Inject
 import io.github.droidkaigi.confsched.about.AboutScreenContext
@@ -59,11 +60,11 @@ class AboutScreenRobot(
     fun scrollToCreditsSection() {
         composeUiTest
             .onNode(hasTestTag(AboutScreenLazyColumnTestTag))
-            .performScrollToNode(hasTestTag(AboutCreditsStaffItemTestTag))
+            .performScrollToNode(hasTestTag(AboutCreditsTitleTestTag))
 
         // FIXME Without this, you won't be able to scroll to the exact middle of the credits section.
         composeUiTest.onRoot().performTouchInput {
-            swipeUp(startY = centerY, endY = centerY - 100)
+            swipeUp(startY = centerY, endY = centerY - 150)
         }
         waitUntilIdle()
     }
@@ -72,7 +73,13 @@ class AboutScreenRobot(
     fun scrollToOthersSection() {
         composeUiTest
             .onNode(hasTestTag(AboutScreenLazyColumnTestTag))
-            .performScrollToNode(hasTestTag(AboutOthersTitleTestTag))
+            .performScrollToNode(hasTestTag(AboutOthersSettingsItemTestTag))
+
+        // FIXME Without this, you won't be able to scroll to the exact middle of the credits section.
+        composeUiTest.onRoot().performTouchInput {
+            swipeDown(startY = centerY, endY = centerY + 100)
+        }
+
         waitUntilIdle()
     }
 

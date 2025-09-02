@@ -3,6 +3,7 @@ package io.github.droidkaigi.confsched.staff
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
@@ -12,6 +13,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.testTag
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.component.AnimatedMediumTopAppBar
+import io.github.droidkaigi.confsched.droidkaigiui.extension.enableMouseDragScroll
 import io.github.droidkaigi.confsched.model.staff.Staff
 import io.github.droidkaigi.confsched.model.staff.fakes
 import io.github.droidkaigi.confsched.staff.component.StaffItem
@@ -31,6 +33,7 @@ fun StaffScreen(
     modifier: Modifier = Modifier,
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    val listState = rememberLazyListState()
 
     Scaffold(
         topBar = {
@@ -43,8 +46,10 @@ fun StaffScreen(
         modifier = modifier,
     ) { contentPadding ->
         LazyColumn(
+            state = listState,
             modifier = Modifier
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
+                .enableMouseDragScroll(listState)
                 .testTag(StaffScreenLazyColumnTestTag),
             contentPadding = contentPadding,
         ) {

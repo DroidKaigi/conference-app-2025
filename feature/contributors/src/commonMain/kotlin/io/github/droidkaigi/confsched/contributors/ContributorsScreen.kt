@@ -2,6 +2,7 @@ package io.github.droidkaigi.confsched.contributors
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
@@ -13,6 +14,7 @@ import io.github.droidkaigi.confsched.contributors.component.ContributorItem
 import io.github.droidkaigi.confsched.contributors.component.ContributorsCounter
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.component.AnimatedMediumTopAppBar
+import io.github.droidkaigi.confsched.droidkaigiui.extension.enableMouseDragScroll
 import io.github.droidkaigi.confsched.model.contributors.Contributor
 import io.github.droidkaigi.confsched.model.contributors.fakes
 import kotlinx.collections.immutable.PersistentList
@@ -33,6 +35,7 @@ fun ContributorsScreen(
     modifier: Modifier = Modifier,
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    val listState = rememberLazyListState()
 
     Scaffold(
         topBar = {
@@ -45,10 +48,12 @@ fun ContributorsScreen(
         modifier = modifier.testTag(ContributorsScreenTestTag),
     ) { innerPadding ->
         LazyColumn(
+            state = listState,
             contentPadding = innerPadding,
             modifier = Modifier
-                .testTag(ContributorsTestTag)
-                .nestedScroll(scrollBehavior.nestedScrollConnection),
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
+                .enableMouseDragScroll(listState)
+                .testTag(ContributorsTestTag),
         ) {
             item {
                 ContributorsCounter(

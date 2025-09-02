@@ -9,8 +9,8 @@ public data class StaffResponse(
 
 @Serializable
 public data class StaffItemResponse(
-    val id: String,
-    val name: String,
-    val icon: String,
-    val profileUrl: String? = null,
+    val id: Long,
+    val username: String,
+    val profileUrl: String,
+    val iconUrl: String,
 )

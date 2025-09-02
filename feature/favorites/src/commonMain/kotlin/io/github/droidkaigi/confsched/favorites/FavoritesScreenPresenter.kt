@@ -16,8 +16,6 @@ import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentMap
 import soil.query.compose.rememberMutation
 
-private const val MIN_FILTERS_TO_DESELECT = 2
-
 @Composable
 context(screenContext: FavoritesScreenContext)
 fun favoritesScreenPresenter(
@@ -40,23 +38,13 @@ fun favoritesScreenPresenter(
                 selectedDayFilters = emptySet()
             }
 
-            FavoritesScreenEvent.FilterDay1,
-            FavoritesScreenEvent.FilterDay2,
-            -> {
+            FavoritesScreenEvent.FilterDay1 -> {
                 allFilterSelected = false
-
-                val dayType = if (event is FavoritesScreenEvent.FilterDay1) {
-                    DroidKaigi2025Day.ConferenceDay1
-                } else {
-                    DroidKaigi2025Day.ConferenceDay2
-                }
-
-                selectedDayFilters =
-                    if (selectedDayFilters.contains(dayType) && selectedDayFilters.size >= MIN_FILTERS_TO_DESELECT) {
-                        selectedDayFilters - dayType
-                    } else {
-                        selectedDayFilters + dayType
-                    }
+                selectedDayFilters = setOf(DroidKaigi2025Day.ConferenceDay1)
+            }
+            FavoritesScreenEvent.FilterDay2 -> {
+                allFilterSelected = false
+                selectedDayFilters = setOf(DroidKaigi2025Day.ConferenceDay2)
             }
         }
     }

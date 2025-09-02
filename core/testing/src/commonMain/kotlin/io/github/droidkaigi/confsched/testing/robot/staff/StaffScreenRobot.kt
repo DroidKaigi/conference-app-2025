@@ -95,7 +95,7 @@ class StaffScreenRobot(
                 )
                 .assertExists()
                 .assertIsDisplayed()
-                .assertContentDescriptionEquals(staff.name)
+                .assertContentDescriptionEquals(staff.username)
 
             composeUiTest
                 .onNodeWithTag(
@@ -104,7 +104,7 @@ class StaffScreenRobot(
                 )
                 .assertExists()
                 .assertIsDisplayed()
-                .assertTextEquals(staff.name)
+                .assertTextEquals(staff.username)
         }
     }
 

@@ -3,7 +3,16 @@ import Theme
 
 struct BackCard: View {
     let cardType: ProfileCardType
+    let url: URL
     let normal: (Float, Float, Float)
+    let effectEnabled: Bool
+
+    init(cardType: ProfileCardType, url: URL, normal: (Float, Float, Float) = (0, 0, 0), effectEnabled: Bool = true) {
+        self.cardType = cardType
+        self.url = url
+        self.normal = normal
+        self.effectEnabled = effectEnabled
+    }
 
     let shaderFunction = ShaderFunction(library: .bundle(.module), name: "kiraEffect")
 
@@ -19,8 +28,7 @@ struct BackCard: View {
                 .scaledToFill()
             VStack(alignment: .center, spacing: 20) {
                 Image("\(cardType.rawValue)_card_title", bundle: .module)
-                // TODO: Replace with actual QR code generation
-                QrCodeView(data: "sample")
+                QrCodeView(data: url.absoluteString)
                     .frame(width: 160, height: 160)
                 Spacer()
             }
@@ -35,7 +43,8 @@ struct BackCard: View {
         .kiraEffect(
             function: shaderFunction,
             normal: normal,
-            monochromeImage: Image("back_effect", bundle: .module)
+            monochromeImage: Image("back_effect", bundle: .module),
+            isEnabled: effectEnabled
         )
         // Figma shadow: may be replaced by Metal shader
         .shadow(color: .black.opacity(0.12), radius: 10, x: 3, y: 3)
