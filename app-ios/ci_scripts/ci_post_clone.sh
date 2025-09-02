@@ -78,18 +78,31 @@ echo "Setting up environment variables..."
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
+# Set JVM options for Gradle to avoid metadata transformation issues
+export GRADLE_OPTS="-Xmx8g -XX:MaxMetaspaceSize=4g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8"
+echo "GRADLE_OPTS: $GRADLE_OPTS"
+
 # Build XCFramework for the shared module
 echo "============================"
 echo "Building XCFramework"
 echo "============================"
 
+# Clean Gradle caches for metadata tasks
+echo "Cleaning Gradle metadata caches..."
+rm -rf ~/.gradle/caches/transforms-*
+rm -rf ~/.gradle/caches/modules-*/files-*/org.jetbrains.kotlin/kotlin-stdlib-common
+
 # Determine build configuration based on CI action
-# Note: --no-configuration-cache is used to avoid Kotlin Multiplatform metadata caching issues
+# Note: Using specific flags to avoid Kotlin Multiplatform metadata issues
 if [ "$CI_XCODEBUILD_ACTION" = "archive" ]; then
     echo "Building XCFramework for distribution (Release configuration)..."
     if ! ./gradlew :app-shared:assembleSharedReleaseXCFramework \
         --no-configuration-cache \
+        --no-parallel \
         --no-daemon \
+        --max-workers=1 \
+        -Dorg.gradle.parallel=false \
+        -Dkotlin.incremental=false \
         --stacktrace; then
         echo "❌ XCFramework build failed for Release configuration"
         exit 1
@@ -98,7 +111,11 @@ else
     echo "Building XCFramework for development/testing (Debug configuration)..."
     if ! ./gradlew :app-shared:assembleSharedDebugXCFramework \
         --no-configuration-cache \
+        --no-parallel \
         --no-daemon \
+        --max-workers=1 \
+        -Dorg.gradle.parallel=false \
+        -Dkotlin.incremental=false \
         --stacktrace; then
         echo "❌ XCFramework build failed for Debug configuration"
         exit 1

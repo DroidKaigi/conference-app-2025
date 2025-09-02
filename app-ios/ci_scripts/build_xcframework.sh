@@ -44,14 +44,22 @@ chmod +x ./gradlew
 echo "Cleaning previous XCFramework builds..."
 rm -rf app-shared/build/XCFrameworks
 
+# Set JVM options for better memory management
+export GRADLE_OPTS="-Xmx8g -XX:MaxMetaspaceSize=4g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8"
+echo "GRADLE_OPTS: $GRADLE_OPTS"
+
 # Build XCFramework based on configuration
-# Note: Using --no-configuration-cache to avoid Kotlin Multiplatform metadata caching issues
+# Note: Using specific flags to avoid Kotlin Multiplatform metadata issues
 # Reference: https://youtrack.jetbrains.com/issue/KT-51970
 if [ "$BUILD_CONFIG" = "Release" ]; then
     echo "Building Release XCFramework..."
     if ! ./gradlew :app-shared:assembleSharedReleaseXCFramework \
         --no-configuration-cache \
+        --no-parallel \
         --no-daemon \
+        --max-workers=1 \
+        -Dorg.gradle.parallel=false \
+        -Dkotlin.incremental=false \
         --stacktrace; then
         echo "❌ XCFramework build failed for Release configuration"
         echo "Build command: ./gradlew :app-shared:assembleSharedReleaseXCFramework"
@@ -61,7 +69,11 @@ else
     echo "Building Debug XCFramework..."
     if ! ./gradlew :app-shared:assembleSharedDebugXCFramework \
         --no-configuration-cache \
+        --no-parallel \
         --no-daemon \
+        --max-workers=1 \
+        -Dorg.gradle.parallel=false \
+        -Dkotlin.incremental=false \
         --stacktrace; then
         echo "❌ XCFramework build failed for Debug configuration"
         echo "Build command: ./gradlew :app-shared:assembleSharedDebugXCFramework"
