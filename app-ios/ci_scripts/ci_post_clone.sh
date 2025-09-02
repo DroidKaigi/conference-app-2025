@@ -78,111 +78,69 @@ echo "Setting up environment variables..."
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-# Set JVM options for Gradle to avoid metadata transformation issues and network problems
-export GRADLE_OPTS="-Xmx8g -XX:MaxMetaspaceSize=4g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv6Addresses=false -Dhttp.keepAlive=false"
-echo "GRADLE_OPTS: $GRADLE_OPTS"
-
 # Build XCFramework for the shared module
 echo "============================"
 echo "Building XCFramework"
 echo "============================"
 
-# Clean Gradle caches for metadata tasks and corrupted downloads
-echo "Cleaning Gradle metadata caches..."
-rm -rf ~/.gradle/caches/transforms-*
-rm -rf ~/.gradle/caches/modules-*/files-*/org.jetbrains.kotlin/kotlin-stdlib-common
-rm -rf ~/.gradle/caches/modules-*/files-*/androidx.annotation
+# Clean ALL Gradle caches to force fresh downloads
+echo "Cleaning ALL Gradle caches..."
+rm -rf ~/.gradle/caches
+rm -rf "$CI_PRIMARY_REPOSITORY_PATH/.gradle"
+rm -rf "$CI_PRIMARY_REPOSITORY_PATH/.gradle-cache"
 
-# Copy CI-specific Gradle properties
+# Copy CI-specific Gradle properties (MUST be before any Gradle command)
 echo "Setting up Gradle CI properties..."
 cp "$CI_PRIMARY_REPOSITORY_PATH/app-ios/ci_scripts/gradle_ci.properties" "$CI_PRIMARY_REPOSITORY_PATH/gradle.properties"
+echo "gradle.properties content:"
+cat "$CI_PRIMARY_REPOSITORY_PATH/gradle.properties"
 
-# Configure Java SSL settings
-echo "Configuring Java SSL settings..."
-export JAVA_TOOL_OPTIONS="-Djavax.net.ssl.trustStore=NONE -Djavax.net.ssl.trustStoreType=Windows-ROOT -Djdk.tls.client.protocols=TLSv1.2,TLSv1.3"
+# Set conservative JVM options
+export GRADLE_OPTS="-Xmx6g -XX:MaxMetaspaceSize=2g -Dfile.encoding=UTF-8"
+echo "GRADLE_OPTS: $GRADLE_OPTS"
 
-# Pre-download dependencies with aggressive retry logic
-echo "Pre-downloading dependencies..."
-MAX_RETRIES=5
-RETRY_COUNT=0
+# Configure Java to work around Xcode Cloud networking issues
+export JAVA_TOOL_OPTIONS="-Djava.net.preferIPv4Stack=true -Dhttp.keepAlive=false -Dhttp.maxConnections=1"
+echo "JAVA_TOOL_OPTIONS: $JAVA_TOOL_OPTIONS"
 
-while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-    RETRY_COUNT=$((RETRY_COUNT + 1))
-    echo "Attempt $RETRY_COUNT of $MAX_RETRIES: Downloading dependencies..."
-    
-    # Clean corrupted downloads before retry
-    if [ $RETRY_COUNT -gt 1 ]; then
-        echo "Cleaning corrupted downloads..."
-        find ~/.gradle/caches/modules-*/files-*/ -name "*.klib" -size 0 -delete 2>/dev/null || true
-        find ~/.gradle/caches/modules-*/files-*/ -name "*.jar" -size 0 -delete 2>/dev/null || true
-    fi
-    
-    if ./gradlew :app-shared:dependencies \
-        --no-daemon \
-        --refresh-dependencies \
-        --no-parallel \
-        --max-workers=1 \
-        --gradle-user-home="$CI_PRIMARY_REPOSITORY_PATH/.gradle" \
-        --project-cache-dir="$CI_PRIMARY_REPOSITORY_PATH/.gradle-cache" \
-        -Dorg.gradle.internal.http.connectionTimeout=180000 \
-        -Dorg.gradle.internal.http.socketTimeout=180000 \
-        -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false \
-        --info; then
-        echo "✅ Dependencies downloaded successfully"
-        break
-    else
-        echo "⚠️ Attempt $RETRY_COUNT failed"
-        if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
-            echo "Waiting 10 seconds before retry..."
-            sleep 10
-        fi
-    fi
-done
-
-if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
-    echo "❌ Failed to download dependencies after $MAX_RETRIES attempts"
-    echo "Attempting to continue anyway..."
-fi
+# Skip dependency pre-download - go directly to build
+echo "Skipping dependency pre-download to avoid connection issues..."
 
 # Determine build configuration based on CI action
-# Note: Using specific flags to avoid Kotlin Multiplatform metadata issues
+# Note: Simplified flags - most settings are in gradle.properties
 if [ "$CI_XCODEBUILD_ACTION" = "archive" ]; then
     echo "Building XCFramework for distribution (Release configuration)..."
     if ! ./gradlew :app-shared:assembleSharedReleaseXCFramework \
-        --no-configuration-cache \
-        --no-parallel \
         --no-daemon \
-        --max-workers=1 \
-        --gradle-user-home="$CI_PRIMARY_REPOSITORY_PATH/.gradle" \
-        --project-cache-dir="$CI_PRIMARY_REPOSITORY_PATH/.gradle-cache" \
-        -Dorg.gradle.parallel=false \
-        -Dkotlin.incremental=false \
-        -Dorg.gradle.internal.http.connectionTimeout=180000 \
-        -Dorg.gradle.internal.http.socketTimeout=180000 \
-        -Dorg.gradle.internal.publish.checksums.insecure=true \
-        -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false \
-        --info; then
+        --no-parallel \
+        --no-configuration-cache \
+        --offline \
+        --stacktrace; then
         echo "❌ XCFramework build failed for Release configuration"
-        exit 1
+        echo "Trying again without --offline flag..."
+        # Fallback without offline mode
+        ./gradlew :app-shared:assembleSharedReleaseXCFramework \
+            --no-daemon \
+            --no-parallel \
+            --no-configuration-cache \
+            --stacktrace || exit 1
     fi
 else
     echo "Building XCFramework for development/testing (Debug configuration)..."
     if ! ./gradlew :app-shared:assembleSharedDebugXCFramework \
-        --no-configuration-cache \
-        --no-parallel \
         --no-daemon \
-        --max-workers=1 \
-        --gradle-user-home="$CI_PRIMARY_REPOSITORY_PATH/.gradle" \
-        --project-cache-dir="$CI_PRIMARY_REPOSITORY_PATH/.gradle-cache" \
-        -Dorg.gradle.parallel=false \
-        -Dkotlin.incremental=false \
-        -Dorg.gradle.internal.http.connectionTimeout=180000 \
-        -Dorg.gradle.internal.http.socketTimeout=180000 \
-        -Dorg.gradle.internal.publish.checksums.insecure=true \
-        -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false \
-        --info; then
+        --no-parallel \
+        --no-configuration-cache \
+        --offline \
+        --stacktrace; then
         echo "❌ XCFramework build failed for Debug configuration"
-        exit 1
+        echo "Trying again without --offline flag..."
+        # Fallback without offline mode
+        ./gradlew :app-shared:assembleSharedDebugXCFramework \
+            --no-daemon \
+            --no-parallel \
+            --no-configuration-cache \
+            --stacktrace || exit 1
     fi
 fi
 
