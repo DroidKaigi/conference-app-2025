@@ -38,22 +38,58 @@ echo "Java version: $(java -version 2>&1 | head -n 1)"
 echo "Setting up Gradle..."
 chmod +x ./gradlew
 
-# Set JVM options
-export GRADLE_OPTS="-Xmx6g -XX:MaxMetaspaceSize=3g -Dfile.encoding=UTF-8"
+# Set JVM options with SSL/TLS configuration
+export GRADLE_OPTS="-Xmx6g -XX:MaxMetaspaceSize=3g -Dfile.encoding=UTF-8 -Djavax.net.ssl.trustStoreType=JKS -Dhttps.protocols=TLSv1.2,TLSv1.3"
 echo "GRADLE_OPTS: $GRADLE_OPTS"
+
+# Set Gradle properties for better network handling
+export GRADLE_USER_HOME="${CI_PRIMARY_REPOSITORY_PATH}/.gradle"
+mkdir -p "$GRADLE_USER_HOME"
+echo "org.gradle.daemon=false" >> "$GRADLE_USER_HOME/gradle.properties"
+echo "org.gradle.parallel=false" >> "$GRADLE_USER_HOME/gradle.properties"
+echo "systemProp.http.connectionTimeout=120000" >> "$GRADLE_USER_HOME/gradle.properties"
+echo "systemProp.http.socketTimeout=120000" >> "$GRADLE_USER_HOME/gradle.properties"
+echo "systemProp.https.connectionTimeout=120000" >> "$GRADLE_USER_HOME/gradle.properties"
+echo "systemProp.https.socketTimeout=120000" >> "$GRADLE_USER_HOME/gradle.properties"
 
 # Build XCFramework for the shared module
 echo "============================"
 echo "Building XCFramework"
 echo "============================"
 
+# Function to retry Gradle build with exponential backoff
+run_gradle_with_retry() {
+    local max_attempts=3
+    local attempt=1
+    local wait_time=10
+    
+    while [ $attempt -le $max_attempts ]; do
+        echo "Attempt $attempt of $max_attempts..."
+        
+        if eval "$1"; then
+            echo "✅ Gradle build succeeded on attempt $attempt"
+            return 0
+        else
+            if [ $attempt -lt $max_attempts ]; then
+                echo "⚠️ Gradle build failed on attempt $attempt, retrying in ${wait_time} seconds..."
+                sleep $wait_time
+                wait_time=$((wait_time * 2))
+                attempt=$((attempt + 1))
+            else
+                echo "❌ Gradle build failed after $max_attempts attempts"
+                return 1
+            fi
+        fi
+    done
+}
+
 # Determine build configuration based on CI action
 if [ "$CI_XCODEBUILD_ACTION" = "archive" ]; then
     echo "Building XCFramework for distribution (Release configuration)..."
-    ./gradlew app-shared:assembleSharedReleaseXCFramework -Papp.ios.shared.arch=arm64 --no-configuration-cache --refresh-dependencies --no-parallel --stacktrace
+    run_gradle_with_retry "./gradlew app-shared:assembleSharedReleaseXCFramework -Papp.ios.shared.arch=arm64 --no-configuration-cache --refresh-dependencies --no-parallel --stacktrace"
 else
     echo "Building XCFramework for development/testing (Debug configuration)..."
-    ./gradlew app-shared:assembleSharedDebugXCFramework -Papp.ios.shared.arch=arm64 --no-configuration-cache --refresh-dependencies --no-parallel --stacktrace
+    run_gradle_with_retry "./gradlew app-shared:assembleSharedDebugXCFramework -Papp.ios.shared.arch=arm64 --no-configuration-cache --refresh-dependencies --no-parallel --stacktrace"
 fi
 
 # Verify XCFramework output
