@@ -89,11 +89,17 @@ rm -rf ~/.gradle/caches
 rm -rf "$CI_PRIMARY_REPOSITORY_PATH/.gradle"
 rm -rf "$CI_PRIMARY_REPOSITORY_PATH/.gradle-cache"
 
-# Copy CI-specific Gradle properties (MUST be before any Gradle command)
-echo "Setting up Gradle CI properties..."
+# Copy CI-specific Gradle properties and settings (MUST be before any Gradle command)
+echo "Setting up Gradle CI configuration..."
 cp "$CI_PRIMARY_REPOSITORY_PATH/app-ios/ci_scripts/gradle_ci.properties" "$CI_PRIMARY_REPOSITORY_PATH/gradle.properties"
 echo "gradle.properties content:"
 cat "$CI_PRIMARY_REPOSITORY_PATH/gradle.properties"
+
+# Also copy CI-specific settings.gradle.kts if it exists
+if [ -f "$CI_PRIMARY_REPOSITORY_PATH/app-ios/ci_scripts/settings_ci.gradle.kts" ]; then
+    echo "Copying CI-specific settings.gradle.kts..."
+    cp "$CI_PRIMARY_REPOSITORY_PATH/app-ios/ci_scripts/settings_ci.gradle.kts" "$CI_PRIMARY_REPOSITORY_PATH/settings.gradle.kts"
+fi
 
 # Set conservative JVM options
 export GRADLE_OPTS="-Xmx6g -XX:MaxMetaspaceSize=2g -Dfile.encoding=UTF-8"
@@ -106,41 +112,36 @@ echo "JAVA_TOOL_OPTIONS: $JAVA_TOOL_OPTIONS"
 # Skip dependency pre-download - go directly to build
 echo "Skipping dependency pre-download to avoid connection issues..."
 
+# Clear Gradle plugin portal cache (helps with plugin resolution)
+echo "Clearing Gradle plugin portal cache..."
+rm -rf ~/.gradle/caches/modules-2/files-2.1/org.gradle.kotlin.kotlin-dsl
+rm -rf ~/.gradle/caches/modules-2/metadata-2.96/descriptors/org.gradle.kotlin.kotlin-dsl
+
 # Determine build configuration based on CI action
 # Note: Simplified flags - most settings are in gradle.properties
 if [ "$CI_XCODEBUILD_ACTION" = "archive" ]; then
     echo "Building XCFramework for distribution (Release configuration)..."
+    # Try without offline first for plugin resolution
     if ! ./gradlew :app-shared:assembleSharedReleaseXCFramework \
         --no-daemon \
         --no-parallel \
         --no-configuration-cache \
-        --offline \
+        --refresh-dependencies \
         --stacktrace; then
         echo "❌ XCFramework build failed for Release configuration"
-        echo "Trying again without --offline flag..."
-        # Fallback without offline mode
-        ./gradlew :app-shared:assembleSharedReleaseXCFramework \
-            --no-daemon \
-            --no-parallel \
-            --no-configuration-cache \
-            --stacktrace || exit 1
+        exit 1
     fi
 else
     echo "Building XCFramework for development/testing (Debug configuration)..."
+    # Try without offline first for plugin resolution
     if ! ./gradlew :app-shared:assembleSharedDebugXCFramework \
         --no-daemon \
         --no-parallel \
         --no-configuration-cache \
-        --offline \
+        --refresh-dependencies \
         --stacktrace; then
         echo "❌ XCFramework build failed for Debug configuration"
-        echo "Trying again without --offline flag..."
-        # Fallback without offline mode
-        ./gradlew :app-shared:assembleSharedDebugXCFramework \
-            --no-daemon \
-            --no-parallel \
-            --no-configuration-cache \
-            --stacktrace || exit 1
+        exit 1
     fi
 fi
 
