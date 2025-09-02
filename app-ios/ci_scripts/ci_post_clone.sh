@@ -50,10 +50,10 @@ echo "============================"
 # Determine build configuration based on CI action
 if [ "$CI_XCODEBUILD_ACTION" = "archive" ]; then
     echo "Building XCFramework for distribution (Release configuration)..."
-    ./gradlew app-shared:assembleSharedReleaseXCFramework -Papp.ios.shared.arch=arm64
+    ./gradlew app-shared:assembleSharedReleaseXCFramework -Papp.ios.shared.arch=arm64 --no-configuration-cache
 else
     echo "Building XCFramework for development/testing (Debug configuration)..."
-    ./gradlew app-shared:assembleSharedDebugXCFramework -Papp.ios.shared.arch=arm64
+    ./gradlew app-shared:assembleSharedDebugXCFramework -Papp.ios.shared.arch=arm64 --no-configuration-cache
 fi
 
 # Verify XCFramework output
