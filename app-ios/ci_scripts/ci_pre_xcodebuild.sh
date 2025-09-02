@@ -56,12 +56,75 @@ else
     fi
 fi
 
-# Verify XCFramework was created
-if [ -d "app-shared/build/XCFrameworks" ]; then
-    echo "✅ XCFramework built successfully"
-    ls -la app-shared/build/XCFrameworks/
+# Debug: Check build directory structure
+echo "============================"
+echo "Checking build output..."
+echo "============================"
+
+echo "Current directory: $(pwd)"
+echo "Checking for app-shared directory:"
+if [ -d "app-shared" ]; then
+    echo "✅ app-shared directory exists"
+    echo "Contents of app-shared:"
+    ls -la app-shared/
+    
+    if [ -d "app-shared/build" ]; then
+        echo "✅ app-shared/build directory exists"
+        echo "Contents of app-shared/build:"
+        ls -la app-shared/build/
+        
+        # Check for various possible XCFramework locations
+        if [ -d "app-shared/build/XCFrameworks" ]; then
+            echo "✅ XCFramework directory found at app-shared/build/XCFrameworks"
+            echo "Contents:"
+            ls -la app-shared/build/XCFrameworks/
+            find app-shared/build/XCFrameworks -name "*.xcframework" -type d
+        elif [ -d "app-shared/build/bin" ]; then
+            echo "ℹ️ Checking app-shared/build/bin directory:"
+            ls -la app-shared/build/bin/
+            find app-shared/build/bin -name "*.xcframework" -type d
+        fi
+        
+        # Search for any .xcframework in build directory
+        echo "Searching for .xcframework files in build directory:"
+        find app-shared/build -name "*.xcframework" -type d 2>/dev/null || echo "No .xcframework found"
+    else
+        echo "❌ app-shared/build directory does not exist"
+    fi
 else
-    echo "❌ XCFramework build failed"
+    echo "❌ app-shared directory does not exist"
+fi
+
+# Also check if XCFramework exists in other common locations
+echo "============================"
+echo "Searching for XCFramework in common locations..."
+echo "============================"
+find . -name "*.xcframework" -type d -maxdepth 4 2>/dev/null | head -10
+
+# Verify XCFramework was created (with more flexible checking)
+XCFRAMEWORK_FOUND=false
+if [ -d "app-shared/build/XCFrameworks" ] && [ "$(ls -A app-shared/build/XCFrameworks 2>/dev/null)" ]; then
+    XCFRAMEWORK_FOUND=true
+    XCFRAMEWORK_PATH="app-shared/build/XCFrameworks"
+elif [ -d "app-shared/build/bin" ]; then
+    # Check if XCFramework is in bin directory
+    if find app-shared/build/bin -name "*.xcframework" -type d -quit 2>/dev/null; then
+        XCFRAMEWORK_FOUND=true
+        XCFRAMEWORK_PATH="app-shared/build/bin"
+    fi
+fi
+
+if [ "$XCFRAMEWORK_FOUND" = true ]; then
+    echo "✅ XCFramework built successfully"
+    echo "XCFramework location: $XCFRAMEWORK_PATH"
+    ls -la "$XCFRAMEWORK_PATH/"
+else
+    echo "❌ XCFramework build failed - no .xcframework found"
+    echo "Build may have succeeded but output is in unexpected location"
+    echo "Checking gradle build output for clues:"
+    if [ -f "app-shared/build/reports/configuration.txt" ]; then
+        cat app-shared/build/reports/configuration.txt
+    fi
     exit 1
 fi
 
