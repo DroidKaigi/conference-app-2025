@@ -78,6 +78,70 @@ echo "Setting up environment variables..."
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
+# Build XCFramework for the shared module
+echo "============================"
+echo "Building XCFramework"
+echo "============================"
+
+# Determine build configuration based on CI action
+if [ "$CI_XCODEBUILD_ACTION" = "archive" ]; then
+    echo "Building XCFramework for distribution (Release configuration)..."
+    if ! ./gradlew :app-shared:assembleSharedReleaseXCFramework --stacktrace; then
+        echo "❌ XCFramework build failed for Release configuration"
+        exit 1
+    fi
+else
+    echo "Building XCFramework for development/testing (Debug configuration)..."
+    if ! ./gradlew :app-shared:assembleSharedDebugXCFramework --stacktrace; then
+        echo "❌ XCFramework build failed for Debug configuration"
+        exit 1
+    fi
+fi
+
+# Debug: Check build output
+echo "============================"
+echo "Verifying XCFramework output..."
+echo "============================"
+
+echo "Current directory: $(pwd)"
+echo "Checking app-shared/build structure:"
+if [ -d "app-shared/build" ]; then
+    echo "Contents of app-shared/build:"
+    ls -la app-shared/build/
+    
+    # Search for XCFramework in various locations
+    echo "Searching for .xcframework files:"
+    find app-shared/build -name "*.xcframework" -type d 2>/dev/null || echo "No .xcframework found in app-shared/build"
+fi
+
+# Check common output locations
+XCFRAMEWORK_FOUND=false
+XCFRAMEWORK_PATH=""
+
+# Check multiple possible locations
+for dir in "app-shared/build/XCFrameworks" "app-shared/build/bin" "app-shared/build"; do
+    if [ -d "$dir" ]; then
+        FOUND_XCFRAMEWORK=$(find "$dir" -name "*.xcframework" -type d -print -quit 2>/dev/null)
+        if [ -n "$FOUND_XCFRAMEWORK" ]; then
+            XCFRAMEWORK_FOUND=true
+            XCFRAMEWORK_PATH=$(dirname "$FOUND_XCFRAMEWORK")
+            echo "✅ Found XCFramework at: $FOUND_XCFRAMEWORK"
+            break
+        fi
+    fi
+done
+
+if [ "$XCFRAMEWORK_FOUND" = true ]; then
+    echo "✅ XCFramework built successfully"
+    echo "XCFramework location: $XCFRAMEWORK_PATH"
+    ls -la "$XCFRAMEWORK_PATH/"
+else
+    echo "❌ XCFramework not found after build"
+    echo "Searching entire project for .xcframework:"
+    find . -name "*.xcframework" -type d 2>/dev/null | head -20
+    exit 1
+fi
+
 echo "============================"
 echo "Post-Clone Script Completed"
 echo "============================"
