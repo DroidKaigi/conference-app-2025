@@ -14,6 +14,7 @@ import io.github.droidkaigi.confsched.app_desktop.app_name
 import io.github.droidkaigi.confsched.app_desktop.ic_app
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import java.awt.Dimension
 
 fun main() = application {
     val graphFactory = createGraphFactory<JvmAppGraph.Factory>()
@@ -36,6 +37,8 @@ fun main() = application {
             height = 800.dp,
         ),
     ) {
+        window.minimumSize = Dimension(500, 450)
+
         // workaround for java.lang.NullPointerException at androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner.getCurrent
         CompositionLocalProvider(LocalNavigationEventDispatcherOwner provides FakeNavigationEventDispatcherOwner()) {
             with(graph) {

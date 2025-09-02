@@ -8,7 +8,9 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
@@ -122,9 +124,9 @@ private fun KaigiNavigationScaffold(
                                 bottom = 32.dp,
                             )
                             .windowInsetsPadding(
-                                WindowInsets.safeDrawing.only(
-                                    WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom,
-                                ),
+                                WindowInsets.safeDrawing
+                                    .exclude(WindowInsets.ime)
+                                    .only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom),
                             ),
                     )
                 }

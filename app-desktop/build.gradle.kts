@@ -54,6 +54,8 @@ compose.desktop {
             packageName = "DroidKaigi 2025"
             // If necessary, modify the code to obtain and load packageVersion from a single source on all platforms.
             packageVersion = "1.0.0"
+            copyright = "Copyright 2025 DroidKaigi committee"
+            licenseFile.set(rootProject.file("LICENSE.md"))
 
             // Prevent a runtime error from occurring with java.lang.ClassNotFoundException: sun.misc.Unsafe.
             // For distribution files such as dmg, exe, and msi, the “minimal JRE” is used, which does not include sun.misc.Unsafe for compatibility reasons.
