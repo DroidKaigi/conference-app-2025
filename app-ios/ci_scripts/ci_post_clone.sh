@@ -38,10 +38,6 @@ echo "Java version: $(java -version 2>&1 | head -n 1)"
 echo "Setting up Gradle..."
 chmod +x ./gradlew
 
-# Copy CI-specific Gradle properties
-echo "Setting up CI Gradle properties..."
-cp "$CI_PRIMARY_REPOSITORY_PATH/app-ios/ci_scripts/gradle_ci.properties" "$CI_PRIMARY_REPOSITORY_PATH/gradle.properties"
-
 # Set JVM options
 export GRADLE_OPTS="-Xmx6g -XX:MaxMetaspaceSize=3g -Dfile.encoding=UTF-8"
 echo "GRADLE_OPTS: $GRADLE_OPTS"
@@ -54,18 +50,10 @@ echo "============================"
 # Determine build configuration based on CI action
 if [ "$CI_XCODEBUILD_ACTION" = "archive" ]; then
     echo "Building XCFramework for distribution (Release configuration)..."
-    ./gradlew :app-shared:assembleSharedReleaseXCFramework \
-        --no-daemon \
-        --no-parallel \
-        --no-configuration-cache \
-        --stacktrace || exit 1
+    ./gradlew app-shared:assembleSharedReleaseXCFramework -Papp.ios.shared.arch=arm64
 else
     echo "Building XCFramework for development/testing (Debug configuration)..."
-    ./gradlew :app-shared:assembleSharedDebugXCFramework \
-        --no-daemon \
-        --no-parallel \
-        --no-configuration-cache \
-        --stacktrace || exit 1
+    ./gradlew app-shared:assembleSharedDebugXCFramework -Papp.ios.shared.arch=arm64
 fi
 
 # Verify XCFramework output
