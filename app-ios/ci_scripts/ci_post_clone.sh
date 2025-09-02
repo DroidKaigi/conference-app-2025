@@ -78,8 +78,8 @@ echo "Setting up environment variables..."
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-# Set JVM options for Gradle to avoid metadata transformation issues
-export GRADLE_OPTS="-Xmx8g -XX:MaxMetaspaceSize=4g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8"
+# Set JVM options for Gradle to avoid metadata transformation issues and network problems
+export GRADLE_OPTS="-Xmx8g -XX:MaxMetaspaceSize=4g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv6Addresses=false -Dhttp.keepAlive=false"
 echo "GRADLE_OPTS: $GRADLE_OPTS"
 
 # Build XCFramework for the shared module
@@ -87,10 +87,29 @@ echo "============================"
 echo "Building XCFramework"
 echo "============================"
 
-# Clean Gradle caches for metadata tasks
+# Clean Gradle caches for metadata tasks and corrupted downloads
 echo "Cleaning Gradle metadata caches..."
 rm -rf ~/.gradle/caches/transforms-*
 rm -rf ~/.gradle/caches/modules-*/files-*/org.jetbrains.kotlin/kotlin-stdlib-common
+rm -rf ~/.gradle/caches/modules-*/files-*/androidx.annotation
+
+# Pre-download dependencies with retry logic
+echo "Pre-downloading dependencies..."
+for i in 1 2 3; do
+    echo "Attempt $i: Downloading dependencies..."
+    if ./gradlew :app-shared:dependencies \
+        --no-daemon \
+        --refresh-dependencies \
+        -Dorg.gradle.internal.http.connectionTimeout=120000 \
+        -Dorg.gradle.internal.http.socketTimeout=120000 \
+        --stacktrace; then
+        echo "✅ Dependencies downloaded successfully"
+        break
+    else
+        echo "⚠️ Attempt $i failed, retrying..."
+        sleep 5
+    fi
+done
 
 # Determine build configuration based on CI action
 # Note: Using specific flags to avoid Kotlin Multiplatform metadata issues
@@ -103,6 +122,9 @@ if [ "$CI_XCODEBUILD_ACTION" = "archive" ]; then
         --max-workers=1 \
         -Dorg.gradle.parallel=false \
         -Dkotlin.incremental=false \
+        -Dorg.gradle.internal.http.connectionTimeout=120000 \
+        -Dorg.gradle.internal.http.socketTimeout=120000 \
+        -Dorg.gradle.internal.publish.checksums.insecure=true \
         --stacktrace; then
         echo "❌ XCFramework build failed for Release configuration"
         exit 1
@@ -116,6 +138,9 @@ else
         --max-workers=1 \
         -Dorg.gradle.parallel=false \
         -Dkotlin.incremental=false \
+        -Dorg.gradle.internal.http.connectionTimeout=120000 \
+        -Dorg.gradle.internal.http.socketTimeout=120000 \
+        -Dorg.gradle.internal.publish.checksums.insecure=true \
         --stacktrace; then
         echo "❌ XCFramework build failed for Debug configuration"
         exit 1

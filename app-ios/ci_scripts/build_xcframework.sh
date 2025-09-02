@@ -44,8 +44,8 @@ chmod +x ./gradlew
 echo "Cleaning previous XCFramework builds..."
 rm -rf app-shared/build/XCFrameworks
 
-# Set JVM options for better memory management
-export GRADLE_OPTS="-Xmx8g -XX:MaxMetaspaceSize=4g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8"
+# Set JVM options for better memory management and network stability
+export GRADLE_OPTS="-Xmx8g -XX:MaxMetaspaceSize=4g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv6Addresses=false -Dhttp.keepAlive=false"
 echo "GRADLE_OPTS: $GRADLE_OPTS"
 
 # Build XCFramework based on configuration
@@ -60,6 +60,9 @@ if [ "$BUILD_CONFIG" = "Release" ]; then
         --max-workers=1 \
         -Dorg.gradle.parallel=false \
         -Dkotlin.incremental=false \
+        -Dorg.gradle.internal.http.connectionTimeout=120000 \
+        -Dorg.gradle.internal.http.socketTimeout=120000 \
+        -Dorg.gradle.internal.publish.checksums.insecure=true \
         --stacktrace; then
         echo "❌ XCFramework build failed for Release configuration"
         echo "Build command: ./gradlew :app-shared:assembleSharedReleaseXCFramework"
@@ -74,6 +77,9 @@ else
         --max-workers=1 \
         -Dorg.gradle.parallel=false \
         -Dkotlin.incremental=false \
+        -Dorg.gradle.internal.http.connectionTimeout=120000 \
+        -Dorg.gradle.internal.http.socketTimeout=120000 \
+        -Dorg.gradle.internal.publish.checksums.insecure=true \
         --stacktrace; then
         echo "❌ XCFramework build failed for Debug configuration"
         echo "Build command: ./gradlew :app-shared:assembleSharedDebugXCFramework"
