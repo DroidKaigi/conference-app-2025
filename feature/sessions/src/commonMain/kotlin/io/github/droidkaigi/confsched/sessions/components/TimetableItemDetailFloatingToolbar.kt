@@ -14,8 +14,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import io.github.droidkaigi.confsched.designsystem.theme.LocalRoomTheme
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.extension.roomTheme
@@ -49,6 +52,9 @@ fun TimetableItemDetailFloatingToolbar(
         expanded = expanded,
         floatingActionButton = {
             val haptic = LocalHapticFeedback.current
+            val roomTheme = LocalRoomTheme.current
+            // TODO: This color is temporary. We should define a proper color once the official Figma definitions are available.
+            val fabContainerColor = roomTheme.primaryColor.copy(alpha = 0.5f).compositeOver(Color.Black)
             FloatingToolbarDefaults.StandardFloatingActionButton(
                 onClick = {
                     if (!isBookmarked) {
@@ -56,6 +62,7 @@ fun TimetableItemDetailFloatingToolbar(
                     }
                     onBookmarkClick(!isBookmarked)
                 },
+                containerColor = fabContainerColor,
             ) {
                 Icon(
                     imageVector = if (isBookmarked) Icons.Default.Favorite else Icons.Outlined.FavoriteBorder,
