@@ -93,23 +93,56 @@ rm -rf ~/.gradle/caches/transforms-*
 rm -rf ~/.gradle/caches/modules-*/files-*/org.jetbrains.kotlin/kotlin-stdlib-common
 rm -rf ~/.gradle/caches/modules-*/files-*/androidx.annotation
 
-# Pre-download dependencies with retry logic
+# Copy CI-specific Gradle properties
+echo "Setting up Gradle CI properties..."
+cp "$CI_PRIMARY_REPOSITORY_PATH/app-ios/ci_scripts/gradle_ci.properties" "$CI_PRIMARY_REPOSITORY_PATH/gradle.properties"
+
+# Configure Java SSL settings
+echo "Configuring Java SSL settings..."
+export JAVA_TOOL_OPTIONS="-Djavax.net.ssl.trustStore=NONE -Djavax.net.ssl.trustStoreType=Windows-ROOT -Djdk.tls.client.protocols=TLSv1.2,TLSv1.3"
+
+# Pre-download dependencies with aggressive retry logic
 echo "Pre-downloading dependencies..."
-for i in 1 2 3; do
-    echo "Attempt $i: Downloading dependencies..."
+MAX_RETRIES=5
+RETRY_COUNT=0
+
+while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+    RETRY_COUNT=$((RETRY_COUNT + 1))
+    echo "Attempt $RETRY_COUNT of $MAX_RETRIES: Downloading dependencies..."
+    
+    # Clean corrupted downloads before retry
+    if [ $RETRY_COUNT -gt 1 ]; then
+        echo "Cleaning corrupted downloads..."
+        find ~/.gradle/caches/modules-*/files-*/ -name "*.klib" -size 0 -delete 2>/dev/null || true
+        find ~/.gradle/caches/modules-*/files-*/ -name "*.jar" -size 0 -delete 2>/dev/null || true
+    fi
+    
     if ./gradlew :app-shared:dependencies \
         --no-daemon \
         --refresh-dependencies \
-        -Dorg.gradle.internal.http.connectionTimeout=120000 \
-        -Dorg.gradle.internal.http.socketTimeout=120000 \
-        --stacktrace; then
+        --no-parallel \
+        --max-workers=1 \
+        --gradle-user-home="$CI_PRIMARY_REPOSITORY_PATH/.gradle" \
+        --project-cache-dir="$CI_PRIMARY_REPOSITORY_PATH/.gradle-cache" \
+        -Dorg.gradle.internal.http.connectionTimeout=180000 \
+        -Dorg.gradle.internal.http.socketTimeout=180000 \
+        -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false \
+        --info; then
         echo "✅ Dependencies downloaded successfully"
         break
     else
-        echo "⚠️ Attempt $i failed, retrying..."
-        sleep 5
+        echo "⚠️ Attempt $RETRY_COUNT failed"
+        if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+            echo "Waiting 10 seconds before retry..."
+            sleep 10
+        fi
     fi
 done
+
+if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
+    echo "❌ Failed to download dependencies after $MAX_RETRIES attempts"
+    echo "Attempting to continue anyway..."
+fi
 
 # Determine build configuration based on CI action
 # Note: Using specific flags to avoid Kotlin Multiplatform metadata issues
@@ -120,12 +153,15 @@ if [ "$CI_XCODEBUILD_ACTION" = "archive" ]; then
         --no-parallel \
         --no-daemon \
         --max-workers=1 \
+        --gradle-user-home="$CI_PRIMARY_REPOSITORY_PATH/.gradle" \
+        --project-cache-dir="$CI_PRIMARY_REPOSITORY_PATH/.gradle-cache" \
         -Dorg.gradle.parallel=false \
         -Dkotlin.incremental=false \
-        -Dorg.gradle.internal.http.connectionTimeout=120000 \
-        -Dorg.gradle.internal.http.socketTimeout=120000 \
+        -Dorg.gradle.internal.http.connectionTimeout=180000 \
+        -Dorg.gradle.internal.http.socketTimeout=180000 \
         -Dorg.gradle.internal.publish.checksums.insecure=true \
-        --stacktrace; then
+        -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false \
+        --info; then
         echo "❌ XCFramework build failed for Release configuration"
         exit 1
     fi
@@ -136,12 +172,15 @@ else
         --no-parallel \
         --no-daemon \
         --max-workers=1 \
+        --gradle-user-home="$CI_PRIMARY_REPOSITORY_PATH/.gradle" \
+        --project-cache-dir="$CI_PRIMARY_REPOSITORY_PATH/.gradle-cache" \
         -Dorg.gradle.parallel=false \
         -Dkotlin.incremental=false \
-        -Dorg.gradle.internal.http.connectionTimeout=120000 \
-        -Dorg.gradle.internal.http.socketTimeout=120000 \
+        -Dorg.gradle.internal.http.connectionTimeout=180000 \
+        -Dorg.gradle.internal.http.socketTimeout=180000 \
         -Dorg.gradle.internal.publish.checksums.insecure=true \
-        --stacktrace; then
+        -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false \
+        --info; then
         echo "❌ XCFramework build failed for Debug configuration"
         exit 1
     fi
