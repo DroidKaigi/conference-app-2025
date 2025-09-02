@@ -38,19 +38,22 @@ echo "Repository root: $REPO_ROOT"
 echo "Building XCFramework..."
 if [ "$CI_XCODEBUILD_ACTION" = "build-for-testing" ] || [ "$CI_XCODEBUILD_ACTION" = "test-without-building" ]; then
     echo "Building XCFramework for testing (Debug configuration)..."
-    ./gradlew :app-shared:assembleSharedDebugXCFramework \
-        -Papp.ios.shared.arch=arm64SimulatorDebug \
-        --stacktrace
+    if ! ./gradlew :app-shared:assembleSharedDebugXCFramework --stacktrace; then
+        echo "❌ XCFramework build failed for Debug configuration"
+        exit 1
+    fi
 elif [ "$CI_XCODEBUILD_ACTION" = "archive" ]; then
     echo "Building XCFramework for distribution (Release configuration)..."
-    ./gradlew :app-shared:assembleSharedReleaseXCFramework \
-        -Papp.ios.shared.arch=arm64 \
-        --stacktrace
+    if ! ./gradlew :app-shared:assembleSharedReleaseXCFramework --stacktrace; then
+        echo "❌ XCFramework build failed for Release configuration"
+        exit 1
+    fi
 else
-    echo "Building XCFramework for general build..."
-    ./gradlew :app-shared:assembleSharedDebugXCFramework \
-        -Papp.ios.shared.arch=arm64SimulatorDebug \
-        --stacktrace
+    echo "Building XCFramework for general build (Debug)..."
+    if ! ./gradlew :app-shared:assembleSharedDebugXCFramework --stacktrace; then
+        echo "❌ XCFramework build failed for general build"
+        exit 1
+    fi
 fi
 
 # Verify XCFramework was created

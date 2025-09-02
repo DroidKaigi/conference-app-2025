@@ -50,11 +50,14 @@ else
 fi
 
 # Verify Gradle installation
-./gradlew --version
+if ! ./gradlew --version; then
+    echo "❌ Error: Gradle verification failed"
+    exit 1
+fi
 
 # Cache Gradle dependencies
 echo "Downloading Gradle dependencies..."
-./gradlew :app-shared:dependencies --configuration=sharedDebugFramework || true
+./gradlew :app-shared:dependencies || true
 
 # Install SwiftLint for code quality checks
 echo "Installing SwiftLint..."

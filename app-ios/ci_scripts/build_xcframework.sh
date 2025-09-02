@@ -47,14 +47,18 @@ rm -rf app-shared/build/XCFrameworks
 # Build XCFramework based on configuration
 if [ "$BUILD_CONFIG" = "Release" ]; then
     echo "Building Release XCFramework..."
-    ./gradlew :app-shared:assembleSharedReleaseXCFramework \
-        -Papp.ios.shared.arch=arm64 \
-        --stacktrace
+    if ! ./gradlew :app-shared:assembleSharedReleaseXCFramework --stacktrace; then
+        echo "❌ XCFramework build failed for Release configuration"
+        echo "Build command: ./gradlew :app-shared:assembleSharedReleaseXCFramework"
+        exit 1
+    fi
 else
     echo "Building Debug XCFramework..."
-    ./gradlew :app-shared:assembleSharedDebugXCFramework \
-        -Papp.ios.shared.arch="$ARCHITECTURE" \
-        --stacktrace
+    if ! ./gradlew :app-shared:assembleSharedDebugXCFramework --stacktrace; then
+        echo "❌ XCFramework build failed for Debug configuration"
+        echo "Build command: ./gradlew :app-shared:assembleSharedDebugXCFramework"
+        exit 1
+    fi
 fi
 
 # Verify build output
