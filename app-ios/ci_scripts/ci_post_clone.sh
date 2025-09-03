@@ -38,29 +38,26 @@ echo "Java version: $(java -version 2>&1 | head -n 1)"
 echo "Setting up Gradle..."
 chmod +x ./gradlew
 
-# Set JVM options with aggressive SSL/TLS configuration for Xcode Cloud
-export GRADLE_OPTS="-Xmx6g -XX:MaxMetaspaceSize=3g -Dfile.encoding=UTF-8 -Djavax.net.ssl.trustStoreType=JKS -Dhttps.protocols=TLSv1.2,TLSv1.3 -Dcom.sun.net.ssl.checkRevocation=false -Djavax.net.ssl.trustStore=/System/Library/Keychains/SystemRootCertificates.keychain"
+# Set JVM options for Xcode Cloud - simplified to avoid SSL initialization errors
+export GRADLE_OPTS="-Xmx6g -XX:MaxMetaspaceSize=3g -Dfile.encoding=UTF-8"
 echo "GRADLE_OPTS: $GRADLE_OPTS"
 
 # Set Gradle properties for better network handling
 export GRADLE_USER_HOME="${CI_PRIMARY_REPOSITORY_PATH}/.gradle"
 mkdir -p "$GRADLE_USER_HOME"
 
-# Create gradle.properties with aggressive network and SSL settings
+# Create gradle.properties with network retry settings
 cat > "$GRADLE_USER_HOME/gradle.properties" << 'EOL'
 org.gradle.daemon=false
 org.gradle.parallel=false
-org.gradle.workers.max=1
+org.gradle.workers.max=2
 systemProp.http.connectionTimeout=300000
 systemProp.http.socketTimeout=300000
 systemProp.https.connectionTimeout=300000
 systemProp.https.socketTimeout=300000
-systemProp.https.proxyHost=
-systemProp.https.proxyPort=
-systemProp.http.keepAlive=false
-systemProp.http.maxConnections=10
-systemProp.javax.net.ssl.trustStoreType=JKS
-systemProp.com.sun.net.ssl.checkRevocation=false
+systemProp.org.gradle.internal.http.connectionTimeout=300000
+systemProp.org.gradle.internal.http.socketTimeout=300000
+systemProp.org.gradle.internal.http.retry.max=5
 EOL
 
 echo "Gradle properties configured for Xcode Cloud environment"
@@ -96,16 +93,13 @@ run_gradle_with_retry() {
     done
 }
 
-# Additional JVM options for dependency resolution issues
-DEPENDENCY_JVM_OPTS="-Djavax.net.ssl.trustAll=true -Djdk.http.auth.tunneling.disabledSchemes=\"\" -Djdk.http.auth.proxying.disabledSchemes=\"\""
-
 # Determine build configuration based on CI action
 if [ "$CI_XCODEBUILD_ACTION" = "archive" ]; then
     echo "Building XCFramework for distribution (Release configuration)..."
-    run_gradle_with_retry "JAVA_OPTS='$DEPENDENCY_JVM_OPTS' ./gradlew app-shared:assembleSharedReleaseXCFramework -Papp.ios.shared.arch=arm64 --no-configuration-cache --refresh-dependencies --no-parallel --stacktrace --no-build-cache"
+    run_gradle_with_retry "./gradlew app-shared:assembleSharedReleaseXCFramework -Papp.ios.shared.arch=arm64 --no-configuration-cache --refresh-dependencies --no-parallel --stacktrace --no-build-cache"
 else
     echo "Building XCFramework for development/testing (Debug configuration)..."
-    run_gradle_with_retry "JAVA_OPTS='$DEPENDENCY_JVM_OPTS' ./gradlew app-shared:assembleSharedDebugXCFramework -Papp.ios.shared.arch=arm64 --no-configuration-cache --refresh-dependencies --no-parallel --stacktrace --no-build-cache"
+    run_gradle_with_retry "./gradlew app-shared:assembleSharedDebugXCFramework -Papp.ios.shared.arch=arm64 --no-configuration-cache --refresh-dependencies --no-parallel --stacktrace --no-build-cache"
 fi
 
 # Verify XCFramework output
