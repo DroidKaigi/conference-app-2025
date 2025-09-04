@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -52,13 +53,17 @@ fun createKMPProfileCardViewController(
 /**
  * Material3 Shapeのみを適用した画像ViewControllerを作成
  */
-@OptIn(ExperimentalObjCName::class)
+@OptIn(ExperimentalObjCName::class, ExperimentalComposeUiApi::class)
 @ObjCName("createKMPProfileImageViewController")
 fun createKMPProfileImageViewController(
     profileImageData: NSData,
     profileCardTheme: String,
 ): UIViewController {
-    val controller = ComposeUIViewController {
+    val controller = ComposeUIViewController(
+        configure = {
+            opaque = false
+        },
+    ) {
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center,
@@ -86,7 +91,7 @@ object ProfileCardIOSBridge {
     /**
      * ProfileCardUserのiOS向けUIViewController生成
      */
-    @OptIn(ExperimentalObjCName::class)
+    @OptIn(ExperimentalObjCName::class, ExperimentalComposeUiApi::class)
     @ObjCName("createProfileCardUserViewController")
     fun createProfileCardUserViewController(
         isDarkTheme: Boolean,
@@ -95,7 +100,11 @@ object ProfileCardIOSBridge {
         occupation: String,
         profileCardTheme: String,
     ): UIViewController {
-        val controller = ComposeUIViewController {
+        val controller = ComposeUIViewController(
+            configure = {
+                opaque = false
+            },
+        ) {
             Box(
                 modifier = Modifier.background(Color.Transparent).fillMaxSize(),
                 contentAlignment = Alignment.Center,
