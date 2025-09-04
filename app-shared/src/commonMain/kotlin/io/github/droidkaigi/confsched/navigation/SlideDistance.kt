@@ -62,3 +62,15 @@ fun materialSharedAxisXOut(
         easing = FastOutLinearInEasing,
     ),
 )
+
+fun materialFadeIn(): EnterTransition = fadeIn(
+    animationSpec = tween(
+        durationMillis = 100,
+    ),
+)
+
+fun materialFadeOut(): ExitTransition = fadeOut(
+    animationSpec = tween(
+        durationMillis = 50,
+    ),
+)
