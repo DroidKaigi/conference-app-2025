@@ -29,7 +29,9 @@ echo "Repository root: $CI_PRIMARY_REPOSITORY_PATH"
 
 # Install Java (required for Gradle)
 echo "Installing Java..."
-brew install openjdk@17
+echo "This may take a few minutes..."
+# Use verbose output to prevent timeout
+brew install openjdk@17 --verbose || brew install openjdk@17
 export JAVA_HOME="$(brew --prefix openjdk@17)"
 export PATH="$JAVA_HOME/bin:$PATH"
 echo "Java version: $(java -version 2>&1 | head -n 1)"
@@ -67,17 +69,30 @@ echo "============================"
 echo "Building XCFramework"
 echo "============================"
 
+# Function to print progress periodically to prevent timeout
+print_progress() {
+    while true; do
+        sleep 30
+        echo "⏳ Build in progress... $(date '+%H:%M:%S')"
+    done
+}
+
 # Function to retry Gradle build with exponential backoff
 run_gradle_with_retry() {
     local max_attempts=3
     local attempt=1
     local wait_time=10
     
+    # Start progress printer in background to prevent timeout
+    print_progress &
+    local progress_pid=$!
+    
     while [ $attempt -le $max_attempts ]; do
         echo "Attempt $attempt of $max_attempts..."
         
         if eval "$1"; then
             echo "✅ Gradle build succeeded on attempt $attempt"
+            kill $progress_pid 2>/dev/null
             return 0
         else
             if [ $attempt -lt $max_attempts ]; then
@@ -87,6 +102,7 @@ run_gradle_with_retry() {
                 attempt=$((attempt + 1))
             else
                 echo "❌ Gradle build failed after $max_attempts attempts"
+                kill $progress_pid 2>/dev/null
                 return 1
             fi
         fi
@@ -96,10 +112,10 @@ run_gradle_with_retry() {
 # Determine build configuration based on CI action
 if [ "$CI_XCODEBUILD_ACTION" = "archive" ]; then
     echo "Building XCFramework for distribution (Release configuration)..."
-    run_gradle_with_retry "./gradlew app-shared:assembleSharedReleaseXCFramework --no-configuration-cache --refresh-dependencies --no-parallel --stacktrace --no-build-cache"
+    run_gradle_with_retry "./gradlew app-shared:assembleSharedReleaseXCFramework --no-configuration-cache --refresh-dependencies --no-parallel --stacktrace --no-build-cache --info"
 else
     echo "Building XCFramework for development/testing (Debug configuration)..."
-    run_gradle_with_retry "./gradlew app-shared:assembleSharedDebugXCFramework --no-configuration-cache --refresh-dependencies --no-parallel --stacktrace --no-build-cache"
+    run_gradle_with_retry "./gradlew app-shared:assembleSharedDebugXCFramework --no-configuration-cache --refresh-dependencies --no-parallel --stacktrace --no-build-cache --info"
 fi
 
 # Verify XCFramework output
