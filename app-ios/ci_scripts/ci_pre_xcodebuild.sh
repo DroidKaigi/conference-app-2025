@@ -28,24 +28,34 @@ echo "Repository root: $REPO_ROOT"
 # Navigate to iOS app directory
 cd "$REPO_ROOT/app-ios"
 
-# Enable skip plugin validation (fix typo in key name)
+# Enable all plugin and macro validations to be skipped
+echo "Configuring Xcode to skip all plugin and macro validations..."
 defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidation -bool YES
-
-# Enable macro execution without prompting
 defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
-
-# Trust all macros in CI environment
 defaults write com.apple.dt.Xcode IDEMacroExpansionBuildEverything -bool YES
+defaults write com.apple.dt.Xcode IDEPackageOnlyUseVersionsFromResolvedFile -bool NO
 
 # Create Xcode preferences directory if it doesn't exist
 mkdir -p ~/Library/Developer/Xcode
 
-# Enable macros for swift-dependencies package specifically
-xcodebuild -skipMacroValidation -skipPackagePluginValidation || true
+# Set environment variables for build
+export SKIP_MACRO_VALIDATION=YES
+export SKIP_PACKAGE_PLUGIN_VALIDATION=YES
 
-# Pre-resolve package dependencies to ensure macros are registered
-echo "Pre-resolving package dependencies..."
-xcodebuild -resolvePackageDependencies -project "$REPO_ROOT/app-ios/DroidKaigi2025.xcodeproj" -scheme DroidKaigi2025 -skipMacroValidation || true
+# Pre-resolve package dependencies to ensure all plugins and macros are registered
+echo "Pre-resolving package dependencies with all validations skipped..."
+xcodebuild -resolvePackageDependencies \
+    -project "$REPO_ROOT/app-ios/DroidKaigi2025.xcodeproj" \
+    -scheme DroidKaigi2025 \
+    -skipMacroValidation \
+    -skipPackagePluginValidation \
+    -allowProvisioningUpdates \
+    -disableAutomaticPackageResolution \
+    CODE_SIGN_IDENTITY="" \
+    CODE_SIGNING_REQUIRED=NO \
+    CODE_SIGNING_ALLOWED=NO || true
+
+echo "Package dependencies resolved."
 
 echo "============================"
 echo "Pre-Build Script Completed"
