@@ -27,6 +27,13 @@ fi
 
 echo "Repository root: $CI_PRIMARY_REPOSITORY_PATH"
 
+# Configure Xcode to trust Swift Package plugins
+echo "Configuring Xcode to trust plugins..."
+# Note: IDESkipPackagePluginFingerprintValidatation has a typo but that's how Apple implemented it
+defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
+defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
+echo "Xcode plugin trust configuration completed."
+
 # Install Java (required for Gradle)
 echo "Installing Java..."
 echo "This may take a few minutes..."

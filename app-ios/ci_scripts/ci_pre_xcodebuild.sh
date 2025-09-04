@@ -30,7 +30,8 @@ cd "$REPO_ROOT/app-ios"
 
 # Enable all plugin and macro validations to be skipped
 echo "Configuring Xcode to skip all plugin and macro validations..."
-defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidation -bool YES
+# Note: IDESkipPackagePluginFingerprintValidatation has a typo but that's how Apple implemented it
+defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
 defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
 defaults write com.apple.dt.Xcode IDEMacroExpansionBuildEverything -bool YES
 defaults write com.apple.dt.Xcode IDEPackageOnlyUseVersionsFromResolvedFile -bool NO
@@ -42,6 +43,24 @@ defaults write com.apple.dt.Xcode PluginValidationMode -int 0
 
 # Create Xcode preferences directory if it doesn't exist
 mkdir -p ~/Library/Developer/Xcode
+
+# Create SPM security directories for plugin trust
+mkdir -p ~/Library/org.swift.swiftpm/security
+mkdir -p ~/Library/org.swift.swiftpm/configuration
+
+# Create plugins.json to explicitly trust SwiftGenPlugin
+echo "Creating plugin trust whitelist..."
+cat > ~/Library/org.swift.swiftpm/security/plugins.json << 'EOF'
+{
+  "packages": {
+    "https://github.com/SwiftGen/SwiftGen": {
+      "plugins": ["SwiftGenPlugin"]
+    }
+  }
+}
+EOF
+
+echo "Plugin trust whitelist created."
 
 # Set environment variables for build
 export SKIP_MACRO_VALIDATION=YES
