@@ -25,8 +25,27 @@ REPO_ROOT="$CI_PRIMARY_REPOSITORY_PATH"
 
 echo "Repository root: $REPO_ROOT"
 
-# Enalbe skip plugin validation
-defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
+# Navigate to iOS app directory
+cd "$REPO_ROOT/app-ios"
+
+# Enable skip plugin validation (fix typo in key name)
+defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidation -bool YES
+
+# Enable macro execution without prompting
+defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
+
+# Trust all macros in CI environment
+defaults write com.apple.dt.Xcode IDEMacroExpansionBuildEverything -bool YES
+
+# Create Xcode preferences directory if it doesn't exist
+mkdir -p ~/Library/Developer/Xcode
+
+# Enable macros for swift-dependencies package specifically
+xcodebuild -skipMacroValidation -skipPackagePluginValidation || true
+
+# Pre-resolve package dependencies to ensure macros are registered
+echo "Pre-resolving package dependencies..."
+xcodebuild -resolvePackageDependencies -project "$REPO_ROOT/app-ios/DroidKaigi2025.xcodeproj" -scheme DroidKaigi2025 -skipMacroValidation || true
 
 echo "============================"
 echo "Pre-Build Script Completed"
