@@ -8,9 +8,6 @@ import Theme
 
 public struct HomeScreen: View {
     @State private var presenter = HomePresenter()
-    @State private var animationProgress: CGFloat = 0
-    @State private var targetTimetableItemId: String?
-    @State private var targetLocationPoint: CGPoint?
     @State private var timetableMode: TimetableMode = .list
     @State private var selectedDay: DayTab = .day1
 
@@ -23,40 +20,29 @@ public struct HomeScreen: View {
     public var body: some View {
         let timetableItems = presenter.timetable.dayTimetable[selectedDay.model] ?? []
 
-        ZStack {
-            Group {
-                switch timetableMode {
-                case .list:
-                    TimetableListView(
-                        selectedDay: $selectedDay,
-                        timetableItems: timetableItems,
-                        onItemTap: { item in
-                            onNavigate(.timetableDetail(item))
-                        },
-                        onFavoriteTap: { item, _ in
-                            presenter.timetable.toggleFavorite(item)
-                        },
-                        animationTrigger: { timetableItem, location in
-                            toggleFavorite(timetableItem: timetableItem, adjustedLocationPoint: location)
-                        }
-                    )
-                case .grid:
-                    TimetableGridView(
-                        selectedDay: $selectedDay,
-                        timetableItems: timetableItems,
-                        rooms: presenter.timetable.rooms,
-                        onItemTap: { item in
-                            onNavigate(.timetableDetail(item))
-                        }
-                    )
-                }
+        Group {
+            switch timetableMode {
+            case .list:
+                TimetableListView(
+                    selectedDay: $selectedDay,
+                    timetableItems: timetableItems,
+                    onItemTap: { item in
+                        onNavigate(.timetableDetail(item))
+                    },
+                    onFavoriteTap: { item, _ in
+                        presenter.timetable.toggleFavorite(item)
+                    },
+                )
+            case .grid:
+                TimetableGridView(
+                    selectedDay: $selectedDay,
+                    timetableItems: timetableItems,
+                    rooms: presenter.timetable.rooms,
+                    onItemTap: { item in
+                        onNavigate(.timetableDetail(item))
+                    }
+                )
             }
-
-            FavoriteAnimationView(
-                targetTimetableItemId: targetTimetableItemId,
-                targetLocationPoint: targetLocationPoint,
-                animationProgress: animationProgress
-            )
         }
         .background(
             Image("background_night", bundle: .module)
@@ -67,58 +53,37 @@ public struct HomeScreen: View {
         .navigationTitle(String(localized: "Timetable", bundle: .module))
         .navigationBarTitleDisplayMode(.automatic)
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                HStack(spacing: 0) {
-                    Button(
-                        action: {
-                            onNavigate(.search)
-                        },
-                        label: {
-                            AssetImages.icSearch.swiftUIImage
-                                .resizable()
-                                .foregroundStyle(AssetColors.onSurface.swiftUIColor)
-                                .frame(width: 24, height: 24)
-                                .padding(8)
-                                .accessibilityLabel(String(localized: "Search sessions", bundle: .module))
-                        })
-                    Button(
-                        action: {
-                            timetableMode = timetableMode == .list ? .grid : .list
-                        },
-                        label: {
-                            (timetableMode == .list ? AssetImages.icGridView : AssetImages.icViewTimeline)
-                                .swiftUIImage
-                                .resizable()
-                                .foregroundStyle(AssetColors.onSurface.swiftUIColor)
-                                .frame(width: 24, height: 24)
-                                .padding(8)
-                                .accessibilityLabel(
-                                    timetableMode == .list
-                                        ? String(localized: "Switch to grid view", bundle: .module)
-                                        : String(localized: "Switch to list view", bundle: .module))
-                        })
-                }
+            ToolbarItemGroup(placement: .topBarTrailing) {
+                Button(
+                    action: {
+                        onNavigate(.search)
+                    },
+                    label: {
+                        AssetImages.icSearch.swiftUIImage
+                            .resizable()
+                            .foregroundStyle(AssetColors.onSurface.swiftUIColor)
+                            .frame(width: 24, height: 24)
+                            .accessibilityLabel(String(localized: "Search sessions", bundle: .module))
+                    })
+                Button(
+                    action: {
+                        timetableMode = timetableMode == .list ? .grid : .list
+                    },
+                    label: {
+                        (timetableMode == .list ? AssetImages.icGridView : AssetImages.icViewTimeline)
+                            .swiftUIImage
+                            .resizable()
+                            .foregroundStyle(AssetColors.onSurface.swiftUIColor)
+                            .frame(width: 24, height: 24)
+                            .accessibilityLabel(
+                                timetableMode == .list
+                                    ? String(localized: "Switch to grid view", bundle: .module)
+                                    : String(localized: "Switch to list view", bundle: .module))
+                    })
             }
         }
         .onAppear {
             presenter.loadInitial()
-        }
-    }
-
-    private func toggleFavorite(timetableItem: any TimetableItem, adjustedLocationPoint: CGPoint?) {
-        targetLocationPoint = adjustedLocationPoint
-        targetTimetableItemId = timetableItem.id.value
-
-        if targetTimetableItemId != nil {
-            withAnimation(.easeOut(duration: 1)) {
-                animationProgress = 1
-            }
-            Task {
-                try await Task.sleep(nanoseconds: 1_000_000_000)
-                targetTimetableItemId = nil
-                targetLocationPoint = nil
-                self.animationProgress = 0
-            }
         }
     }
 }

@@ -3,6 +3,7 @@ package io.github.droidkaigi.confsched.about
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
@@ -17,6 +18,7 @@ import io.github.droidkaigi.confsched.about.section.aboutOthers
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.component.AnimatedTextTopAppBar
 import io.github.droidkaigi.confsched.droidkaigiui.compositionlocal.safeDrawingWithBottomNavBar
+import io.github.droidkaigi.confsched.droidkaigiui.extension.enableMouseDragScroll
 import io.github.droidkaigi.confsched.droidkaigiui.extension.excludeTop
 import io.github.droidkaigi.confsched.droidkaigiui.extension.plus
 import io.github.droidkaigi.confsched.model.about.AboutItem
@@ -33,6 +35,7 @@ fun AboutScreen(
     modifier: Modifier = Modifier,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val listState = rememberLazyListState()
 
     Scaffold(
         topBar = {
@@ -45,9 +48,11 @@ fun AboutScreen(
         modifier = modifier,
     ) { contentPadding ->
         LazyColumn(
+            state = listState,
             contentPadding = contentPadding + WindowInsets.safeDrawingWithBottomNavBar.excludeTop().asPaddingValues(),
             modifier = Modifier
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
+                .enableMouseDragScroll(listState)
                 .testTag(AboutScreenLazyColumnTestTag),
         ) {
             item {

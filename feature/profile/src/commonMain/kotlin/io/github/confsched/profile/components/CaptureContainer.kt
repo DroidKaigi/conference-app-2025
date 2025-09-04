@@ -6,7 +6,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import kotlinx.coroutines.launch
 
@@ -32,8 +31,6 @@ fun CaptureContainer(
                         onRendered(graphicsLayer.toImageBitmap())
                     }
                 }
-
-                drawLayer(graphicsLayer)
             },
     ) {
         content()

@@ -45,6 +45,8 @@ kotlin {
             implementation(libs.androidxDatastorePreferencesCore)
             implementation(libs.material3)
 
+            implementation(libs.coilTest)
+
             implementation(kotlin("test"))
         }
 

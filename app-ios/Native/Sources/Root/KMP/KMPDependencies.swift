@@ -1,4 +1,5 @@
 import Dependencies
+import UseCase
 
 enum KMPDependencies {
     static func prepareKMPDependencies(_ dependencyValues: inout DependencyValues) {
@@ -32,6 +33,24 @@ enum KMPDependencies {
         dependencyValues.profileUseCase = .init(
             load: profileUseCaseImpl.load,
             save: profileUseCaseImpl.save
+        )
+
+        // Store the notification use case implementation as a shared instance
+        // so it can be accessed directly from RootScreen for navigation handler setup
+        NotificationUseCaseManager.shared.setupImpl()
+        let notificationUseCaseImpl = NotificationUseCaseManager.shared.impl
+        dependencyValues.notificationUseCase = UseCase.NotificationUseCase(
+            load: notificationUseCaseImpl.load,
+            save: notificationUseCaseImpl.save,
+            requestPermission: notificationUseCaseImpl.requestPermission,
+            checkAuthorizationStatus: notificationUseCaseImpl.checkAuthorizationStatus,
+            scheduleNotification: notificationUseCaseImpl.scheduleNotification(_:_:),
+            cancelNotification: notificationUseCaseImpl.cancelNotification(_:),
+            rescheduleAllNotifications: notificationUseCaseImpl.rescheduleAllNotifications(_:_:),
+            cancelAllNotifications: notificationUseCaseImpl.cancelAllNotifications,
+            setNavigationHandler: { @MainActor handler in
+                NotificationUseCaseManager.shared.setNavigationHandler(handler)
+            }
         )
     }
 }

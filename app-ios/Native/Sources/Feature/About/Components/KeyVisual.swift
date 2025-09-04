@@ -28,12 +28,12 @@ struct KeyVisual: View {
                         .frame(width: 16, height: 16)
                         .foregroundStyle(AssetColors.onSurface.swiftUIColor)
 
-                    Text(String(localized: "Date:", bundle: .module))
+                    Text(String(localized: "Date", bundle: .module))
                         .foregroundStyle(AssetColors.onSurface.swiftUIColor)
                         .typographyStyle(.titleSmall)
                         .padding(.trailing, 4)
 
-                    Text(String(localized: "2025.09.11(Thu) - 12(Fri)", bundle: .module))
+                    Text(String(localized: "2025.09.10(Wed) - 12(Fri)", bundle: .module))
                         .foregroundStyle(AssetColors.onSurface.swiftUIColor)
                         .typographyStyle(.titleSmall)
                 }
@@ -46,7 +46,7 @@ struct KeyVisual: View {
                         .frame(width: 16, height: 16)
                         .foregroundStyle(AssetColors.onSurface.swiftUIColor)
 
-                    Text(String(localized: "Location:", bundle: .module))
+                    Text(String(localized: "Location", bundle: .module))
                         .foregroundStyle(AssetColors.onSurface.swiftUIColor)
                         .typographyStyle(.titleSmall)
                         .padding(.trailing, 4)

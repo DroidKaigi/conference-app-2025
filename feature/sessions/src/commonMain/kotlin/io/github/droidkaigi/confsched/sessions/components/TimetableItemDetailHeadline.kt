@@ -34,7 +34,8 @@ import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.designsystem.theme.LocalRoomTheme
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
-import io.github.droidkaigi.confsched.droidkaigiui.component.TimetableItemTag
+import io.github.droidkaigi.confsched.droidkaigiui.component.OutlinedToolTip
+import io.github.droidkaigi.confsched.droidkaigiui.component.RoomToolTip
 import io.github.droidkaigi.confsched.droidkaigiui.extension.icon
 import io.github.droidkaigi.confsched.droidkaigiui.extension.roomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.rememberAsyncImagePainter
@@ -66,19 +67,17 @@ fun TimetableItemDetailHeadline(
             .then(modifier),
     ) {
         FlowRow {
-            TimetableItemTag(
-                modifier = Modifier.align(Alignment.CenterVertically),
-                tagText = timetableItem.room.name.currentLangTitle.toUpperCase(Locale.current),
-                contentTextColor = MaterialTheme.colorScheme.surface,
-                contentBackgroundColor = roomTheme.primaryColor,
-                borderColor = roomTheme.primaryColor,
+            RoomToolTip(
                 icon = timetableItem.room.icon,
+                text = timetableItem.room.name.currentLangTitle.toUpperCase(Locale.current),
+                color = roomTheme.primaryColor,
+                modifier = Modifier.align(Alignment.CenterVertically),
             )
             timetableItem.language.labels.forEach { label ->
                 Spacer(modifier = Modifier.padding(4.dp))
-                TimetableItemTag(
+                OutlinedToolTip(
                     modifier = Modifier.align(Alignment.CenterVertically),
-                    tagText = label,
+                    text = label,
                 )
             }
             Spacer(modifier = Modifier.weight(1f))

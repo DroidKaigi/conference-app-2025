@@ -1,7 +1,16 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "Category" : {
+    "%lld" : {
+
+    },
+    "9/11" : {
+
+    },
+    "9/12" : {
+
+    },
+    "All" : {
 
     },
     "Clear search" : {
@@ -21,10 +30,13 @@
         }
       }
     },
-    "Day" : {
+    "English" : {
 
     },
-    "Language" : {
+    "Japanese" : {
+
+    },
+    "Mixed" : {
 
     },
     "Results" : {
@@ -80,6 +92,15 @@
           }
         }
       }
+    },
+    "カテゴリ" : {
+
+    },
+    "言語" : {
+
+    },
+    "開催日" : {
+
     }
   },
   "version" : "1.0"

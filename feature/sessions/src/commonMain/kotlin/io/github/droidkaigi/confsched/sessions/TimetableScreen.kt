@@ -2,6 +2,9 @@ package io.github.droidkaigi.confsched.sessions
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -40,6 +43,7 @@ import io.github.droidkaigi.confsched.model.sessions.TimetableItemId
 import io.github.droidkaigi.confsched.model.sessions.TimetableUiType
 import io.github.droidkaigi.confsched.model.sessions.fake
 import io.github.droidkaigi.confsched.sessions.components.TimetableTopAppBar
+import io.github.droidkaigi.confsched.sessions.grid.TimeLine
 import io.github.droidkaigi.confsched.sessions.grid.TimetableGrid
 import io.github.droidkaigi.confsched.sessions.grid.TimetableGridUiState
 import io.github.droidkaigi.confsched.sessions.section.TimetableListUiState
@@ -47,6 +51,9 @@ import io.github.droidkaigi.confsched.sessions.section.TimetableUiState
 import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.collections.immutable.toPersistentMap
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import kotlin.time.Duration.Companion.hours
+
+private const val ChangeTabDeltaThreshold = 20f
 
 @Composable
 fun TimetableScreen(
@@ -138,7 +145,7 @@ fun TimetableScreen(
                     is TimetableUiState.GridTimetable -> {
                         TimetableGrid(
                             timetable = requireNotNull(uiState.timetable.timetableGridUiState[selectedDay]).timetable,
-                            timeLine = null, // TODO
+                            timeLine = uiState.timetable.timeLine,
                             onTimetableItemClick = onTimetableItemClick,
                             selectedDay = selectedDay,
                             contentPadding = WindowInsets.safeDrawingWithBottomNavBar.excludeTop().asPaddingValues(),
@@ -148,6 +155,18 @@ fun TimetableScreen(
                     is TimetableUiState.ListTimetable -> {
                         val timetableListUiState = requireNotNull(uiState.timetable.timetableListUiStates[selectedDay])
                         TimetableList(
+                            modifier = modifier.draggable(
+                                orientation = Orientation.Horizontal,
+                                state = rememberDraggableState { delta ->
+                                    when (selectedDay) {
+                                        DroidKaigi2025Day.ConferenceDay1 if delta < -ChangeTabDeltaThreshold -> onDaySelected(DroidKaigi2025Day.ConferenceDay2)
+                                        DroidKaigi2025Day.ConferenceDay2 if delta > ChangeTabDeltaThreshold -> onDaySelected(DroidKaigi2025Day.ConferenceDay1)
+                                        else -> {
+                                            // NOOP
+                                        }
+                                    }
+                                },
+                            ),
                             timetableItemMap = timetableListUiState.timetableItemMap,
                             onTimetableItemClick = onTimetableItemClick,
                             onBookmarkClick = { id -> onBookmarkClick(id.value) },
@@ -233,6 +252,10 @@ private fun TimetableScreenPreview_Grid() {
                         ),
                     ),
                     selectedDay = DroidKaigi2025Day.ConferenceDay1,
+                    timeLine = TimeLine(
+                        currentTime = DroidKaigi2025Day.ConferenceDay1.start + 11.hours,
+                        currentDay = DroidKaigi2025Day.ConferenceDay1,
+                    ),
                 ),
                 uiType = TimetableUiType.Grid,
             ),

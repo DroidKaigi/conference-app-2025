@@ -1,4 +1,7 @@
 [versions]
+# bump this when releasing a new version of the app
+droidkaigiApp = "1.1.0"
+
 androidGradlePlugin = "8.11.0"
 kotlin = "2.2.0"
 ksp = "2.2.0-2.0.2"

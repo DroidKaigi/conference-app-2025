@@ -12,7 +12,7 @@ public struct CircularUserIcon: View {
 
     public var body: some View {
         if let imageUrl, let url = URL(string: imageUrl) {
-            AsyncImage(url: url) { image in
+            CacheAsyncImage(url: url) { image in
                 image
                     .resizable()
                     .aspectRatio(contentMode: .fill)

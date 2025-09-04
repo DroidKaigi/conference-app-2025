@@ -22,6 +22,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -37,6 +38,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.window.core.layout.WindowWidthSizeClass
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,10 +48,9 @@ fun AnimatedTextTopAppBar(
     onBackClick: (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
     windowInsets: WindowInsets = AnimatedTextTopAppBarDefaults.windowInsets(),
-    colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors().copy(
-        scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer,
-    ),
+    colors: TopAppBarColors? = null,
     textColor: Color = MaterialTheme.colorScheme.onSurface,
+    scrolledTextColor: Color = MaterialTheme.colorScheme.onSurface,
     scrollBehavior: TopAppBarScrollBehavior? = null,
 ) {
     val transitionFraction by remember(scrollBehavior) {
@@ -59,6 +60,16 @@ fun AnimatedTextTopAppBar(
     }
     val density = LocalDensity.current.density
     var navigationIconWidthDp by remember { mutableStateOf(0f) }
+    val currentTextColor = if (transitionFraction > 0f) scrolledTextColor else textColor
+
+    val widthSizeClass = currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass
+    val resolvedColors: TopAppBarColors =
+        colors ?: TopAppBarDefaults.topAppBarColors(
+            scrolledContainerColor = when (widthSizeClass) {
+                WindowWidthSizeClass.MEDIUM, WindowWidthSizeClass.EXPANDED -> MaterialTheme.colorScheme.background
+                else -> MaterialTheme.colorScheme.surfaceContainer
+            },
+        )
 
     TopAppBar(
         title = {
@@ -68,7 +79,7 @@ fun AnimatedTextTopAppBar(
                     autoSize = TextAutoSize.StepBased(
                         maxFontSize = 28.sp,
                     ),
-                    color = textColor,
+                    color = currentTextColor,
                     modifier = Modifier
                         .fillMaxWidth()
                         .graphicsLayer {
@@ -84,7 +95,7 @@ fun AnimatedTextTopAppBar(
                     autoSize = TextAutoSize.StepBased(
                         maxFontSize = 16.sp,
                     ),
-                    color = textColor,
+                    color = currentTextColor,
                     modifier = Modifier
                         // Ensures the title appears centered when a navigation icon is present.
                         // Note: The width of actions is currently not considered.
@@ -118,7 +129,7 @@ fun AnimatedTextTopAppBar(
         },
         actions = actions,
         windowInsets = windowInsets,
-        colors = colors,
+        colors = resolvedColors,
         scrollBehavior = scrollBehavior,
     )
 }

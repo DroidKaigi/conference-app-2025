@@ -32,7 +32,7 @@ struct SessionDescriptionView: View {
                     isDescriptionExpanded = true
                     canBeExpanded = false
                 } label: {
-                    Text("続きを読む")
+                    Text(String(localized: "Read more", bundle: .module))
                         .font(Typography.labelLarge)
                         .foregroundStyle(primaryColor)
                         .frame(height: 40)

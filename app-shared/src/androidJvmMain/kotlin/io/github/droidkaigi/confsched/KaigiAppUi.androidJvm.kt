@@ -64,7 +64,7 @@ actual fun KaigiAppUi() {
                 MainScreenTab.Profile -> ProfileNavKey
             }
             backStack.clear()
-            backStack.add(navKey)
+            backStack.addAll(listOf(TimetableNavKey, navKey).distinct())
         },
         hazeState = hazeState,
     ) {
@@ -152,7 +152,7 @@ actual fun KaigiAppUi() {
 
                             AboutItem.X -> {
                                 externalNavController.navigate(
-                                    url = "https://twitter.com/DroidKaigi",
+                                    url = "https://x.com/DroidKaigi",
                                 )
                             }
 

@@ -11,8 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.dp
+import io.github.confsched.profile.innerShadow
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.model.profile.ProfileCardTheme
 import io.github.droidkaigi.confsched.profile.ProfileRes
@@ -29,11 +31,18 @@ fun ProfileCardBack(
     qrImageBitmap: ImageBitmap,
     modifier: Modifier = Modifier,
 ) {
+    val shape = MaterialTheme.shapes.medium
+
     Box(
         modifier = modifier
             .width(300.dp)
             .height(380.dp)
-            .clip(shape = MaterialTheme.shapes.medium)
+            .clip(shape = shape)
+            .innerShadow(
+                color = Color.White.copy(alpha = 0.7f),
+                shape = shape,
+                blur = 4.dp,
+            )
             .background(theme.baseColor),
         contentAlignment = Alignment.Center,
     ) {

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import io.github.droidkaigi.confsched.droidkaigiui.extension.enableMouseDragScroll
 import io.github.droidkaigi.confsched.eventmap.EventMapUiState
 import io.github.droidkaigi.confsched.eventmap.EventmapRes
 import io.github.droidkaigi.confsched.eventmap.event_map_description
@@ -26,14 +28,18 @@ const val EventMapItemTestTag = "EventMapItemTestTag:"
 @Composable
 fun EventMap(
     uiState: EventMapUiState,
+    listState: LazyListState,
     onSelectFloor: (FloorLevel) -> Unit,
     onClickReadMore: (url: String) -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
+        state = listState,
         contentPadding = contentPadding,
-        modifier = modifier.testTag(EventMapLazyColumnTestTag),
+        modifier = modifier
+            .enableMouseDragScroll(listState)
+            .testTag(EventMapLazyColumnTestTag),
     ) {
         item {
             Text(

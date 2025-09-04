@@ -66,9 +66,11 @@ let package = Package(
                 .target(name: "SponsorFeature"),
                 .target(name: "StaffFeature"),
                 .target(name: "ProfileCardFeature"),
+                .target(name: "SettingsFeature"),
                 .target(name: "KMPFramework"),
                 .product(name: "UseCase", package: "Core"),
                 .product(name: "Model", package: "Core"),
+                .product(name: "Presentation", package: "Core"),
                 .product(name: "Dependencies", package: "swift-dependencies"),
                 .target(name: "Extension"),
             ],
@@ -214,6 +216,23 @@ let package = Package(
                 .target(name: "Theme"),
             ],
             path: "Sources/Feature/ProfileCard",
+        ),
+        
+        .target(
+            name: "SettingsFeature",
+            dependencies: [
+                .product(name: "Presentation", package: "Core"),
+                .product(name: "Model", package: "Core"),
+                .product(name: "UseCase", package: "Core"),
+                .target(name: "Component"),
+                .target(name: "Extension"),
+                .target(name: "Theme"),
+                .target(name: "DependencyExtra"),
+            ],
+            path: "Sources/Feature/Settings",
+            resources: [
+                .process("Resources")
+            ],
         ),
 
         .target(

@@ -1,6 +1,7 @@
 package io.github.droidkaigi.confsched.navigation
 
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.adaptive.navigation.BackNavigationBehavior
 import androidx.compose.material3.adaptive.navigation3.ListDetailSceneStrategy
 import androidx.compose.material3.adaptive.navigation3.rememberListDetailSceneStrategy
 import androidx.compose.runtime.Composable
@@ -31,7 +32,9 @@ actual fun listDetailSceneStrategyDetailPaneMetaData(): Map<String, Any> {
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 actual fun sceneStrategy(): SceneStrategy<NavKey> {
-    return rememberListDetailSceneStrategy()
+    // To pop the continuous list pane's backstack one by one using PopLatest.
+    // https://github.com/DroidKaigi/conference-app-2025/pull/539
+    return rememberListDetailSceneStrategy(BackNavigationBehavior.PopLatest)
 }
 
 @Composable

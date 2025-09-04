@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiWindowSizeClassConstants
 import io.github.droidkaigi.confsched.droidkaigiui.component.TimetableTimeSlot
+import io.github.droidkaigi.confsched.droidkaigiui.extension.enableMouseDragScroll
 import io.github.droidkaigi.confsched.droidkaigiui.extension.plus
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import io.github.droidkaigi.confsched.model.sessions.TimetableItemId
@@ -62,7 +63,7 @@ fun TimetableList(
             state = lazyListState,
             verticalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = contentPadding + WindowInsets.navigationBars.asPaddingValues(),
-            modifier = modifier,
+            modifier = modifier.enableMouseDragScroll(lazyListState),
         ) {
             itemsIndexed(
                 items = timetableItemMap.toList(),

@@ -14,14 +14,19 @@ import dev.chrisbanes.haze.rememberHazeState
 import io.github.droidkaigi.confsched.component.KaigiNavigationScaffold
 import io.github.droidkaigi.confsched.component.MainScreenTab
 import io.github.droidkaigi.confsched.model.about.AboutItem
+import io.github.droidkaigi.confsched.model.core.Lang
+import io.github.droidkaigi.confsched.model.core.defaultLang
 import io.github.droidkaigi.confsched.navigation.component.NavHostWithSharedAxisX
 import io.github.droidkaigi.confsched.navigation.extension.navigateToAboutTab
+import io.github.droidkaigi.confsched.navigation.extension.navigateToContributors
 import io.github.droidkaigi.confsched.navigation.extension.navigateToEventMapTab
 import io.github.droidkaigi.confsched.navigation.extension.navigateToFavoritesTab
 import io.github.droidkaigi.confsched.navigation.extension.navigateToLicenses
 import io.github.droidkaigi.confsched.navigation.extension.navigateToProfileCardTab
 import io.github.droidkaigi.confsched.navigation.extension.navigateToSearch
 import io.github.droidkaigi.confsched.navigation.extension.navigateToSettings
+import io.github.droidkaigi.confsched.navigation.extension.navigateToSponsors
+import io.github.droidkaigi.confsched.navigation.extension.navigateToStaffs
 import io.github.droidkaigi.confsched.navigation.extension.navigateToTimetableItemDetail
 import io.github.droidkaigi.confsched.navigation.extension.navigateToTimetableTab
 import io.github.droidkaigi.confsched.navigation.graph.aboutTabNavGraph
@@ -99,21 +104,49 @@ actual fun KaigiAppUi() {
             )
             aboutTabNavGraph(
                 onAboutItemClick = {
+                    val portalBaseUrl = if (defaultLang() == Lang.JAPANESE) {
+                        "https://portal.droidkaigi.jp"
+                    } else {
+                        "https://portal.droidkaigi.jp/en"
+                    }
                     when (it) {
-                        AboutItem.Map -> TODO()
-                        AboutItem.Contributors -> TODO()
-                        AboutItem.Staff -> TODO()
-                        AboutItem.Sponsors -> TODO()
-                        AboutItem.CodeOfConduct -> TODO()
+                        AboutItem.Map -> externalNavController.navigate(
+                            url = "https://goo.gl/maps/vv9sE19JvRjYKtSP9",
+                        )
+                        AboutItem.Contributors -> navController.navigateToContributors()
+                        AboutItem.Staff -> navController.navigateToStaffs()
+                        AboutItem.Sponsors -> navController.navigateToSponsors()
+                        AboutItem.CodeOfConduct -> {
+                            externalNavController.navigate(
+                                url = "$portalBaseUrl/about/code-of-conduct",
+                            )
+                        }
                         AboutItem.License -> navController.navigateToLicenses()
-                        AboutItem.PrivacyPolicy -> TODO()
+                        AboutItem.PrivacyPolicy -> {
+                            externalNavController.navigate(
+                                url = "$portalBaseUrl/about/privacy",
+                            )
+                        }
                         AboutItem.Settings -> navController.navigateToSettings()
-                        AboutItem.Youtube -> TODO()
-                        AboutItem.X -> TODO()
-                        AboutItem.Medium -> TODO()
+                        AboutItem.Youtube -> {
+                            externalNavController.navigate(
+                                url = "https://www.youtube.com/c/DroidKaigi",
+                            )
+                        }
+                        AboutItem.X -> {
+                            externalNavController.navigate(
+                                url = "https://x.com/DroidKaigi",
+                            )
+                        }
+                        AboutItem.Medium -> {
+                            externalNavController.navigate(
+                                url = "https://medium.com/droidkaigi",
+                            )
+                        }
                     }
                 },
                 onBackClick = navController::popBackStack,
+                onLinkClick = externalNavController::navigate,
             )
             profileTabNavGraph(
                 onShareProfileCardClick = externalNavController::onShareProfileCardClick,

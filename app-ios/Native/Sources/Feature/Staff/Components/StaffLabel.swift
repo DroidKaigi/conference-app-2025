@@ -1,3 +1,4 @@
+import Component
 import Model
 import SwiftUI
 import Theme
@@ -8,7 +9,7 @@ struct StaffLabel: View {
     var body: some View {
         HStack(spacing: 12) {
             // Avatar with circular shape and border
-            AsyncImage(url: staff.iconUrl) { image in
+            CacheAsyncImage(url: staff.iconUrl) { image in
                 image
                     .resizable()
                     .aspectRatio(contentMode: .fill)

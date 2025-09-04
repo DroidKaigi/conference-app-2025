@@ -32,6 +32,8 @@ kotlin {
 
             implementation(libs.library("soilQueryCompose"))
             implementation(libs.library("soilReacty"))
+
+            implementation(libs.library("lifecycleRuntimeCompose"))
         }
 
         commonTest.dependencies {

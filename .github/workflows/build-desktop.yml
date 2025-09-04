@@ -19,8 +19,11 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 30
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-15]
 
     steps:
       - name: Checkout
@@ -28,4 +31,11 @@ jobs:
 
       - uses: ./.github/actions/setup-java
 
-      - run: ./gradlew :app-desktop:build --stacktrace
+      - run: ./gradlew :app-desktop:createDistributable --stacktrace
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: desktop-app-build-${{ matrix.os }}
+          path: app-desktop/build/compose/binaries/main/**/*
+          retention-days: 14

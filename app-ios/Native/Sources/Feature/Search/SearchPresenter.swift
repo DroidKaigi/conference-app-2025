@@ -66,7 +66,14 @@ final class SearchPresenter {
 
             // Language filter
             if let language = selectedLanguage {
-                if item.timetableItem.language != language {
+                let itemLang = item.timetableItem.language.langOfSpeaker.uppercased()
+                let selectedLang = language.langOfSpeaker.uppercased()
+
+                // Handle different language code formats
+                let normalizedItemLang = normalizeLanguageCode(itemLang)
+                let normalizedSelectedLang = normalizeLanguageCode(selectedLang)
+
+                if normalizedItemLang != normalizedSelectedLang {
                     return false
                 }
             }
@@ -89,5 +96,28 @@ final class SearchPresenter {
 
     func timetableItemTapped(_ item: TimetableItemWithFavorite) {
         // print("Search item tapped: \(item.timetableItem.title)")
+    }
+
+    private func normalizeLanguageCode(_ langCode: String) -> String {
+        let upperCode = langCode.uppercased()
+
+        switch upperCode {
+        case "JA", "JAPANESE", "JP":
+            return "JA"
+        case "EN", "ENGLISH", "ENG":
+            return "EN"
+        case "MIXED":
+            return "MIXED"
+        default:
+            // Handle codes like "ENGLISH" or "JAPANESE" from actual data
+            if upperCode.hasPrefix("JA") || upperCode.contains("JAPANESE") {
+                return "JA"
+            } else if upperCode.hasPrefix("EN") || upperCode.contains("ENGLISH") {
+                return "EN"
+            } else if upperCode.contains("MIXED") {
+                return "MIXED"
+            }
+            return upperCode
+        }
     }
 }

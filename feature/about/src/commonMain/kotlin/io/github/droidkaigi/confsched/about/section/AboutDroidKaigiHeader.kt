@@ -1,24 +1,20 @@
 package io.github.droidkaigi.confsched.about.section
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.about.AboutRes
-import io.github.droidkaigi.confsched.about.about_header
+import io.github.droidkaigi.confsched.about.components.AboutAnimatedHeaderImage
 import io.github.droidkaigi.confsched.about.components.AboutDroidKaigiSummaryCard
 import io.github.droidkaigi.confsched.about.description
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -32,13 +28,7 @@ fun AboutDroidKaigiHeader(
     Column(
         modifier = modifier.testTag(AboutHeaderTestTag),
     ) {
-        Image(
-            painter = painterResource(AboutRes.drawable.about_header),
-            contentDescription = null,
-            contentScale = ContentScale.FillWidth,
-            alignment = Alignment.TopCenter,
-            modifier = Modifier.fillMaxWidth(),
-        )
+        AboutAnimatedHeaderImage()
         Text(
             text = stringResource(AboutRes.string.description),
             style = MaterialTheme.typography.titleMedium,

@@ -27,14 +27,14 @@ extension TimetableItem {
         formatter.dateFormat = "HH:mm"
         return formatter.string(from: endsAt)
     }
+
+    public func isLunchTime() -> Bool {
+        title.currentLangTitle.lowercased().contains("lunch")
+    }
 }
 
 extension TimetableTimeGroupItems {
     public func getItem(for room: Room) -> TimetableItemWithFavorite? {
         items.first { $0.timetableItem.room.id == room.id }
-    }
-
-    public func isLunchTime() -> Bool {
-        items.count == 1 && items[0].timetableItem.title.currentLangTitle.lowercased().contains("lunch")
     }
 }

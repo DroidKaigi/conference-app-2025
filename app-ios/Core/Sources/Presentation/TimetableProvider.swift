@@ -24,6 +24,9 @@ public final class TimetableProvider {
     @ObservationIgnored
     private var fetchTask: Task<Void, Never>?
 
+    @ObservationIgnored
+    public var notificationProvider: NotificationProvider?
+
     public var timetable: Timetable?
     public var dayTimetable: [DroidKaigi2025Day: [TimetableTimeGroupItems]] = [:]
 
@@ -47,6 +50,11 @@ public final class TimetableProvider {
     public init() {}
 
     @MainActor
+    public func setNotificationProvider(_ provider: NotificationProvider) {
+        self.notificationProvider = provider
+    }
+
+    @MainActor
     public func subscribeTimetableIfNeeded() {
         guard fetchTask == nil else {
             return
@@ -61,6 +69,13 @@ public final class TimetableProvider {
                         timetableItems: timetable.dayTimetable(droidKaigi2025Day: day).contents
                     )
                 }
+
+                // Update notifications when timetable changes
+                let allItemsWithFavoriteStatus = timetable.timetableItems.compactMap {
+                    item -> TimetableItemWithFavorite? in
+                    TimetableItemWithFavorite(timetableItem: item, isFavorited: timetable.bookmarks.contains(item.id))
+                }
+                notificationProvider?.updateNotifications(for: allItemsWithFavoriteStatus)
             }
         }
     }
@@ -69,6 +84,10 @@ public final class TimetableProvider {
     public func toggleFavorite(_ item: TimetableItemWithFavorite) {
         Task {
             await timetableUseCase.toggleFavorite(itemId: item.id)
+
+            // Notify the notification provider about the favorite change
+            // The updated favorite status will be reflected in the next timetable update
+            notificationProvider?.handleFavoriteChange(item)
         }
     }
 

@@ -65,7 +65,7 @@ fun TimetableGridHours(
     val coroutineScope = rememberCoroutineScope()
     val verticalScale = scaleState.verticalScale
 
-    val hoursScreen by remember(verticalScale) {
+    val hoursScreen by remember(verticalScale, timeLine) {
         derivedStateOf {
             val hoursLayout = createHoursLayout(hoursCount(), density, verticalScale)
             HoursScreen(

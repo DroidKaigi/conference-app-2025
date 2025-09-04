@@ -56,9 +56,6 @@ extension Model.RoomType {
             self = .roomM
         case .roomN:
             self = .roomN
-        default:
-            // Map any unknown room types to roomJ as a fallback
-            self = .roomJ
         }
     }
 }
@@ -249,7 +246,7 @@ extension Model.TimetableItemWithFavorite {
 // MARK: - Timetable Converters
 
 extension Model.Timetable {
-    init(from shared: shared.Timetable) {
+    public init(from shared: shared.Timetable) {
         let timetableItems: [any Model.TimetableItem] = shared.timetableItems.map { item in
             if let session = item as? shared.TimetableItem.Session {
                 return Model.TimetableItemSession(from: session)

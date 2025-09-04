@@ -135,9 +135,9 @@ graph LR
 
 ### Prerequisites
 
-- **Xcode**: 16.0 or later
+- **Xcode**: 16.4 or later
 - **Swift**: 6.1.2
-- **macOS**: 15.0 or later
+- **macOS**: 15.3 or later
 - **iOS Deployment Target**: 18.0
 
 ### Setup

@@ -54,6 +54,10 @@ kotlin {
             implementation(libs.androidxBrowser)
         }
 
+        jvmMain.dependencies {
+            implementation(libs.lifecycleViewmodelCompose)
+        }
+
         androidJvmMain.dependencies {
             implementation(libs.navigation3Ui.get().toString()) {
                 /**

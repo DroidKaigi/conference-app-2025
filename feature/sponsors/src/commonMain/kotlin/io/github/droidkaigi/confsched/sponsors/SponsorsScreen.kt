@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched.sponsors
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,7 @@ import androidx.compose.foundation.lazy.grid.LazyGridItemSpanScope
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,12 +28,14 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.component.AnimatedMediumTopAppBar
+import io.github.droidkaigi.confsched.droidkaigiui.extension.enableMouseDragScroll
+import io.github.droidkaigi.confsched.droidkaigiui.rememberAsyncImagePainter
 import io.github.droidkaigi.confsched.model.sponsors.Sponsor
 import io.github.droidkaigi.confsched.model.sponsors.SponsorList
 import io.github.droidkaigi.confsched.model.sponsors.SponsorPlan
@@ -50,6 +54,7 @@ fun SponsorsScreen(
     contentPadding: PaddingValues = PaddingValues(),
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    val gridState = rememberLazyGridState()
     val sponsorList = SponsorList(
         platinumSponsors = sponsors.filter { it.plan == SponsorPlan.PLATINUM },
         goldSponsors = sponsors.filter { it.plan == SponsorPlan.GOLD },
@@ -68,6 +73,7 @@ fun SponsorsScreen(
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
             LazyVerticalGrid(
+                state = gridState,
                 columns = GridCells.Fixed(6),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -76,7 +82,9 @@ fun SponsorsScreen(
                     end = 16.dp,
                     bottom = 48.dp,
                 ),
-                modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+                modifier = Modifier
+                    .nestedScroll(scrollBehavior.nestedScrollConnection)
+                    .enableMouseDragScroll(gridState),
             ) {
                 sponsorsByPlanSection(
                     headerStringResource = SponsorsRes.string.platinum_sponsors_title,
@@ -157,14 +165,18 @@ fun SponsorItem(
     modifier: Modifier = Modifier,
     onSponsorsItemClick: (url: String) -> Unit,
 ) {
+    val painter = rememberAsyncImagePainter(
+        model = sponsor.logo,
+        placeholder = ColorPainter(Color.White),
+    )
     Card(
         modifier = modifier.clickable { onSponsorsItemClick(sponsor.link) },
         colors = CardDefaults.cardColors(
             containerColor = Color.White,
         ),
     ) {
-        AsyncImage(
-            model = sponsor.logo,
+        Image(
+            painter = painter,
             contentDescription = stringResource(
                 SponsorsRes.string.content_description_sponsor_logo_format,
                 sponsor.name,

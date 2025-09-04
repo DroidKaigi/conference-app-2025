@@ -5,17 +5,28 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 pluginManagement {
     includeBuild("gradle-conventions")
     repositories {
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
         gradlePluginPortal()
         mavenCentral()
-        google()
     }
 }
 
 dependencyResolutionManagement {
     repositories {
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
         mavenCentral()
-        google()
-        gradlePluginPortal()
         // navigation3 adaptive
         maven {
             url = uri("https://androidx.dev/snapshots/builds/13508953/artifacts/repository")

@@ -1,0 +1,48 @@
+{
+  "sourceLanguage" : "ja",
+  "strings" : {
+    "${applicationName}で指定日時のセッションを取得" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringSet" : {
+            "state" : "translated",
+            "values" : [
+              "Get sessions at a specific date and time for ${applicationName}"
+            ]
+          }
+        },
+        "ja" : {
+          "stringSet" : {
+            "state" : "new",
+            "values" : [
+              "${applicationName}で指定日時のセッションを取得"
+            ]
+          }
+        }
+      }
+    },
+    "${applicationName}で現在のセッションを取得" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringSet" : {
+            "state" : "translated",
+            "values" : [
+              "Get ongoing sessions for ${applicationName}"
+            ]
+          }
+        },
+        "ja" : {
+          "stringSet" : {
+            "state" : "new",
+            "values" : [
+              "${applicationName}で現在のセッションを取得"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

@@ -1,17 +1,17 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "2025.09.11(Thu) - 12(Fri)" : {
+    "2025.09.10(Wed) - 12(Fri)" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2025.09.11(木) 〜 12(金) "
+            "value" : "2025.09.10(水) 〜 12(金) "
           }
         }
       }
     },
-    "About" : {
+    "About DroidKaigi" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -22,7 +22,14 @@
       }
     },
     "App Version" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アプリバージョン"
+          }
+        }
+      }
     },
     "Bellesalle Shibuya Garden" : {
       "localizations" : {
@@ -35,7 +42,14 @@
       }
     },
     "Cancel" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キャンセル"
+          }
+        }
+      }
     },
     "Check Map" : {
       "localizations" : {
@@ -115,7 +129,7 @@
         }
       }
     },
-    "Date:" : {
+    "Date" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -152,7 +166,7 @@
         }
       }
     },
-    "Location:" : {
+    "Location" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -265,7 +279,14 @@
       }
     },
     "Switch" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "切り替え"
+          }
+        }
+      }
     },
     "Switch to Compose Multiplatform" : {
       "extractionState" : "manual",
@@ -302,7 +323,14 @@
       }
     },
     "Switch UI from SwiftUI to Compose Multiplatform. Are you sure you want to do this?" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UIをSwiftUIからCompose Multiplatformに切り替えます。よろしいですか？"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

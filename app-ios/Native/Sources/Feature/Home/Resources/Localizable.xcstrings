@@ -11,6 +11,9 @@
         }
       }
     },
+    "00:00" : {
+
+    },
     "Conference background" : {
       "extractionState" : "manual",
       "localizations" : {

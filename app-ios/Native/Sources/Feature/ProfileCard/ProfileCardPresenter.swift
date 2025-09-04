@@ -28,12 +28,30 @@ class FormState {
     }
 
     func validate() -> Bool {
-        nameError = name.isEmpty ? "Name is required" : nil
-        occupationError = occupation.isEmpty ? "Occupation is required" : nil
-        urlError = urlString.isEmpty ? "URL is required" : nil
-        imageError = image == nil ? "Image is required" : nil
+        // Name validation
+        nameError = name.isEmpty ? String(localized: "Nickname is required", bundle: .module) : nil
+
+        // Occupation validation
+        occupationError = occupation.isEmpty ? String(localized: "Occupation is required", bundle: .module) : nil
+
+        // URL validation
+        if urlString.isEmpty {
+            urlError = String(localized: "Link is required", bundle: .module)
+        } else if !isValidURL(urlString) {
+            urlError = String(localized: "Invalid URL format", bundle: .module)
+        } else {
+            urlError = nil
+        }
+
+        // Image validation
+        imageError = image == nil ? String(localized: "Image is required", bundle: .module) : nil
 
         return nameError == nil && occupationError == nil && urlError == nil && imageError == nil
+    }
+
+    private func isValidURL(_ urlString: String) -> Bool {
+        guard let url = URL(string: urlString) else { return false }
+        return url.scheme == "http" || url.scheme == "https"
     }
 
     @MainActor

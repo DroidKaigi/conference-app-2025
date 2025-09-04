@@ -14,6 +14,7 @@ kotlin {
             implementation(projects.core.model)
             implementation(libs.soilQueryCompose)
             implementation(libs.soilReacty)
+            implementation(libs.material3Adaptive)
 
             api(libs.coil)
             api(libs.coilNetwork)

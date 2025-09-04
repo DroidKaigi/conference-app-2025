@@ -17,7 +17,15 @@ actual fun rememberExternalNavController(): ExternalNavController {
 
 class JvmExternalNavController : ExternalNavController {
     override fun navigate(url: String) {
-        TODO("Not yet implemented")
+        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+            runCatching {
+                Desktop.getDesktop().browse(URI(url))
+            }.onFailure { error ->
+                println("Failed to navigate to URL (invalid URL): $url error: $error")
+            }
+        } else {
+            println("Failed to navigate to URL (desktop not supported): $url")
+        }
     }
 
     override fun navigateToCalendarRegistration(timetableItem: TimetableItem) {
@@ -39,16 +47,7 @@ class JvmExternalNavController : ExternalNavController {
             append("&details=").append(timetableItem.url.encodeUtf8())
             append("&location=").append(timetableItem.room.name.currentLangTitle.encodeUtf8())
         }
-
-        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-            runCatching {
-                Desktop.getDesktop().browse(URI(calendarUrl))
-            }.onFailure { error ->
-                println("Failed to add event to calendar: $error")
-            }
-        } else {
-            println("Access to calendar not granted:")
-        }
+        navigate(calendarUrl)
     }
 
     override fun onShareClick(timetableItem: TimetableItem) {

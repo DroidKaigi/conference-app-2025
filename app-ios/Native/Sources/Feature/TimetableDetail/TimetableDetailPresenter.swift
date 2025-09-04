@@ -12,7 +12,7 @@ final class TimetableDetailPresenter {
         var action: (title: String, handler: () -> Void)? = nil
     }
 
-    let timetableItem: TimetableItemWithFavorite
+    var timetableItem: TimetableItemWithFavorite
     private let timetableProvider = TimetableProvider()
     private let eventStore: EKEventStore
 
@@ -29,8 +29,13 @@ final class TimetableDetailPresenter {
 
     func toggleFavorite() {
         timetableProvider.toggleFavorite(timetableItem)
-        if !timetableItem.isFavorited {
-            toast = Toast(message: "ブックマークに追加されました", action: ("一覧を見る", navigateToFavorite))
+        timetableItem.isFavorited.toggle()
+        if timetableItem.isFavorited {
+            toast = Toast(
+                message: String(localized: "Added to bookmarks", bundle: .module),
+                action: (String(localized: "View list", bundle: .module), navigateToFavorite))
+        } else {
+            toast = Toast(message: String(localized: "Removed from bookmarks", bundle: .module))
         }
     }
 
@@ -45,7 +50,7 @@ final class TimetableDetailPresenter {
                     if granted {
                         self.createCalendarEvent()
                     } else {
-                        self.toast = Toast(message: "カレンダーへのアクセスが許可されていません")
+                        self.toast = Toast(message: String(localized: "Calendar access not granted", bundle: .module))
                     }
                 }
             }
@@ -75,9 +80,9 @@ final class TimetableDetailPresenter {
 
         do {
             try eventStore.save(event, span: .thisEvent)
-            toast = Toast(message: "カレンダーに追加しました")
+            toast = Toast(message: String(localized: "Added to calendar", bundle: .module))
         } catch {
-            toast = Toast(message: "カレンダーの追加に失敗しました")
+            toast = Toast(message: String(localized: "Failed to add to calendar", bundle: .module))
         }
     }
 

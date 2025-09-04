@@ -8,7 +8,7 @@ public struct ContributorScreen: View {
 
     public var body: some View {
         Group {
-            if presenter.isLoading {
+            if presenter.contributorProvider.isLoading {
                 ProgressView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
@@ -23,7 +23,7 @@ public struct ContributorScreen: View {
                                         .foregroundColor(AssetColors.onSurface.swiftUIColor)
 
                                     HStack(alignment: .firstTextBaseline, spacing: 6) {
-                                        Text("\(presenter.contributors.count)")
+                                        Text("\(presenter.contributorProvider.contributors.count)")
                                             .font(.custom(AssetFonts.Chango.regular, size: 32))
                                             .foregroundColor(AssetColors.onSurface.swiftUIColor)
                                             .lineLimit(1)
@@ -42,7 +42,7 @@ public struct ContributorScreen: View {
                         }
                         .background(AssetColors.surface.swiftUIColor)
 
-                        ForEach(presenter.contributors) { contributor in
+                        ForEach(presenter.contributorProvider.contributors, id: \.id) { contributor in
                             VStack(spacing: 0) {
                                 ContributorListItem(contributor: contributor)
                                     .padding(.horizontal, 16)

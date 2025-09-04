@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BF724DA42E16F64B0026FE31 /* Root in Frameworks */ = {isa = PBXBuildFile; productRef = BF724DA32E16F64B0026FE31 /* Root */; };
+		D07635DB265D384F2AA4324A /* NotificationAuthorizationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07631B1D8926F20BAC4B4D4 /* NotificationAuthorizationStatus.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -15,6 +16,7 @@
 		BF779E6A2E0F8D5E000A0710 /* DroidKaigi2025.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DroidKaigi2025.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF779E832E0F8DDC000A0710 /* Core */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Core; sourceTree = "<group>"; };
 		BF779E842E0F8DF0000A0710 /* Native */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Native; sourceTree = "<group>"; };
+		D07631B1D8926F20BAC4B4D4 /* NotificationAuthorizationStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NotificationAuthorizationStatus.swift; path = Core/Sources/Model/NotificationAuthorizationStatus.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -53,6 +55,7 @@
 				BF779E6B2E0F8D5E000A0710 /* Products */,
 				BF779E6C2E0F8D5E000A0710 /* App */,
 				BF724DA22E16F64B0026FE31 /* Frameworks */,
+				D07631B1D8926F20BAC4B4D4 /* NotificationAuthorizationStatus.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -185,6 +188,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D07635DB265D384F2AA4324A /* NotificationAuthorizationStatus.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

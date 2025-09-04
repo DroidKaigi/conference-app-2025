@@ -20,13 +20,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalHapticFeedback
 import io.github.droidkaigi.confsched.designsystem.theme.LocalRoomTheme
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
@@ -49,7 +50,7 @@ fun TimetableItemDetailFloatingActionButtonMenu(
     isBookmarked: Boolean,
     slideUrl: String?,
     videoUrl: String?,
-    onBookmarkClick: (isBookmarked: Boolean) -> Unit,
+    onBookmarkToggle: () -> Unit,
     onAddCalendarClick: () -> Unit,
     onShareClick: () -> Unit,
     onViewSlideClick: (url: String) -> Unit,
@@ -64,7 +65,7 @@ fun TimetableItemDetailFloatingActionButtonMenu(
         slideUrl = slideUrl,
         videoUrl = videoUrl,
         onExpandedChange = { expanded = it },
-        onBookmarkClick = onBookmarkClick,
+        onBookmarkToggle = onBookmarkToggle,
         onAddCalendarClick = onAddCalendarClick,
         onShareClick = onShareClick,
         onViewSlideClick = onViewSlideClick,
@@ -81,7 +82,7 @@ private fun TimetableItemDetailFloatingActionButtonMenu(
     slideUrl: String?,
     videoUrl: String?,
     onExpandedChange: (Boolean) -> Unit,
-    onBookmarkClick: (isBookmarked: Boolean) -> Unit,
+    onBookmarkToggle: () -> Unit,
     onAddCalendarClick: () -> Unit,
     onShareClick: () -> Unit,
     onViewSlideClick: (url: String) -> Unit,
@@ -89,15 +90,17 @@ private fun TimetableItemDetailFloatingActionButtonMenu(
     modifier: Modifier = Modifier,
 ) {
     var height by remember { mutableIntStateOf(0) }
-    var childMenuIsBookmarked by remember { mutableStateOf(isBookmarked) } // local copy to update after transition
-    val latestIsBookmarked by rememberUpdatedState(isBookmarked) // to ensure the latest value is used in recomposition
+    var pendingBookmarkToggle by remember { mutableStateOf(false) }
 
-    // Recompose child menu items only after the view size has settled.
-    // Recomposing them during the transition may cause a brief flicker that makes the menu look flaky.
+    // Waiting for open/close animation to finish
     LaunchedEffect(height) {
-        delay(100) // small debounce delay to wait until transition stabilizes
-        childMenuIsBookmarked = latestIsBookmarked
+        delay(100)
+        if (pendingBookmarkToggle) {
+            pendingBookmarkToggle = false
+            onBookmarkToggle()
+        }
     }
+    val haptic = LocalHapticFeedback.current
 
     val roomTheme = LocalRoomTheme.current
     // TODO: This color is temporary. We should define a proper color once the official Figma definitions are available.
@@ -130,12 +133,15 @@ private fun TimetableItemDetailFloatingActionButtonMenu(
     ) {
         FloatingActionButtonMenuItem(
             onClick = {
-                onBookmarkClick(!isBookmarked)
+                if (!isBookmarked) {
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                }
+                pendingBookmarkToggle = true
                 onExpandedChange(false)
             },
             text = {
                 Text(
-                    if (childMenuIsBookmarked) {
+                    if (isBookmarked) {
                         stringResource(SessionsRes.string.remove_from_bookmark)
                     } else {
                         stringResource(SessionsRes.string.add_to_bookmark)
@@ -144,7 +150,7 @@ private fun TimetableItemDetailFloatingActionButtonMenu(
             },
             icon = {
                 Icon(
-                    if (childMenuIsBookmarked) Icons.Default.Favorite else Icons.Outlined.FavoriteBorder,
+                    if (isBookmarked) Icons.Default.Favorite else Icons.Outlined.FavoriteBorder,
                     contentDescription = null,
                 )
             },
@@ -203,7 +209,7 @@ private fun TimetableItemDetailFloatingMenuPreview() {
                 expanded = false,
                 isBookmarked = false,
                 onExpandedChange = {},
-                onBookmarkClick = {},
+                onBookmarkToggle = {},
                 onAddCalendarClick = {},
                 onShareClick = {},
                 slideUrl = session.asset.slideUrl,
@@ -225,7 +231,7 @@ private fun TimetableItemDetailFloatingMenuExpandedPreview() {
                 expanded = true,
                 isBookmarked = false,
                 onExpandedChange = {},
-                onBookmarkClick = {},
+                onBookmarkToggle = {},
                 onAddCalendarClick = {},
                 onShareClick = {},
                 slideUrl = session.asset.slideUrl,

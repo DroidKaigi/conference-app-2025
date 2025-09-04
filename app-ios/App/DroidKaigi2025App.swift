@@ -5,17 +5,20 @@
 //  Created by Ryoya Ito on 2025/06/28.
 //
 
+import BackgroundTasks
 import Root
 import SwiftUI
 import Theme
 
 @main
 struct DroidKaigi2025App: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     private let inlineTitleFontSize: CGFloat = 20
     private let titleFontSize: CGFloat = 28
 
     init() {
         ThemeFonts.registerAll()
+        registerBackgroundTasks()
 
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
@@ -38,6 +41,10 @@ struct DroidKaigi2025App: App {
         bar.standardAppearance = appearance
         bar.compactAppearance = appearance
         bar.scrollEdgeAppearance = appearance
+    }
+
+    private func registerBackgroundTasks() {
+        BackgroundTaskHandler.registerBackgroundTasks()
     }
 
     var body: some Scene {

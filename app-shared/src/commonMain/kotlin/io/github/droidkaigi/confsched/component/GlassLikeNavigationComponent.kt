@@ -4,10 +4,10 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -20,6 +20,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.haze.HazeDefaults
 import dev.chrisbanes.haze.HazeState
@@ -89,9 +90,11 @@ fun NavigationTabItem(
     Box(
         modifier = modifier
             .scale(scale)
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
+            .selectable(
+                selected = selected,
                 onClick = { onTabSelected(tab) },
+                role = Role.Tab,
+                interactionSource = remember { MutableInteractionSource() },
                 indication = null,
             ),
         contentAlignment = Alignment.Center,
