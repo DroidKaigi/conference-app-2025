@@ -19,7 +19,7 @@ private enum TabType: CaseIterable, Hashable {
     case favorite
     case info
     case profileCard
-
+    
     func tabImage(_ selectedTab: TabType) -> ImageAsset {
         switch self {
         case .timetable:
@@ -45,11 +45,11 @@ public struct RootScreen: View {
     @State private var composeMultiplatformEnabled = false
     @State private var favoriteScreenUiMode: FavoriteScreenUiModePicker.UiMode = .swiftui
     private let presenter = RootPresenter()
-
+    
     public init() {
         UITabBar.appearance().unselectedItemTintColor = UIColor(named: "tab_inactive")
     }
-
+    
     public var body: some View {
         Group {
             if composeMultiplatformEnabled {
@@ -69,7 +69,7 @@ public struct RootScreen: View {
             presenter.prepareWindow()
         }
     }
-
+    
     @ViewBuilder
     private var tabContent: some View {
         switch selectedTab {
@@ -85,7 +85,7 @@ public struct RootScreen: View {
             profileCardTab
         }
     }
-
+    
     private var timetableTab: some View {
         NavigationStack(path: $navigationPath) {
             HomeScreen(onNavigate: handleHomeNavigation)
@@ -97,13 +97,13 @@ public struct RootScreen: View {
                 }
         }
     }
-
+    
     private var mapTab: some View {
         NavigationStack {
             EventMapScreen()
         }
     }
-
+    
     private var favoriteTab: some View {
         NavigationStack(path: $favoriteNavigationPath) {
             ZStack(alignment: .top) {
@@ -119,7 +119,7 @@ public struct RootScreen: View {
                     KMPFavoritesScreenViewControllerWrapper(onNavigate: handleFavoriteNavigation)
                         .ignoresSafeArea(.all)
                 }
-
+                
                 HStack {
                     Spacer()
                     FavoriteScreenUiModePicker(uiMode: $favoriteScreenUiMode)
@@ -133,7 +133,7 @@ public struct RootScreen: View {
             }
         }
     }
-
+    
     private var infoTab: some View {
         NavigationStack(path: $aboutNavigationPath) {
             AboutScreen(
@@ -145,7 +145,7 @@ public struct RootScreen: View {
             }
         }
     }
-
+    
     @ViewBuilder
     private func aboutDestinationView(for destination: AboutNavigationDestination) -> some View {
         switch destination {
@@ -163,13 +163,13 @@ public struct RootScreen: View {
                 .navigationTitle("Settings")
         }
     }
-
+    
     private var profileCardTab: some View {
         NavigationStack {
             ProfileCardScreen()
         }
     }
-
+    
     private func handleHomeNavigation(_ destination: HomeNavigationDestination) {
         switch destination {
         case .timetableDetail(let item):
@@ -178,26 +178,26 @@ public struct RootScreen: View {
             navigationPath.append(NavigationDestination.search)
         }
     }
-
+    
     private func handleAboutNavigation(_ destination: AboutNavigationDestination) {
         aboutNavigationPath.append(destination)
     }
-
+    
     private func handleFavoriteNavigation(_ destination: FavoriteNavigationDestination) {
         favoriteNavigationPath.append(destination)
     }
-
+    
     private func handleSearchNavigation(_ destination: SearchNavigationDestination) {
         switch destination {
         case .timetableDetail(let item):
             navigationPath.append(NavigationDestination.timetableDetail(item))
         }
     }
-
+    
     private func handleEnableComposeMultiplatform() {
         composeMultiplatformEnabled = true
     }
-
+    
     @ViewBuilder
     private var tabBar: some View {
         GeometryReader { geometry in
