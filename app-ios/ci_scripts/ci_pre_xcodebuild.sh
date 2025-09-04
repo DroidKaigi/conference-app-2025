@@ -34,6 +34,11 @@ defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidation -boo
 defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
 defaults write com.apple.dt.Xcode IDEMacroExpansionBuildEverything -bool YES
 defaults write com.apple.dt.Xcode IDEPackageOnlyUseVersionsFromResolvedFile -bool NO
+defaults write com.apple.dt.Xcode IDEDisableAutomaticPackageResolution -bool NO
+
+# Additional plugin trust settings
+defaults write com.apple.dt.Xcode IDESkipPluginValidation -bool YES
+defaults write com.apple.dt.Xcode PluginValidationMode -int 0
 
 # Create Xcode preferences directory if it doesn't exist
 mkdir -p ~/Library/Developer/Xcode
@@ -41,6 +46,8 @@ mkdir -p ~/Library/Developer/Xcode
 # Set environment variables for build
 export SKIP_MACRO_VALIDATION=YES
 export SKIP_PACKAGE_PLUGIN_VALIDATION=YES
+export DISABLE_PACKAGE_PLUGIN_VALIDATION=YES
+export DISABLE_MACRO_VALIDATION=YES
 
 # Pre-resolve package dependencies to ensure all plugins and macros are registered
 echo "Pre-resolving package dependencies with all validations skipped..."
@@ -56,6 +63,28 @@ xcodebuild -resolvePackageDependencies \
     CODE_SIGNING_ALLOWED=NO || true
 
 echo "Package dependencies resolved."
+
+# Explicitly accept and trust all Swift Package plugins
+echo "Trusting all Swift Package plugins..."
+xcodebuild -project "$REPO_ROOT/app-ios/DroidKaigi2025.xcodeproj" \
+    -scheme DroidKaigi2025 \
+    -showBuildSettings \
+    -skipPackagePluginValidation \
+    -skipMacroValidation | grep -i plugin || true
+
+# Create a dummy build to force plugin registration
+echo "Performing initial build to register plugins..."
+xcodebuild build \
+    -project "$REPO_ROOT/app-ios/DroidKaigi2025.xcodeproj" \
+    -scheme DroidKaigi2025 \
+    -destination "generic/platform=iOS" \
+    -skipPackagePluginValidation \
+    -skipMacroValidation \
+    -derivedDataPath "$REPO_ROOT/app-ios/DerivedData" \
+    CODE_SIGN_IDENTITY="" \
+    CODE_SIGNING_REQUIRED=NO \
+    CODE_SIGNING_ALLOWED=NO \
+    -dry-run || true
 
 echo "============================"
 echo "Pre-Build Script Completed"

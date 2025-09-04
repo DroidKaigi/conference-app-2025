@@ -96,10 +96,10 @@ run_gradle_with_retry() {
 # Determine build configuration based on CI action
 if [ "$CI_XCODEBUILD_ACTION" = "archive" ]; then
     echo "Building XCFramework for distribution (Release configuration)..."
-    run_gradle_with_retry "./gradlew app-shared:assembleSharedReleaseXCFramework -Papp.ios.shared.arch=arm64 --no-configuration-cache --refresh-dependencies --no-parallel --stacktrace --no-build-cache"
+    run_gradle_with_retry "./gradlew app-shared:assembleSharedReleaseXCFramework --no-configuration-cache --refresh-dependencies --no-parallel --stacktrace --no-build-cache"
 else
     echo "Building XCFramework for development/testing (Debug configuration)..."
-    run_gradle_with_retry "./gradlew app-shared:assembleSharedDebugXCFramework -Papp.ios.shared.arch=arm64 --no-configuration-cache --refresh-dependencies --no-parallel --stacktrace --no-build-cache"
+    run_gradle_with_retry "./gradlew app-shared:assembleSharedDebugXCFramework --no-configuration-cache --refresh-dependencies --no-parallel --stacktrace --no-build-cache"
 fi
 
 # Verify XCFramework output
