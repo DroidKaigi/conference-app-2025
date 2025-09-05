@@ -12,4 +12,5 @@ dependencies {
     commonMainImplementation(projects.core.model)
     commonMainImplementation(compose.runtime)
     commonMainImplementation(libs.rin)
+    androidMainImplementation(libs.androidxXrCompose)
 }

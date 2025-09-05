@@ -3,27 +3,35 @@ package io.github.droidkaigi.confsched.sessions.components
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import io.github.droidkaigi.confsched.common.compose.rememberSpacialEnvironment
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.component.AnimatedTextTopAppBar
 import io.github.droidkaigi.confsched.model.sessions.TimetableUiType
 import io.github.droidkaigi.confsched.sessions.SessionsRes
 import io.github.droidkaigi.confsched.sessions.grid_view
+import io.github.droidkaigi.confsched.sessions.ic_request_full_space
+import io.github.droidkaigi.confsched.sessions.ic_request_home_space
 import io.github.droidkaigi.confsched.sessions.ic_view_grid
 import io.github.droidkaigi.confsched.sessions.ic_view_timeline
+import io.github.droidkaigi.confsched.sessions.request_full_space
+import io.github.droidkaigi.confsched.sessions.request_home_space
 import io.github.droidkaigi.confsched.sessions.search
 import io.github.droidkaigi.confsched.sessions.timeline_view
 import io.github.droidkaigi.confsched.sessions.timetable
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun TimetableTopAppBar(
     timetableUiType: TimetableUiType,
@@ -31,9 +39,31 @@ fun TimetableTopAppBar(
     onUiTypeChangeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val isFullSpace = rememberSpacialEnvironment().isFullSpace
     AnimatedTextTopAppBar(
         title = stringResource(SessionsRes.string.timetable),
         actions = {
+            val spacialEnvironment = rememberSpacialEnvironment()
+            if (spacialEnvironment.enabledSpacialControl) {
+                IconButton(
+                    onClick = {
+                        spacialEnvironment.toggleSpaceMode()
+                    },
+                    shapes = IconButtonDefaults.shapes(),
+                ) {
+                    if (spacialEnvironment.isFullSpace) {
+                        Icon(
+                            painter = painterResource(SessionsRes.drawable.ic_request_home_space),
+                            contentDescription = stringResource(SessionsRes.string.request_full_space),
+                        )
+                    } else {
+                        Icon(
+                            painter = painterResource(SessionsRes.drawable.ic_request_full_space),
+                            contentDescription = stringResource(SessionsRes.string.request_home_space),
+                        )
+                    }
+                }
+            }
             IconButton(onClick = onSearchClick) {
                 Icon(
                     imageVector = Icons.Default.Search,
@@ -55,7 +85,9 @@ fun TimetableTopAppBar(
                 )
             }
         },
-        colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = if (isFullSpace) Color.Unspecified else Color.Transparent,
+        ),
         modifier = modifier,
     )
 }

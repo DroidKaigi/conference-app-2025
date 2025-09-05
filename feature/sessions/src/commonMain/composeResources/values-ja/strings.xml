@@ -41,4 +41,6 @@
     <string name="remove_from_bookmark">ブックマークを削除</string>
     <string name="add_to_calendar">カレンダーに登録</string>
     <string name="share_link">リンクをシェア</string>
+    <string name="request_full_space">フルスペースに切り替え</string>
+    <string name="request_home_space">ホームスペースに切り替え</string>
 </resources>

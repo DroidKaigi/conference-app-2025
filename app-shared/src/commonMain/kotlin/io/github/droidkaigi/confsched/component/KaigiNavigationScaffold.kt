@@ -92,6 +92,7 @@ private fun KaigiNavigationScaffold(
 ) {
     Row(modifier = modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
         AnimatedVisibility(currentTab != null && navigationBarType == NavigationBarType.NavigationRail) {
+            // TODO: Support XR
             GlassLikeNavigationRailBar(
                 currentTab = currentTab ?: MainScreenTab.Timetable,
                 hazeState = hazeState,

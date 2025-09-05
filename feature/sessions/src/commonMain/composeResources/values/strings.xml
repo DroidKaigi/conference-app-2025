@@ -41,4 +41,6 @@
     <string name="remove_from_bookmark">Remove from Bookmarks</string>
     <string name="add_to_calendar">Add to Calendar</string>
     <string name="share_link">Share Link</string>
+    <string name="request_full_space">Request full space</string>
+    <string name="request_home_space">Request home space</string>
 </resources>
