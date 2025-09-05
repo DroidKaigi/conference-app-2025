@@ -7,7 +7,7 @@ public struct KMPDependencyProvider: Sendable {
 
     private init() {
         self.appGraph = IosAppGraphKt.createIosAppGraph(
-            useProductionApiBaseUrl: false
+            useProductionApiBaseUrl: true
         )
     }
 }
