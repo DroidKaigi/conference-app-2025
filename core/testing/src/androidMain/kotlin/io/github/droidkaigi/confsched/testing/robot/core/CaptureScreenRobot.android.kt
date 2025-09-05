@@ -9,7 +9,7 @@ import com.github.takahirom.roborazzi.captureRoboImage
 @OptIn(InternalRoborazziApi::class)
 context(composeUiTest: ComposeUiTest)
 actual fun SemanticsNodeInteraction.captureNodeWithDescription(description: String) {
-    val filePath = DefaultFileNameGenerator.generateFilePath()
+    val filePath = "android/" + DefaultFileNameGenerator.generateFilePath()
         .split(".")
         .dropLast(2) // drop method name and extension
         .joinToString(".")
