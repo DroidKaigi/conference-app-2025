@@ -10,6 +10,6 @@ context(composeUiTest: ComposeUiTest)
 actual fun SemanticsNodeInteraction.captureNodeWithDescription(description: String) {
     captureRoboImage(
         composeUiTest = composeUiTest,
-        filePath = "ios/$description.png",
+        filePath = "$description - ios.png",
     )
 }
