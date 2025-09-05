@@ -18,6 +18,8 @@ plugins {
     id("droidkaigi.primitive.spotless")
 }
 
+version = "1.0"
+
 compose.resources.nameOfResClass = "AppSharedRes"
 
 kotlin {
