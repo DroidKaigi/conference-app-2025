@@ -2,9 +2,10 @@ package io.github.droidkaigi.confsched.testing.robot.core
 
 import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.SemanticsNodeInteraction
-import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.onNodeWithTag
 import dev.zacsweers.metro.Inject
 import io.github.droidkaigi.confsched.testing.behavior.TestCaseDescriptionProvider
+import io.github.droidkaigi.confsched.testing.compose.TestRootTestTag
 
 interface CaptureScreenRobot {
     context(composeUiTest: ComposeUiTest, checkNode: TestCaseDescriptionProvider)
@@ -19,6 +20,8 @@ class DefaultCaptureScreenRobot : CaptureScreenRobot {
     context(composeUiTest: ComposeUiTest, testCaseDescriptionProvider: TestCaseDescriptionProvider)
     override fun captureScreenWithChecks(checks: () -> Unit) {
         checks()
-        composeUiTest.onRoot().captureNodeWithDescription(testCaseDescriptionProvider.description)
+        composeUiTest
+            .onNodeWithTag(TestRootTestTag)
+            .captureNodeWithDescription(testCaseDescriptionProvider.description)
     }
 }
