@@ -33,7 +33,7 @@ jobs:
           name: event-payload
           path: ${{ github.event_path }}
 
-      - run: ./gradlew testDevDebugUnitTest testDebugUnitTest --stacktrace
+      - run: ./gradlew testDevDebugUnitTest testDebugUnitTest jvmTest --stacktrace
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
