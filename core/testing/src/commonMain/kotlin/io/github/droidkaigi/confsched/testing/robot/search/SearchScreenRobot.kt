@@ -2,6 +2,7 @@ package io.github.droidkaigi.confsched.testing.robot.search
 
 import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.assertAll
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertTextContains
@@ -364,7 +365,7 @@ class SearchScreenRobot(
     fun checkTimetableListNotDisplayed() {
         composeUiTest
             .onNodeWithTag(TimetableListTestTag)
-            .assertIsNotDisplayed()
+            .assertDoesNotExist()
     }
 
     context(composeUiTest: ComposeUiTest)
@@ -387,6 +388,6 @@ class SearchScreenRobot(
         composeUiTest
             .onAllNodesWithTag(TimetableItemCardTestTag)
             .onFirst()
-            .assertIsNotDisplayed()
+            .assertDoesNotExist()
     }
 }
