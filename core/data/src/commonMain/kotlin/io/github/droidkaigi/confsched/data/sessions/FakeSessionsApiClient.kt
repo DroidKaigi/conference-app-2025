@@ -81,7 +81,7 @@ public class FakeSessionsApiClient : SessionsApiClient {
         public val defaultSessionId: String = defaultSession.id
 
         public val defaultSessions: List<SessionResponse> = SessionsAllResponse.fake()
-            .filterConferenceDaySessions().sessions.filter { it.sessionType == "NORMAL" }.take(7)
+            .filterConferenceDaySessions().sessions.filter { it.sessionType == "NORMAL" }.take(10)
         public val defaultSessionIds: List<String> = defaultSessions.map { it.id }
 
         public val defaultSessionWithLongDescription: SessionResponse = SessionsAllResponse.fake()
@@ -234,7 +234,7 @@ private fun SessionResponse.Companion.fakes(
     for (day in 0 until 3) {
         val dayOffsetSeconds = day * 24 * 60 * 60 + 10 * 60 * 60 + (0.5 * 60 * 60).toInt()
         for (room in rooms) {
-            for (index in 0 until 4) {
+            for (index in 0 until 5) {
                 val start =
                     (DroidKaigi2025Day.Workday.start + (index * 30 * 60 * 60 + dayOffsetSeconds).seconds)
                 val end =

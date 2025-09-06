@@ -94,3 +94,10 @@ tasks.withType<KotlinNativeCompile>().all {
         dependsOn("kspCommonMainKotlinMetadata")
     }
 }
+
+// ensure JVM target tests run in English locale
+tasks.withType<Test>().configureEach {
+    if (name == "jvmTest") {
+        systemProperty("user.language", "en")
+    }
+}
