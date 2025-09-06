@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.toShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,13 +24,10 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.model.profile.ProfileCardTheme
 import io.github.droidkaigi.confsched.profile.ProfileRes
-import io.github.droidkaigi.confsched.profile.card_front_background_day
-import io.github.droidkaigi.confsched.profile.card_front_background_night
 import io.github.droidkaigi.confsched.profile.card_theme_selector_check
 import io.github.droidkaigi.confsched.profile.card_theme_selector_logo_day
 import io.github.droidkaigi.confsched.profile.card_theme_selector_logo_night
@@ -61,16 +57,8 @@ fun ThemeWithShape(
             .clickable(onClick = onSelect),
         contentAlignment = Alignment.Center,
     ) {
-        Image(
-            painter = painterResource(
-                if (theme.isDark) {
-                    ProfileRes.drawable.card_front_background_night
-                } else {
-                    ProfileRes.drawable.card_front_background_day
-                },
-            ),
-            contentScale = ContentScale.Crop,
-            contentDescription = null,
+        CardFrontBackgroundImage(
+            isDark = theme.isDark,
             modifier = Modifier
                 .matchParentSize()
                 .clip(RoundedCornerShape(2.dp)),
