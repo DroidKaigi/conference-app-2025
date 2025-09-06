@@ -1,21 +1,24 @@
 import SwiftUI
 import Theme
+import Model
 
 struct FrontCard: View {
     let userRole: String
     let userName: String
     let cardType: ProfileCardType
+    let cardVariant: ProfileCardVariant
     let image: Data
     let normal: (Float, Float, Float)
     let effectEnabled: Bool
 
     init(
-        userRole: String, userName: String, cardType: ProfileCardType, image: Data,
+        userRole: String, userName: String, cardType: ProfileCardType, cardVariant: ProfileCardVariant, image: Data,
         normal: (Float, Float, Float) = (0, 0, 0), effectEnabled: Bool = true
     ) {
         self.userRole = userRole
         self.userName = userName
         self.cardType = cardType
+        self.cardVariant = cardVariant
         self.image = image
         self.normal = normal
         self.effectEnabled = effectEnabled
@@ -82,10 +85,41 @@ struct FrontCard: View {
         .clipped(antialiased: true)
     }
 
+    // Compose Multiplatformを使用したMaterial3 Shape適用版
+    // KMPのProfileCardUserコンポーネントを利用
+    @ViewBuilder
     private var avatarImage: some View {
-        Image(uiImage: UIImage(data: image)!)
-            .resizable()
-            .frame(width: 131, height: 131)
-            .foregroundColor(.accentColor)
+        // KMPのCompose UIをSwiftUIに埋め込む
+        ComposeView(
+            content: {
+                ProfileCardUserView(
+                    isDarkTheme: cardType == .night,
+                    profileImageData: image,
+                    userName: userName,
+                    occupation: userRole,
+                    profileCardTheme: mapToKMPTheme(cardVariant)
+                )
+            }
+        )
+        .frame(width: 150, height: 150) // 画像部分のみのサイズに調整
+    }
+
+    // ProfileCardVariantをKMPのProfileCardThemeにマッピング
+    private func mapToKMPTheme(_ variant: ProfileCardVariant) -> String {
+        // KMPのProfileCardThemeにマッピング
+        switch variant {
+        case .dayPill:
+            return "LightPill"
+        case .nightPill:
+            return "DarkPill"
+        case .dayDiamond:
+            return "LightDiamond"
+        case .nightDiamond:
+            return "DarkDiamond"
+        case .dayFlower:
+            return "LightFlower"
+        case .nightFlower:
+            return "DarkFlower"
+        }
     }
 }

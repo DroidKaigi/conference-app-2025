@@ -9,6 +9,7 @@ import BackgroundTasks
 import Root
 import SwiftUI
 import Theme
+import ProfileCardFeature
 
 @main
 struct DroidKaigi2025App: App {
@@ -41,6 +42,7 @@ struct DroidKaigi2025App: App {
         bar.standardAppearance = appearance
         bar.compactAppearance = appearance
         bar.scrollEdgeAppearance = appearance
+        KMPProfileCardInitializer.initialize()
     }
 
     private func registerBackgroundTasks() {

@@ -36,24 +36,20 @@ public struct ProfileCardScreen: View {
                 } else if presenter.shouldEditing {
                     editView
                 } else {
-                    cardView(profile!)
+                    VStack(spacing: 0) {
+                        profileCard(profile!)
+                        actionButtons
+                    }
+                    .padding(.vertical, 20)
                 }
             }
-            .padding(.bottom, 80)  // Tab bar padding
         }
+        .contentShape(Rectangle())
+        .allowsHitTesting(true)
     }
 
     private var editView: some View {
         EditProfileCardForm(presenter: $presenter)
-    }
-
-    @ViewBuilder
-    private func cardView(_ profile: Model.Profile) -> some View {
-        VStack(spacing: 0) {
-            profileCard(profile)
-            actionButtons
-        }
-        .padding(.vertical, 20)
     }
 
     @ViewBuilder
@@ -64,8 +60,9 @@ public struct ProfileCardScreen: View {
                     userRole: profile.occupation,
                     userName: profile.name,
                     cardType: profile.cardVariant.type,
+                    cardVariant: profile.cardVariant,
                     image: profile.image,
-                    normal: (normal.x, normal.y, normal.z),
+                    normal: (normal.x, normal.y, normal.z)
                 )
             },
             back: { normal in
