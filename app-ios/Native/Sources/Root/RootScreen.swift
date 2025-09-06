@@ -22,7 +22,7 @@ private enum TabType: CaseIterable, Hashable {
     case favorite
     case info
     case profileCard
-
+    
     func tabImage(_ selectedTab: TabType) -> ImageAsset {
         switch self {
         case .timetable:
@@ -48,12 +48,13 @@ public struct RootScreen: View {
     @State private var composeMultiplatformEnabled = false
     @State private var favoriteScreenUiMode: FavoriteScreenUiModePicker.UiMode = .swiftui
     private let presenter = RootPresenter()
-    @State private var notificationCoordinator: NotificationNavigationCoordinator?
 
+    @State private var notificationCoordinator: NotificationNavigationCoordinator?
+  
     public init() {
         UITabBar.appearance().unselectedItemTintColor = UIColor(named: "tab_inactive")
     }
-
+    
     public var body: some View {
         Group {
             if composeMultiplatformEnabled {
@@ -110,7 +111,7 @@ public struct RootScreen: View {
         // NotificationUseCaseImpl instance that handles all notification operations
         NotificationUseCaseManager.shared.setNavigationHandler(coordinator)
     }
-
+    
     @ViewBuilder
     private var tabContent: some View {
         switch selectedTab {
@@ -126,7 +127,7 @@ public struct RootScreen: View {
             profileCardTab
         }
     }
-
+    
     private var timetableTab: some View {
         NavigationStack(path: $navigationPath) {
             HomeScreen(onNavigate: handleHomeNavigation)
@@ -138,13 +139,13 @@ public struct RootScreen: View {
                 }
         }
     }
-
+    
     private var mapTab: some View {
         NavigationStack {
             EventMapScreen()
         }
     }
-
+    
     private var favoriteTab: some View {
         NavigationStack(path: $favoriteNavigationPath) {
             ZStack(alignment: .top) {
@@ -160,7 +161,7 @@ public struct RootScreen: View {
                     KMPFavoritesScreenViewControllerWrapper(onNavigate: handleFavoriteNavigation)
                         .ignoresSafeArea(.all)
                 }
-
+                
                 HStack {
                     Spacer()
                     FavoriteScreenUiModePicker(uiMode: $favoriteScreenUiMode)
@@ -174,7 +175,7 @@ public struct RootScreen: View {
             }
         }
     }
-
+    
     private var infoTab: some View {
         NavigationStack(path: $aboutNavigationPath) {
             AboutScreen(
@@ -186,7 +187,7 @@ public struct RootScreen: View {
             }
         }
     }
-
+    
     @ViewBuilder
     private func aboutDestinationView(for destination: AboutNavigationDestination) -> some View {
         switch destination {
@@ -202,13 +203,13 @@ public struct RootScreen: View {
             SettingsScreen()
         }
     }
-
+    
     private var profileCardTab: some View {
         NavigationStack {
             ProfileCardScreen()
         }
     }
-
+    
     private func handleHomeNavigation(_ destination: HomeNavigationDestination) {
         switch destination {
         case .timetableDetail(let item):
@@ -217,22 +218,22 @@ public struct RootScreen: View {
             navigationPath.append(NavigationDestination.search)
         }
     }
-
+    
     private func handleAboutNavigation(_ destination: AboutNavigationDestination) {
         aboutNavigationPath.append(destination)
     }
-
+    
     private func handleFavoriteNavigation(_ destination: FavoriteNavigationDestination) {
         favoriteNavigationPath.append(destination)
     }
-
+    
     private func handleSearchNavigation(_ destination: SearchNavigationDestination) {
         switch destination {
         case .timetableDetail(let item):
             navigationPath.append(NavigationDestination.timetableDetail(item))
         }
     }
-
+    
     private func handleEnableComposeMultiplatform() {
         composeMultiplatformEnabled = true
     }
@@ -337,7 +338,8 @@ public struct RootScreen: View {
                             .renderingMode(.template)
                             .tint(
                                 isSelected
-                                    ? AssetColors.primary40.swiftUIColor : AssetColors.onSurfaceVariant.swiftUIColor
+                                ? AssetColors.primary40.swiftUIColor
+                                : AssetColors.onSurfaceVariant.swiftUIColor
                             )
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                             .contentShape(Rectangle())
@@ -350,14 +352,40 @@ public struct RootScreen: View {
                 }
             }
             .frame(width: geometry.size.width, height: geometry.size.height)
+            .padding(.horizontal, 12)
+            .modifier(TabBarBackground())
         }
         .frame(height: 64)
         .frame(maxWidth: .infinity)
-        .padding(.horizontal, 12)
-        .background(.ultraThinMaterial, in: Capsule())
-        .overlay(Capsule().stroke(AssetColors.outline.swiftUIColor, lineWidth: 1))
         .environment(\.colorScheme, .dark)
         .padding(.horizontal, 48)
+    }
+    
+    /// 背景用のカスタム Modifier
+    private struct TabBarBackground: ViewModifier {
+        @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+        
+        func body(content: Content) -> some View {
+            if reduceTransparency {
+                // 透明度を下げる設定が有効 → 単色背景
+                content
+                    .background(AssetColors.surface.swiftUIColor, in: Capsule())
+                    .overlay(
+                        Capsule().stroke(AssetColors.outline.swiftUIColor, lineWidth: 1)
+                    )
+            } else {
+                if #available(iOS 26.0, *) {
+                    content
+                        .glassEffect(in: Capsule())
+                } else {
+                    content
+                        .background(.ultraThinMaterial, in: Capsule())
+                        .overlay(
+                            Capsule().stroke(AssetColors.outline.swiftUIColor, lineWidth: 1)
+                        )
+                }
+            }
+        }
     }
 }
 
