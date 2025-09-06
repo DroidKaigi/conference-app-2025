@@ -44,6 +44,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import io.github.confsched.profile.components.CardPreviewImageBitmaps
 import io.github.confsched.profile.components.FlippableProfileCard
@@ -63,6 +64,10 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+
+const val ProfileCardCardScreenTestTag = "ProfileCardCardScreenTestTag"
+const val ProfileCardShareButtonTestTag = "ProfileCardShareButtonTestTag"
+const val ProfileCardEditButtonTestTag = "ProfileCardEditButtonTestTag"
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -109,7 +114,7 @@ fun ProfileCardScreen(
             modifier = Modifier.matchParentSize(),
             contentScale = ContentScale.Crop,
             alignment = Alignment.Center,
-            alpha = backgroundAlpha,
+//            alpha = backgroundAlpha,
         )
         Scaffold(
             topBar = {
@@ -133,13 +138,14 @@ fun ProfileCardScreen(
                     .nestedScroll(scrollBehavior.nestedScrollConnection)
                     .verticalScroll(rememberScrollState())
                     .padding(horizontal = 16.dp)
-                    .padding(contentPadding),
+                    .padding(contentPadding)
+                    .testTag(ProfileCardCardScreenTestTag),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
             ) {
                 FlippableProfileCard(
                     uiState = uiState,
-                    modifier = Modifier.alpha(if (isShareReady) 1f else 0f),
+//                    modifier = Modifier.alpha(if (isShareReady) 1f else 0f),
                 )
                 Spacer(Modifier.height(32.dp))
                 Button(
@@ -150,7 +156,7 @@ fun ProfileCardScreen(
                         }
                     },
                     shapes = ButtonDefaults.shapes(),
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().testTag(ProfileCardShareButtonTestTag),
                     contentPadding = PaddingValues(18.dp),
                     colors = ButtonDefaults.buttonColors().copy(
                         containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
@@ -178,7 +184,7 @@ fun ProfileCardScreen(
                 OutlinedButton(
                     onClick = onEditClick,
                     shapes = ButtonDefaults.shapes(),
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().testTag(ProfileCardEditButtonTestTag),
                     border = null,
                     contentPadding = PaddingValues(18.dp),
                 ) {

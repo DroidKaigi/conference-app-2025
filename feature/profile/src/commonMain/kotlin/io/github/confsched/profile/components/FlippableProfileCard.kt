@@ -4,14 +4,11 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.offset
 import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,11 +17,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.BlurredEdgeTreatment
-import androidx.compose.ui.draw.blur
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.testTag
 import io.github.confsched.profile.ProfileUiState
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.model.profile.Profile
@@ -33,6 +27,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private const val ChangeFlipCardDeltaThreshold = 20f
 private const val IntroAnimationMaxRotation = 30f
+const val ProfileCardFlipCardTestTag = "ProfileCardFlipCardTestTag"
+const val ProfileCardFlipCardFrontTestTag = "ProfileCardFlipCardFrontTestTag"
+const val ProfileCardFlipCardBackTestTag = "ProfileCardFlipCardBackTestTag"
 
 private enum class FlipState { Initial, Animating, Default }
 
@@ -94,6 +91,7 @@ private fun ProfileCard(
 ) {
     Card(
         modifier = modifier
+            .testTag(ProfileCardFlipCardTestTag)
             .clickable(
                 enabled = interactionsEnabled,
                 interactionSource = remember { MutableInteractionSource() },
@@ -124,14 +122,17 @@ private fun ProfileCard(
                 profileImageBitmap = uiState.profileImageBitmap,
                 nickName = uiState.profile.nickName,
                 occupation = uiState.profile.occupation,
+                modifier = Modifier.testTag(ProfileCardFlipCardFrontTestTag),
             )
         } else {
             ProfileCardBack(
                 theme = uiState.profile.theme,
                 qrImageBitmap = uiState.qrImageBitmap,
-                modifier = Modifier.graphicsLayer {
-                    rotationY = 180f
-                },
+                modifier = Modifier
+                    .graphicsLayer {
+                        rotationY = 180f
+                    }
+                    .testTag(ProfileCardFlipCardBackTestTag),
             )
         }
     }
