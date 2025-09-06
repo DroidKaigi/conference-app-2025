@@ -41,4 +41,5 @@
     <string name="remove_from_bookmark">ブックマークを削除</string>
     <string name="add_to_calendar">カレンダーに登録</string>
     <string name="share_link">リンクをシェア</string>
+    <string name="go_to_timetable_detail">詳細を開く</string>
 </resources>

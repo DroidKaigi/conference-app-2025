@@ -146,11 +146,14 @@ fun TimetableScreen(
                 when (uiState.timetable) {
                     is TimetableUiState.Empty -> Text("Empty")
                     is TimetableUiState.GridTimetable -> {
+                        val timetableGridUiState = requireNotNull(uiState.timetable.timetableGridUiState[selectedDay])
                         TimetableGrid(
-                            timetable = requireNotNull(uiState.timetable.timetableGridUiState[selectedDay]).timetable,
+                            timetable = timetableGridUiState.timetable,
                             timeLine = uiState.timetable.timeLine,
                             onTimetableItemClick = onTimetableItemClick,
                             selectedDay = selectedDay,
+                            isBookmarked = { id -> timetableGridUiState.timetable.bookmarks.contains(id) },
+                            onBookmarkClick = { id -> onBookmarkClick(id.value) },
                             contentPadding = WindowInsets.safeDrawingWithBottomNavBar.excludeTop().asPaddingValues(),
                         )
                     }
