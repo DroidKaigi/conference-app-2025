@@ -4,6 +4,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
@@ -175,6 +176,7 @@ private fun <T> FilterDropdown(
         )
 
         DropdownMenu(
+            modifier = Modifier.heightIn(max = 300.dp),
             expanded = expanded,
             onDismissRequest = { expanded = false },
         ) {
