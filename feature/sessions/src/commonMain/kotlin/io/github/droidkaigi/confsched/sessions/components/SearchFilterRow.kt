@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -28,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.sessions.SearchScreenEvent
 import io.github.droidkaigi.confsched.sessions.SearchScreenUiState
@@ -155,6 +157,7 @@ private fun <T> FilterDropdown(
                         )
                     }
                     Text(
+                        modifier = Modifier.widthIn(max = 150.dp),
                         text = if (selectedItems.isNotEmpty()) {
                             selectedItems.joinToString { itemLabel(it) }
                         } else {
@@ -162,6 +165,7 @@ private fun <T> FilterDropdown(
                         },
                         style = MaterialTheme.typography.labelLarge,
                         maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                     )
                     Icon(
                         imageVector = Icons.Default.ArrowDropDown,
