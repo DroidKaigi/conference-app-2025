@@ -32,3 +32,5 @@ shared.xcframework
 
 # nest
 .nest/
+
+**/.licenselist

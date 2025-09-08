@@ -1,6 +1,5 @@
 package io.github.droidkaigi.confsched.droidkaigiui.session
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -19,11 +18,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
@@ -46,13 +47,13 @@ import io.github.droidkaigi.confsched.designsystem.theme.LocalRoomTheme
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.DroidkaigiuiRes
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
+import io.github.droidkaigi.confsched.droidkaigiui.SubcomposeAsyncImage
 import io.github.droidkaigi.confsched.droidkaigiui.bookmarked
 import io.github.droidkaigi.confsched.droidkaigiui.component.OutlinedToolTip
 import io.github.droidkaigi.confsched.droidkaigiui.component.RoomToolTip
 import io.github.droidkaigi.confsched.droidkaigiui.extension.icon
 import io.github.droidkaigi.confsched.droidkaigiui.extension.roomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.not_bookmarked
-import io.github.droidkaigi.confsched.droidkaigiui.rememberAsyncImagePainter
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import io.github.droidkaigi.confsched.model.sessions.TimetableSpeaker
 import io.github.droidkaigi.confsched.model.sessions.fake
@@ -161,6 +162,7 @@ fun TimetableItemCard(
                         }
                         onBookmarkClick()
                     },
+                    modifier = Modifier.padding(end = 12.dp),
                 )
             }
         }
@@ -232,27 +234,31 @@ private fun TimetableItemTitle(
     )
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun FavoriteButton(
     isBookmarked: Boolean,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    TextButton(
+    IconButton(
         onClick = onClick,
-        modifier = Modifier
-            .testTag(TimetableItemCardBookmarkButtonTestTag),
+        shapes = IconButtonDefaults.shapes(),
+        colors = IconButtonDefaults.iconButtonColors(
+            contentColor = LocalRoomTheme.current.primaryColor,
+        ),
+        modifier = modifier.testTag(TimetableItemCardBookmarkButtonTestTag),
     ) {
+        // TODO: Fix contentDescription
         if (isBookmarked) {
             Icon(
                 Icons.Filled.Favorite,
                 contentDescription = stringResource(DroidkaigiuiRes.string.bookmarked),
-                tint = LocalRoomTheme.current.primaryColor,
             )
         } else {
             Icon(
                 Icons.Outlined.FavoriteBorder,
                 contentDescription = stringResource(DroidkaigiuiRes.string.not_bookmarked),
-                tint = LocalRoomTheme.current.primaryColor,
             )
         }
     }
@@ -268,9 +274,8 @@ private fun TimetableItemSpeaker(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier,
     ) {
-        val painter = rememberAsyncImagePainter(speaker.iconUrl)
-        Image(
-            painter = painter,
+        SubcomposeAsyncImage(
+            model = speaker.iconUrl,
             contentDescription = null,
             modifier = Modifier
                 .width(32.dp)

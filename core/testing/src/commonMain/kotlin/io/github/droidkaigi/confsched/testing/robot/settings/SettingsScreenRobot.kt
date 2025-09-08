@@ -21,9 +21,9 @@ import io.github.droidkaigi.confsched.model.settings.Settings
 import io.github.droidkaigi.confsched.settings.SettingsScreenContext
 import io.github.droidkaigi.confsched.settings.SettingsScreenLazyColumnTestTag
 import io.github.droidkaigi.confsched.settings.SettingsScreenRoot
+import io.github.droidkaigi.confsched.settings.component.SettingsAccessibilityUseFontFamilySettingsItemRowTestTag
 import io.github.droidkaigi.confsched.settings.component.SettingsItemRowCurrentValueTextTestTag
 import io.github.droidkaigi.confsched.settings.section.SettingsAccessibilityUseFontFamilySelectableItemColumnTestTagPrefix
-import io.github.droidkaigi.confsched.settings.section.SettingsAccessibilityUseFontFamilySettingsItemRowTestTag
 import io.github.droidkaigi.confsched.testing.compose.TestDefaultsProvider
 import io.github.droidkaigi.confsched.testing.robot.core.CaptureScreenRobot
 import io.github.droidkaigi.confsched.testing.robot.core.DefaultCaptureScreenRobot

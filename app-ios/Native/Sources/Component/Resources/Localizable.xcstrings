@@ -4,16 +4,6 @@
     "|" : {
 
     },
-    "Add Image" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "画像を追加"
-          }
-        }
-      }
-    },
     "Add to favorites" : {
 
     },

@@ -11,7 +11,7 @@ plugins {
     id("droidkaigi.primitive.kmp.skie")
     id("droidkaigi.primitive.metro")
     id("droidkaigi.primitive.kmp.compose")
-    id("droidkaigi.primitive.kmp.compose.resources")
+    id("droidkaigi.primitive.compose.resources")
     id("droidkaigi.primitive.buildkonfig")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("droidkaigi.primitive.aboutlibraries")

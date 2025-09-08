@@ -26,6 +26,7 @@ struct TimetableGridCard: View {
                     .lineLimit(2)
 
                 Spacer()
+                    .frame(maxWidth: .infinity)
 
                 if !timetableItem.speakers.isEmpty {
                     HStack {
@@ -42,7 +43,6 @@ struct TimetableGridCard: View {
                 }
             }
             .padding(8)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(timetableItem.room.color.opacity(0.1))
             .overlay(
                 RoundedRectangle(cornerRadius: 8)

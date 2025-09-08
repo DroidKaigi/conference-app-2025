@@ -7,7 +7,9 @@ import androidx.compose.foundation.interaction.PressInteraction.Cancel
 import androidx.compose.foundation.interaction.PressInteraction.Press
 import androidx.compose.foundation.interaction.PressInteraction.Release
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,10 +22,11 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.about.AboutRes
 import io.github.droidkaigi.confsched.about.icon_youtube
-import io.github.droidkaigi.confsched.designsystem.theme.KaigiTheme
+import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun AboutLinkIcon(
     testTag: String,
@@ -45,6 +48,7 @@ fun AboutLinkIcon(
 
     IconButton(
         onClick = onClick,
+        shapes = IconButtonDefaults.shapes(),
         interactionSource = interactionSource,
         modifier = modifier
             .testTag(testTag),
@@ -60,14 +64,12 @@ fun AboutLinkIcon(
 @Preview
 @Composable
 private fun AboutLinkIconPreview() {
-    KaigiTheme {
-        Surface {
-            AboutLinkIcon(
-                testTag = "testTag",
-                painter = painterResource(AboutRes.drawable.icon_youtube),
-                contentDescription = "YouTube",
-                onClick = {},
-            )
-        }
+    KaigiPreviewContainer {
+        AboutLinkIcon(
+            testTag = "testTag",
+            painter = painterResource(AboutRes.drawable.icon_youtube),
+            contentDescription = "YouTube",
+            onClick = {},
+        )
     }
 }

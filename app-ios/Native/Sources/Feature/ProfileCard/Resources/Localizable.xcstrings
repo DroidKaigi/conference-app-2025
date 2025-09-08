@@ -1,16 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "Create Card" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "カードを作成する"
-          }
-        }
-      }
-    },
     "Edit" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -22,59 +12,16 @@
         }
       }
     },
-    "Image" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "画像"
-          }
-        }
-      }
-    },
-    "Let's create a profile card to introduce yourself at events or on social media!" : {
+    "Profile Card" : {
       "extractionState" : "manual",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "会場やSNSで自分を紹介できるプロフィールカードを作ってみましょう！"
+            "value" : "プロフィールカード"
           }
         }
       }
-    },
-    "Link（ex.X、Instagram...）" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "リンク（ex.X、Instagram...）"
-          }
-        }
-      }
-    },
-    "Nickname" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ニックネーム"
-          }
-        }
-      }
-    },
-    "Occupation" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "職種"
-          }
-        }
-      }
-    },
-    "Profile Card" : {
-
     },
     "QRCode" : {
 
@@ -103,56 +50,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "DroidKaigiのプロフィールカードを作成しました！イベントでつながりましょう。 #DroidKaigi"
-          }
-        }
-      }
-    },
-    "Nickname is required" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ニックネームを入力してください"
-          }
-        }
-      }
-    },
-    "Occupation is required" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "職種を入力してください"
-          }
-        }
-      }
-    },
-    "Link is required" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "リンクを入力してください"
-          }
-        }
-      }
-    },
-    "Invalid URL format" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "正しいURL形式で入力してください"
-          }
-        }
-      }
-    },
-    "Image is required" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "画像を追加してください"
           }
         }
       }

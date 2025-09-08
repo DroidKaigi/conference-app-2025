@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import io.github.droidkaigi.confsched.designsystem.theme.KaigiTheme
+import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -120,9 +120,7 @@ private fun ColorBox(color: Color) {
 @Preview
 @Composable
 private fun ColorPreview_Dark() {
-    KaigiTheme {
-        Surface {
-            ColorBoxes()
-        }
+    KaigiPreviewContainer {
+        ColorBoxes()
     }
 }

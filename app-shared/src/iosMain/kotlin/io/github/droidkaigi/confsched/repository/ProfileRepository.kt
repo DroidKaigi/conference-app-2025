@@ -11,17 +11,19 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
+import soil.query.SwrClientPlus
 import soil.query.annotation.ExperimentalSoilQueryApi
 import soil.query.compose.rememberSubscription
 
 @Inject
 class ProfileRepository(
+    private val swrClient: SwrClientPlus,
     private val profileSubscriptionKey: ProfileSubscriptionKey,
     private val profileDataStore: ProfileDataStore,
 ) {
     @OptIn(ExperimentalSoilQueryApi::class)
     fun profileFlow(): Flow<ProfileWithImages> = moleculeFlow(RecompositionMode.Immediate) {
-        soilDataBoundary(state = rememberSubscription(profileSubscriptionKey))
+        soilDataBoundary(state = rememberSubscription(profileSubscriptionKey, client = swrClient))
     }
         .filterNotNull()
         .distinctUntilChanged()

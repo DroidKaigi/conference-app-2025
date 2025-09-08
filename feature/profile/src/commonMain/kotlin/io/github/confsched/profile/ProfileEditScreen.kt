@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -54,9 +55,9 @@ import androidx.compose.ui.unit.dp
 import io.github.confsched.profile.components.ThemeWithShape
 import io.github.confsched.profile.components.shapeValue
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
+import io.github.droidkaigi.confsched.droidkaigiui.SubcomposeAsyncImage
 import io.github.droidkaigi.confsched.droidkaigiui.component.AnimatedTextTopAppBar
 import io.github.droidkaigi.confsched.droidkaigiui.compositionlocal.safeDrawingWithBottomNavBar
-import io.github.droidkaigi.confsched.droidkaigiui.rememberAsyncImagePainter
 import io.github.droidkaigi.confsched.model.profile.Profile
 import io.github.droidkaigi.confsched.model.profile.ProfileCardTheme
 import io.github.droidkaigi.confsched.profile.ProfileRes
@@ -111,7 +112,7 @@ private val profileSaver: Saver<Profile, Any> = listSaver(
     },
 )
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ProfileEditScreen(
     initialProfile: Profile?,
@@ -158,6 +159,7 @@ fun ProfileEditScreen(
             form.Theme()
             Button(
                 onClick = { form.handleSubmit() },
+                shapes = ButtonDefaults.shapes(),
                 modifier = Modifier.fillMaxWidth(),
                 contentPadding = PaddingValues(18.dp),
             ) {
@@ -445,6 +447,7 @@ private fun InputLabel(
     )
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun ImagePicker(
     image: PlatformFile?,
@@ -463,9 +466,8 @@ private fun ImagePicker(
             modifier = Modifier
                 .size(120.dp),
         ) {
-            val painter = rememberAsyncImagePainter(image)
-            Image(
-                painter = painter,
+            SubcomposeAsyncImage(
+                model = image,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -477,6 +479,7 @@ private fun ImagePicker(
                 colors = IconButtonDefaults
                     .iconButtonColors()
                     .copy(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+                shapes = IconButtonDefaults.shapes(),
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .size(40.dp)
@@ -494,6 +497,7 @@ private fun ImagePicker(
     } else {
         OutlinedButton(
             onClick = { launcher.launch() },
+            shapes = ButtonDefaults.shapes(),
             contentPadding = PaddingValues(
                 top = 10.dp,
                 start = 16.dp,

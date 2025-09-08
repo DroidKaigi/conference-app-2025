@@ -33,9 +33,9 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
+import io.github.droidkaigi.confsched.droidkaigiui.SubcomposeAsyncImage
 import io.github.droidkaigi.confsched.droidkaigiui.component.AnimatedMediumTopAppBar
 import io.github.droidkaigi.confsched.droidkaigiui.extension.enableMouseDragScroll
-import io.github.droidkaigi.confsched.droidkaigiui.rememberAsyncImagePainter
 import io.github.droidkaigi.confsched.model.sponsors.Sponsor
 import io.github.droidkaigi.confsched.model.sponsors.SponsorList
 import io.github.droidkaigi.confsched.model.sponsors.SponsorPlan
@@ -165,18 +165,14 @@ fun SponsorItem(
     modifier: Modifier = Modifier,
     onSponsorsItemClick: (url: String) -> Unit,
 ) {
-    val painter = rememberAsyncImagePainter(
-        model = sponsor.logo,
-        placeholder = ColorPainter(Color.White),
-    )
     Card(
         modifier = modifier.clickable { onSponsorsItemClick(sponsor.link) },
         colors = CardDefaults.cardColors(
             containerColor = Color.White,
         ),
     ) {
-        Image(
-            painter = painter,
+        SubcomposeAsyncImage(
+            model = sponsor.logo,
             contentDescription = stringResource(
                 SponsorsRes.string.content_description_sponsor_logo_format,
                 sponsor.name,

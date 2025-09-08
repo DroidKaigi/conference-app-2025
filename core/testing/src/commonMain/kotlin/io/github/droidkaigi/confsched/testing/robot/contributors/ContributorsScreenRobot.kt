@@ -7,6 +7,7 @@ import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performScrollToIndex
 import dev.zacsweers.metro.Inject
@@ -92,6 +93,7 @@ class ContributorsScreenRobot(
                 )
                 .assertExists()
                 .assertIsDisplayed()
+                .onChild()
                 .assertContentDescriptionEquals(contributor.username)
 
             composeUiTest

@@ -1,5 +1,7 @@
 package io.github.droidkaigi.confsched.designsystem.theme
 
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
@@ -88,12 +90,13 @@ data class FixedAccentColors(
     val tertiaryFixedDim: Color,
 )
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun KaigiTheme(
     fontFamily: FontFamily? = null,
     content: @Composable () -> Unit,
 ) {
-    MaterialTheme(
+    MaterialExpressiveTheme(
         // currently, we do not support light theme
         colorScheme = darkScheme,
         typography = AppTypography(fontFamily),

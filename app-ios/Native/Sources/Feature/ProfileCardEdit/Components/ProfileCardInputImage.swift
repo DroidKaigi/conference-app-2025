@@ -7,17 +7,20 @@ public struct ProfileCardInputImage: View {
     @State private var isPickerPresented = false
     @State private var selectedImage: Image?
     @Binding var selectedPhoto: PhotosPickerItem?
+    var initialImage: UIImage?
     var title: String
     var dismissKeyboard: () -> Void
     var errorMessage: String?
 
     public init(
         selectedPhoto: Binding<PhotosPickerItem?>,
+        initialImage: UIImage? = nil,
         title: String,
         dismissKeyboard: @escaping () -> Void = {},
         errorMessage: String? = nil
     ) {
         self._selectedPhoto = selectedPhoto
+        self.initialImage = initialImage
         self.title = title
         self.dismissKeyboard = dismissKeyboard
         self.errorMessage = errorMessage
@@ -30,17 +33,16 @@ public struct ProfileCardInputImage: View {
                 .foregroundStyle(.white)
 
             if let image = selectedImage {
-                ZStack(alignment: .topTrailing) {
-                    image
-                        .resizable()
-                        .frame(width: 120, height: 120)
-                        .padding(.top, 12)
-                        .padding(.trailing, 17)
-                    Button {
-                        selectedPhoto = nil
-                        selectedImage = nil
-                    } label: {
-                        Image(systemName: "xmark")
+                Button {
+                    isPickerPresented = true
+                } label: {
+                    ZStack(alignment: .topTrailing) {
+                        image
+                            .resizable()
+                            .frame(width: 120, height: 120)
+                            .padding(.top, 12)
+                            .padding(.trailing, 17)
+                        Image(systemName: "pencil")
                             .resizable()
                             .renderingMode(.template)
                             .foregroundStyle(AssetColors.onSurface.swiftUIColor)
@@ -84,6 +86,18 @@ public struct ProfileCardInputImage: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .onAppear {
+            if let initialImage {
+                selectedImage = Image(uiImage: initialImage)
+                selectedPhoto = nil
+            }
+        }
+        .onChange(of: initialImage) { _, newInitialImage in
+            if let newInitialImage {
+                selectedImage = Image(uiImage: newInitialImage)
+                selectedPhoto = nil
+            }
+        }
         .photosPicker(isPresented: $isPickerPresented, selection: $selectedPhoto)
         .onChange(of: selectedPhoto) { _, newValue in
             newValue?

@@ -3,8 +3,10 @@ package io.github.droidkaigi.confsched.sessions.components
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,7 +25,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun TimetableTopAppBar(
     timetableUiType: TimetableUiType,
@@ -34,13 +36,19 @@ fun TimetableTopAppBar(
     AnimatedTextTopAppBar(
         title = stringResource(SessionsRes.string.timetable),
         actions = {
-            IconButton(onClick = onSearchClick) {
+            IconButton(
+                onClick = onSearchClick,
+                shapes = IconButtonDefaults.shapes(),
+            ) {
                 Icon(
                     imageVector = Icons.Default.Search,
                     contentDescription = stringResource(SessionsRes.string.search),
                 )
             }
-            IconButton(onClick = onUiTypeChangeClick) {
+            IconButton(
+                onClick = onUiTypeChangeClick,
+                shapes = IconButtonDefaults.shapes(),
+            ) {
                 val iconRes = when (timetableUiType) {
                     TimetableUiType.List -> SessionsRes.drawable.ic_view_grid
                     TimetableUiType.Grid -> SessionsRes.drawable.ic_view_timeline

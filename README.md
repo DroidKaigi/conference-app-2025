@@ -16,7 +16,6 @@ The DroidKaigi 2025 official app offers a variety of features to enhance your co
 
 <img width="300" src="assets/readme/sample-app-screenshot.png"/>
 
-
 # Try it out!
 
 ## Android
@@ -81,7 +80,9 @@ First of all, let's take a look into the screen structure of the app.
 
 #### Dependency Injection via ScreenContext
 
-The entry point of each screen is Composable function named `XXXScreenRoot`.
+Each screen in the app has a dedicated entry point implemented as a Composable function, typically named `<ScreenName>ScreenRoot`.
+For example, the timetable screen defines `TimetableScreenRoot` as its entry point.
+
 This function receives a corresponding `ScreenContext` as a context parameter, which provides
 the necessary dependencies for the screen.
 

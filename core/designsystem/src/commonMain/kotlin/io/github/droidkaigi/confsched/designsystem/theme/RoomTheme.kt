@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.Color
 sealed interface RoomTheme {
     val primaryColor: Color
     val containerColor: Color get() = primaryColor.copy(alpha = 0.1f)
+    val containerHighlightColor: Color get() = primaryColor.copy(alpha = 0.7f)
     val dimColor: Color
 
     data object Jellyfish : RoomTheme {

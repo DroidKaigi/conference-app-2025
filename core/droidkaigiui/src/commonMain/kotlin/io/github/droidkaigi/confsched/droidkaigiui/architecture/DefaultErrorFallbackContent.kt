@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,7 +29,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 const val DefaultErrorFallbackContentTestTag = "DefaultErrorFallbackContentTestTag"
 const val DefaultErrorFallbackContentRetryTestTag = "DefaultErrorFallbackContentRetry"
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 context(errorContext: SoilErrorContext)
 fun DefaultErrorFallbackContent(modifier: Modifier = Modifier) {
@@ -50,6 +52,7 @@ fun DefaultErrorFallbackContent(modifier: Modifier = Modifier) {
         )
         Button(
             onClick = { errorContext.errorBoundaryContext.reset?.invoke() },
+            shapes = ButtonDefaults.shapes(),
             modifier = Modifier.testTag(DefaultErrorFallbackContentRetryTestTag),
         ) {
             Text(

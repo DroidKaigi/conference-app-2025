@@ -1,4 +1,5 @@
 import Model
+import ProfileCardEditFeature
 import SearchFeature
 import SwiftUI
 import TimetableDetailFeature
@@ -7,14 +8,20 @@ import TimetableDetailFeature
 public enum NavigationDestination: Hashable {
     case timetableDetail(TimetableItemWithFavorite)
     case search
+    case profileCardEdit
 }
 
 // Navigation handler that can be passed down
 public struct NavigationHandler {
     let handleSearchNavigation: (SearchNavigationDestination) -> Void
+    let handleProfileCardEditNavigation: (ProfileCardEditNavigationDestination) -> Void
 
-    public init(handleSearchNavigation: @escaping (SearchNavigationDestination) -> Void) {
+    public init(
+        handleSearchNavigation: @escaping (SearchNavigationDestination) -> Void,
+        handleProfileCardEditNavigation: @escaping (ProfileCardEditNavigationDestination) -> Void = { _ in }
+    ) {
         self.handleSearchNavigation = handleSearchNavigation
+        self.handleProfileCardEditNavigation = handleProfileCardEditNavigation
     }
 }
 
@@ -28,6 +35,8 @@ extension NavigationDestination {
             TimetableDetailScreen(timetableItem: item)
         case .search:
             SearchScreen(onNavigate: navigationHandler.handleSearchNavigation)
+        case .profileCardEdit:
+            ProfileCardEditScreen(onNavigate: navigationHandler.handleProfileCardEditNavigation)
         }
     }
 }

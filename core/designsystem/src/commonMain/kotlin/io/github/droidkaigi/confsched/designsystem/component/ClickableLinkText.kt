@@ -41,7 +41,7 @@ fun ClickableLinkText(
     overflow: TextOverflow = TextOverflow.Clip,
     maxLines: Int = Int.MAX_VALUE,
     hasUnderLine: Boolean = true,
-    underLineColor: Color = LightBlue,
+    underLineAndLinkTextColor: Color = LightBlue,
     onOverflow: (Boolean) -> Unit = {},
 ) {
     val findResults = findResults(
@@ -63,7 +63,7 @@ fun ClickableLinkText(
         text = buildClickableAnnotatedString(
             content = content,
             hasUnderLine = hasUnderLine,
-            underLineColor = underLineColor,
+            underLineColor = underLineAndLinkTextColor,
             findUrlResults = findResults,
             onLinkClick = onLinkClick,
         ),
@@ -97,7 +97,7 @@ private fun buildClickableAnnotatedString(
     return buildAnnotatedString {
         pushStyle(
             style = SpanStyle(
-                color = MaterialTheme.colorScheme.inverseSurface,
+                color = MaterialTheme.colorScheme.onSurface,
             ),
         )
 

@@ -4,7 +4,6 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +24,7 @@ import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -64,7 +64,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ProfileCardScreen(
     uiState: ProfileUiState.Card,
@@ -149,6 +149,7 @@ fun ProfileCardScreen(
                             coroutineScope.launch { onShareClick(it) }
                         }
                     },
+                    shapes = ButtonDefaults.shapes(),
                     modifier = Modifier.fillMaxWidth(),
                     contentPadding = PaddingValues(18.dp),
                     colors = ButtonDefaults.buttonColors().copy(
@@ -176,6 +177,7 @@ fun ProfileCardScreen(
                 Spacer(Modifier.height(8.dp))
                 OutlinedButton(
                     onClick = onEditClick,
+                    shapes = ButtonDefaults.shapes(),
                     modifier = Modifier.fillMaxWidth(),
                     border = null,
                     contentPadding = PaddingValues(18.dp),

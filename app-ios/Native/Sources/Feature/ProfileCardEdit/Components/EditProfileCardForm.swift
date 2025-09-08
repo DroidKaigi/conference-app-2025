@@ -4,7 +4,7 @@ import SwiftUI
 import Theme
 
 struct EditProfileCardForm: View {
-    @Binding var presenter: ProfileCardPresenter
+    @Binding var presenter: ProfileCardEditPresenter
 
     enum Field: Hashable {
         case nickName
@@ -83,22 +83,7 @@ struct EditProfileCardForm: View {
                 focusedField = nil
             }
 
-            ProfileCardInputImage(
-                selectedPhoto: .init(
-                    get: {
-                        presenter.formState.image
-                    },
-                    set: {
-                        presenter.setImage($0)
-                        presenter.formState.imageError = nil
-                    }
-                ),
-                title: String(localized: "Image", bundle: .module),
-                dismissKeyboard: {
-                    focusedField = nil
-                },
-                errorMessage: presenter.formState.imageError
-            )
+            ProfileCardInputImageWrapper(presenter: presenter, focusedField: $focusedField)
 
             ProfileCardInputCardVariant(
                 selectedCardType: .init(
@@ -115,7 +100,12 @@ struct EditProfileCardForm: View {
                 focusedField = nil
                 presenter.createCard()
             } label: {
-                Text(String(localized: "Create Card", bundle: .module))
+                let isEditing = presenter.profile.profile != nil
+                let buttonText =
+                    isEditing
+                    ? String(localized: "Save Card", bundle: .module)
+                    : String(localized: "Create Card", bundle: .module)
+                Text(buttonText)
                     .frame(maxWidth: .infinity)
             }
             .filledButtonStyle()
@@ -123,6 +113,46 @@ struct EditProfileCardForm: View {
         .padding(.horizontal, 16)
         .onTapGesture {
             focusedField = nil
+        }
+    }
+}
+
+private struct ProfileCardInputImageWrapper: View {
+    let presenter: ProfileCardEditPresenter
+    @FocusState.Binding var focusedField: EditProfileCardForm.Field?
+    @State private var currentInitialImage: UIImage?
+
+    var body: some View {
+        ProfileCardInputImage(
+            selectedPhoto: .init(
+                get: {
+                    presenter.formState.image
+                },
+                set: {
+                    presenter.setImage($0)
+                    presenter.formState.imageError = nil
+                }
+            ),
+            initialImage: currentInitialImage,
+            title: String(localized: "Image", bundle: .module),
+            dismissKeyboard: {
+                focusedField = nil
+            },
+            errorMessage: presenter.formState.imageError
+        )
+        .onChange(of: presenter.formState.existingImageData) { _, newData in
+            if let newData = newData, let uiImage = UIImage(data: newData) {
+                currentInitialImage = uiImage
+            } else {
+                currentInitialImage = nil
+            }
+        }
+        .onAppear {
+            if let imageData = presenter.formState.existingImageData,
+                let uiImage = UIImage(data: imageData)
+            {
+                currentInitialImage = uiImage
+            }
         }
     }
 }

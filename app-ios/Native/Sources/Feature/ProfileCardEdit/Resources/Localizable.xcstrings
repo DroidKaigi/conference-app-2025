@@ -1,0 +1,140 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Add Image" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "画像を追加"
+          }
+        }
+      }
+    },
+    "Create Card" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カードを作成する"
+          }
+        }
+      }
+    },
+    "Image" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "画像"
+          }
+        }
+      }
+    },
+    "Image is required" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "画像を追加してください"
+          }
+        }
+      }
+    },
+    "Invalid URL format" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正しいURL形式で入力してください"
+          }
+        }
+      }
+    },
+    "Let's create a profile card to introduce yourself at events or on social media!" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "会場やSNSで自分を紹介できるプロフィールカードを作ってみましょう！"
+          }
+        }
+      }
+    },
+    "Link is required" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "リンクを入力してください"
+          }
+        }
+      }
+    },
+    "Link（ex.X、Instagram...）" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "リンク（ex.X、Instagram...）"
+          }
+        }
+      }
+    },
+    "Nickname" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ニックネーム"
+          }
+        }
+      }
+    },
+    "Nickname is required" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ニックネームを入力してください"
+          }
+        }
+      }
+    },
+    "Occupation" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "職種"
+          }
+        }
+      }
+    },
+    "Occupation is required" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "職種を入力してください"
+          }
+        }
+      }
+    },
+    "Profile Card" : {
+
+    },
+    "Save Card" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "編集内容を保存する"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

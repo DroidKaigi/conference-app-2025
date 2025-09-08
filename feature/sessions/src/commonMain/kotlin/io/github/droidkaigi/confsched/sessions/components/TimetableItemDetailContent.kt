@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -23,6 +24,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.designsystem.component.ClickableLinkText
+import io.github.droidkaigi.confsched.designsystem.component.provideSelectionContainerCustomContextMenuForDesktop
 import io.github.droidkaigi.confsched.designsystem.theme.LocalRoomTheme
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
@@ -65,6 +67,7 @@ fun TimetableItemDetailContent(
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun DescriptionSection(
     description: String,
@@ -74,18 +77,22 @@ private fun DescriptionSection(
     var isOverFlow by remember { mutableStateOf(false) }
 
     Column(modifier = Modifier.padding(8.dp)) {
-        SelectionContainer {
-            ClickableLinkText(
-                content = description,
-                regex = "(https)(://[\\w/:%#$&?()~.=+\\-]+)".toRegex(),
-                onLinkClick = onLinkClick,
-                style = MaterialTheme.typography.bodyLarge,
-                maxLines = if (isExpand) Int.MAX_VALUE else 7,
-                overflow = if (isExpand) TextOverflow.Clip else TextOverflow.Ellipsis,
-                onOverflow = {
-                    isOverFlow = it
-                },
-            )
+        provideSelectionContainerCustomContextMenuForDesktop(
+            onWebSearchClick = { onLinkClick(it) },
+        ) {
+            SelectionContainer {
+                ClickableLinkText(
+                    content = description,
+                    regex = "(https)(://[\\w/:%#$&?()~.=+\\-]+)".toRegex(),
+                    onLinkClick = onLinkClick,
+                    style = MaterialTheme.typography.bodyLarge,
+                    maxLines = if (isExpand) Int.MAX_VALUE else 7,
+                    overflow = if (isExpand) TextOverflow.Clip else TextOverflow.Ellipsis,
+                    onOverflow = {
+                        isOverFlow = it
+                    },
+                )
+            }
         }
         Spacer(Modifier.height(16.dp))
         AnimatedVisibility(
@@ -96,6 +103,7 @@ private fun DescriptionSection(
         ) {
             OutlinedButton(
                 modifier = Modifier.fillMaxWidth(),
+                shapes = ButtonDefaults.shapes(),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = LocalRoomTheme.current.dimColor,
                 ),

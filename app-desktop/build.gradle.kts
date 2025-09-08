@@ -6,7 +6,7 @@ plugins {
     id("droidkaigi.primitive.metro")
     id("droidkaigi.primitive.aboutlibraries")
     id("droidkaigi.primitive.spotless")
-    id("droidkaigi.primitive.kmp.compose.resources")
+    id("droidkaigi.primitive.compose.resources")
 }
 
 compose {

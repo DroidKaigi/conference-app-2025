@@ -4,6 +4,7 @@ import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.assertContentDescriptionEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
+import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToIndex
@@ -95,6 +96,7 @@ class StaffScreenRobot(
                 )
                 .assertExists()
                 .assertIsDisplayed()
+                .onChild()
                 .assertContentDescriptionEquals(staff.username)
 
             composeUiTest

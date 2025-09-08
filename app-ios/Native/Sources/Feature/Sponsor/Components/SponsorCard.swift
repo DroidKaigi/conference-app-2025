@@ -81,7 +81,7 @@ struct SponsorSection: View {
                             )
                         }
                     )
-                    .buttonStyle(PlainButtonStyle())
+                    .sponsorCardStyle()
                 }
             }
             .padding(.horizontal, 16)

@@ -96,7 +96,7 @@ private fun AboutDroidKaigiSummaryCardRow(
             content = content,
             onLinkClick = onLinkClick,
             hasUnderLine = false,
-            underLineColor = MaterialTheme.colorScheme.surfaceTint,
+            underLineAndLinkTextColor = MaterialTheme.colorScheme.primary,
             regex = stringResource(AboutRes.string.place_link).toRegex(),
         )
     }
