@@ -81,7 +81,6 @@ fun TimetableItemCard(
         Row(
             verticalAlignment = Alignment.Top,
             modifier = modifier
-                .testTag(TimetableItemCardTestTag)
                 .semantics {
                     this[TimetableItemCardSemanticsKey] = timetableItem
                 }
