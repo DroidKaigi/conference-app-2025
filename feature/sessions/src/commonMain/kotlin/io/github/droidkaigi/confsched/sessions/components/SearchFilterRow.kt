@@ -192,7 +192,6 @@ private fun <T> FilterDropdown(
                     text = { Text(itemLabel(item)) },
                     onClick = {
                         onItemSelected(item)
-                        expanded = false
                     },
                 )
             }
