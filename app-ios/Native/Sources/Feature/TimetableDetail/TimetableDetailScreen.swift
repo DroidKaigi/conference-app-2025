@@ -35,6 +35,8 @@ public struct TimetableDetailScreen: View {
                         .padding(.horizontal, 16)
                     targetAudience
                         .padding(16)
+
+                    Spacer().frame(height: 56)  // FAB space
                 }
 
                 fabMenu
