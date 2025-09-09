@@ -8,6 +8,7 @@ kotlin {
             implementation(libs.qrcodeKotlin)
             implementation(libs.soilForm)
             implementation(libs.filekitDialogsCompose)
+            implementation(libs.uiBackHandler)
         }
     }
 }

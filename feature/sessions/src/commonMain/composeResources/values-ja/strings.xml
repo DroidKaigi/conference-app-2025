@@ -42,4 +42,6 @@
     <string name="add_to_calendar">カレンダーに登録</string>
     <string name="share_link">リンクをシェア</string>
     <string name="go_to_timetable_detail">詳細を開く</string>
+    <string name="request_full_space">フルスペースに切り替え</string>
+    <string name="request_home_space">ホームスペースに切り替え</string>
 </resources>

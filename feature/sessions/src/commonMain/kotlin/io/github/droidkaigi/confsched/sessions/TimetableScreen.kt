@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import io.github.droidkaigi.confsched.common.compose.rememberXrEnvironment
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.compositionlocal.safeDrawingWithBottomNavBar
 import io.github.droidkaigi.confsched.droidkaigiui.extension.excludeTop
@@ -87,6 +88,7 @@ fun TimetableScreen(
     val headerBackgroundColor by animateColorAsState(
         targetValue = if (completelyScrolledToTop) Color.Transparent else MaterialTheme.colorScheme.surface,
     )
+    val isFullSpace = rememberXrEnvironment().isFullSpace
 
     Scaffold(
         topBar = {
@@ -97,11 +99,13 @@ fun TimetableScreen(
                 modifier = Modifier.background(headerBackgroundColor),
             )
         },
-        containerColor = Color.Transparent,
+        containerColor = if (isFullSpace) MaterialTheme.colorScheme.surface else Color.Transparent,
         contentWindowInsets = WindowInsets(),
         modifier = modifier.fillMaxSize(),
     ) { paddingValues ->
-        TimetableBackground()
+        if (!isFullSpace) {
+            TimetableBackground()
+        }
         CollapsingHeaderLayout(
             state = collapsingState,
             headerContent = {

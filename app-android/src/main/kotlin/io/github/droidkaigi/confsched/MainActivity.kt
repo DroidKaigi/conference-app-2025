@@ -7,8 +7,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.xr.compose.material3.EnableXrComponentOverrides
+import androidx.xr.compose.material3.ExperimentalMaterial3XrApi
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3XrApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.dark(scrim = TRANSPARENT),
@@ -21,7 +24,9 @@ class MainActivity : ComponentActivity() {
 
         with(appGraph) {
             setContent {
-                KaigiApp()
+                EnableXrComponentOverrides {
+                    KaigiApp()
+                }
             }
         }
     }

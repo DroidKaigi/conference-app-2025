@@ -109,6 +109,11 @@ composeBom = { module = "androidx.compose:compose-bom", version.ref = "composeBo
 androidxUiTestJunit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 androidxUiTestManifest = { module = "androidx.compose.ui:ui-test-manifest" }
 
+# XR
+androidxXrCompose = "androidx.xr.compose:compose:1.0.0-alpha06"
+androidxXrComposeMaterial3 = "androidx.xr.compose.material3:material3:1.0.0-alpha11"
+androidXrExtensions = "com.android.extensions.xr:extensions-xr:1.0.0"
+
 # firebase
 firebaseCrashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx", version.ref = "firebaseCrashlytics" }
 
@@ -163,6 +168,7 @@ coilTest = { module = "io.coil-kt.coil3:coil-test", version.ref = "coil" }
 haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
 material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "material3" }
 material3Adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive", version.ref = "material3Adaptive" }
+uiBackHandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version.ref = "jetbrainsCompose" }
 
 buildkonfigCompiler = { module = "com.codingfeline.buildkonfig:buildkonfig-compiler", version.ref = "buildkonfig" }
 

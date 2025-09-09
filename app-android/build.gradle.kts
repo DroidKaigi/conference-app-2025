@@ -137,4 +137,8 @@ dependencies {
     implementation(libs.soilQueryCompose)
     // need this for compile success
     implementation(libs.androidxDatastorePreferencesCore)
+
+    implementation(libs.androidxXrCompose)
+    implementation(libs.androidxXrComposeMaterial3)
+    compileOnly(libs.androidXrExtensions)
 }

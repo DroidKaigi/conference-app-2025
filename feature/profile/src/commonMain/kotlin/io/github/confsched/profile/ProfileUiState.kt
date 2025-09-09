@@ -12,5 +12,6 @@ sealed interface ProfileUiState {
 
     data class Edit(
         val baseProfile: Profile?,
+        val canBackToCardScreen: Boolean,
     ) : ProfileUiState
 }

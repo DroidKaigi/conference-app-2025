@@ -42,4 +42,6 @@
     <string name="add_to_calendar">Add to Calendar</string>
     <string name="share_link">Share Link</string>
     <string name="go_to_timetable_detail">Open details</string>
+    <string name="request_full_space">Request full space</string>
+    <string name="request_home_space">Request home space</string>
 </resources>

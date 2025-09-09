@@ -11,16 +11,22 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import io.github.droidkaigi.confsched.common.compose.rememberXrEnvironment
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.component.AnimatedTextTopAppBar
 import io.github.droidkaigi.confsched.model.sessions.TimetableUiType
 import io.github.droidkaigi.confsched.sessions.SessionsRes
 import io.github.droidkaigi.confsched.sessions.grid_view
+import io.github.droidkaigi.confsched.sessions.ic_request_full_space
+import io.github.droidkaigi.confsched.sessions.ic_request_home_space
 import io.github.droidkaigi.confsched.sessions.ic_view_grid
 import io.github.droidkaigi.confsched.sessions.ic_view_timeline
+import io.github.droidkaigi.confsched.sessions.request_full_space
+import io.github.droidkaigi.confsched.sessions.request_home_space
 import io.github.droidkaigi.confsched.sessions.search
 import io.github.droidkaigi.confsched.sessions.timeline_view
 import io.github.droidkaigi.confsched.sessions.timetable
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -33,9 +39,16 @@ fun TimetableTopAppBar(
     onUiTypeChangeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val xrEnvironment = rememberXrEnvironment()
     AnimatedTextTopAppBar(
         title = stringResource(SessionsRes.string.timetable),
         actions = {
+            if (xrEnvironment.enabledSpacialControl) {
+                XrSpaceToggleIconButton(
+                    onClick = xrEnvironment::toggleSpaceMode,
+                    isXrFullSpace = xrEnvironment.isFullSpace,
+                )
+            }
             IconButton(
                 onClick = onSearchClick,
                 shapes = IconButtonDefaults.shapes(),
@@ -63,9 +76,37 @@ fun TimetableTopAppBar(
                 )
             }
         },
-        colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = if (xrEnvironment.isFullSpace) Color.Unspecified else Color.Transparent,
+        ),
         modifier = modifier,
     )
+}
+
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+private fun XrSpaceToggleIconButton(
+    onClick: () -> Unit,
+    isXrFullSpace: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    IconButton(
+        onClick = onClick,
+        shapes = IconButtonDefaults.shapes(),
+        modifier = modifier,
+    ) {
+        if (isXrFullSpace) {
+            Icon(
+                painter = painterResource(SessionsRes.drawable.ic_request_home_space),
+                contentDescription = stringResource(SessionsRes.string.request_full_space),
+            )
+        } else {
+            Icon(
+                painter = painterResource(SessionsRes.drawable.ic_request_full_space),
+                contentDescription = stringResource(SessionsRes.string.request_home_space),
+            )
+        }
+    }
 }
 
 @Preview

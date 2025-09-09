@@ -31,6 +31,10 @@ fun profilePresenter(
                 isInEditMode = true
             }
 
+            is ProfileScreenEvent.ExitEditMode -> {
+                isInEditMode = false
+            }
+
             is ProfileScreenEvent.CreateProfile -> {
                 profileMutation.mutate(event.profile)
                 isInEditMode = false
@@ -39,7 +43,10 @@ fun profilePresenter(
     }
 
     if (!isAllowedToShowCard || isInEditMode) {
-        ProfileUiState.Edit(baseProfile = profileWithImages.profile)
+        ProfileUiState.Edit(
+            baseProfile = profileWithImages.profile,
+            canBackToCardScreen = isAllowedToShowCard,
+        )
     } else {
         ProfileUiState.Card(
             profile = requireNotNull(profileWithImages.profile),

@@ -8,9 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -51,12 +48,6 @@ fun ContributorItem(
         SubcomposeAsyncImage(
             model = contributor.iconUrl,
             contentDescription = contributor.username,
-            loading = {
-                Icon(
-                    imageVector = Icons.Default.Person,
-                    contentDescription = contributor.username,
-                )
-            },
             modifier = Modifier
                 .size(52.dp)
                 .clip(CircleShape)

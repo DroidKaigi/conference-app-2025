@@ -92,6 +92,10 @@ private fun KaigiNavigationScaffold(
 ) {
     Row(modifier = modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
         AnimatedVisibility(currentTab != null && navigationBarType == NavigationBarType.NavigationRail) {
+            /**
+             * TODO: Orbiter support for NavigationRail in XR.
+             * Also, as of September 9, 2025, there is a problem where Orbiter cannot be displayed on the XR emulator.
+             */
             GlassLikeNavigationRailBar(
                 currentTab = currentTab ?: MainScreenTab.Timetable,
                 hazeState = hazeState,
