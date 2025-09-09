@@ -37,8 +37,6 @@
     <string name="filter_chip_supported_language">Supported languages</string>
     <string name="timeline_view">timeline view</string>
     <string name="grid_view">multi column view</string>
-    <string name="add_to_bookmark">Add to Bookmarks</string>
-    <string name="remove_from_bookmark">Remove from Bookmarks</string>
     <string name="add_to_calendar">Add to Calendar</string>
     <string name="share_link">Share Link</string>
     <string name="go_to_timetable_detail">Open details</string>

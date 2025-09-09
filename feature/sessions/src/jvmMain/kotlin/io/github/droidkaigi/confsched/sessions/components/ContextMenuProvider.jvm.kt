@@ -14,11 +14,12 @@ import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.isSecondaryPressed
 import androidx.compose.ui.input.pointer.onPointerEvent
+import io.github.droidkaigi.confsched.droidkaigiui.DroidkaigiuiRes
+import io.github.droidkaigi.confsched.droidkaigiui.add_to_bookmark
+import io.github.droidkaigi.confsched.droidkaigiui.remove_from_bookmark
 import io.github.droidkaigi.confsched.sessions.SessionsRes
-import io.github.droidkaigi.confsched.sessions.add_to_bookmark
 import io.github.droidkaigi.confsched.sessions.go_to_timetable_detail
 import io.github.droidkaigi.confsched.sessions.grid.TimetableGridScope
-import io.github.droidkaigi.confsched.sessions.remove_from_bookmark
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -33,9 +34,9 @@ actual fun TimetableGridScope.ContextMenuProviderForDesktop(
     val gotoTimetableDetailLabel = stringResource(SessionsRes.string.go_to_timetable_detail)
     val bookmarkLabel = stringResource(
         if (isBookmarked) {
-            SessionsRes.string.remove_from_bookmark
+            DroidkaigiuiRes.string.remove_from_bookmark
         } else {
-            SessionsRes.string.add_to_bookmark
+            DroidkaigiuiRes.string.add_to_bookmark
         },
     )
 

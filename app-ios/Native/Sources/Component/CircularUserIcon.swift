@@ -16,22 +16,30 @@ public struct CircularUserIcon: View {
                 image
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .overlay {
-                        Circle()
-                            .stroke(AssetColors.outline.swiftUIColor)
-                    }
             } placeholder: {
-                Image(systemName: "person.circle.fill")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .foregroundStyle(AssetColors.outline.swiftUIColor)
+                // NOTE: If you only use ProgressView, it cannot determine the correct size.
+                ZStack {
+                    Circle()
+                        .foregroundStyle(AssetColors.surface.swiftUIColor)
+                    ProgressView()
+                }
             }
+            .background(AssetColors.surface.swiftUIColor)
             .clipShape(Circle())
+            .overlay {
+                Circle()
+                    .stroke(AssetColors.outline.swiftUIColor)
+            }
         } else {
             Image(systemName: "person.circle.fill")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .foregroundStyle(AssetColors.outline.swiftUIColor)
+                .foregroundStyle(AssetColors.onSurface.swiftUIColor)
+                .background(AssetColors.surface.swiftUIColor)
+                .overlay {
+                    Circle()
+                        .stroke(AssetColors.outline.swiftUIColor)
+                }
         }
     }
 }

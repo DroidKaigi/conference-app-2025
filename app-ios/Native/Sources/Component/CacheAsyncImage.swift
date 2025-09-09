@@ -46,7 +46,7 @@ public struct CacheAsyncImage<Content, PlaceHolder>: View where Content: View, P
 extension CacheAsyncImage {
     fileprivate func cacheAndRender(image: Image) -> some View {
         // Hop to the ImageCache actor to perform the mutation.
-        Task {
+        Task { @MainActor in
             await ImageCache.shared.set(image: image, for: url)
         }
         return contentImage(image)

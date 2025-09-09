@@ -53,14 +53,14 @@ public struct FavoriteScreen: View {
                 guard let firstItem = timeGroup.items.first else { return false }
                 let calendar = Calendar.current
                 let components = calendar.dateComponents([.day], from: firstItem.timetableItem.startsAt)
-                return components.day == 12
+                return components.day == 11
             }
         case .day2:
             return presenter.favoriteTimetableItems.filter { timeGroup in
                 guard let firstItem = timeGroup.items.first else { return false }
                 let calendar = Calendar.current
                 let components = calendar.dateComponents([.day], from: firstItem.timetableItem.startsAt)
-                return components.day == 13
+                return components.day == 12
             }
         }
     }

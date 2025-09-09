@@ -186,6 +186,7 @@ struct TimetableGridView: View {
 
                 TimetableGridCard(
                     timetableItem: item.timetableItem,
+                    isFavorite: item.isFavorited,
                     onTap: { _ in onItemTap(item) }
                 )
                 .frame(width: width, height: height)

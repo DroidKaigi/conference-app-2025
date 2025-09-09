@@ -30,14 +30,15 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalHapticFeedback
 import io.github.droidkaigi.confsched.designsystem.theme.LocalRoomTheme
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
+import io.github.droidkaigi.confsched.droidkaigiui.DroidkaigiuiRes
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
+import io.github.droidkaigi.confsched.droidkaigiui.add_to_bookmark
 import io.github.droidkaigi.confsched.droidkaigiui.extension.roomTheme
+import io.github.droidkaigi.confsched.droidkaigiui.remove_from_bookmark
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import io.github.droidkaigi.confsched.model.sessions.fake
 import io.github.droidkaigi.confsched.sessions.SessionsRes
-import io.github.droidkaigi.confsched.sessions.add_to_bookmark
 import io.github.droidkaigi.confsched.sessions.add_to_calendar
-import io.github.droidkaigi.confsched.sessions.remove_from_bookmark
 import io.github.droidkaigi.confsched.sessions.share_link
 import io.github.droidkaigi.confsched.sessions.slide
 import io.github.droidkaigi.confsched.sessions.video
@@ -142,9 +143,9 @@ private fun TimetableItemDetailFloatingActionButtonMenu(
             text = {
                 Text(
                     if (isBookmarked) {
-                        stringResource(SessionsRes.string.remove_from_bookmark)
+                        stringResource(DroidkaigiuiRes.string.remove_from_bookmark)
                     } else {
-                        stringResource(SessionsRes.string.add_to_bookmark)
+                        stringResource(DroidkaigiuiRes.string.add_to_bookmark)
                     },
                 )
             },
