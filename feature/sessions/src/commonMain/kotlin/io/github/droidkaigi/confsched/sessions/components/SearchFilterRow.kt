@@ -157,10 +157,10 @@ private fun <T> FilterDropdown(
             modifier = if (onItemLongPress != null) {
                 Modifier.combinedClickable(
                     onLongClick = {
-                        if(selectedItems.isNotEmpty()) {
+                        if (selectedItems.isNotEmpty()) {
                             onItemLongPress(selectedItems.first())
                         }
-                    }
+                    },
                 ) {
                     scope.launch {
                         withFrameNanos {
@@ -168,7 +168,9 @@ private fun <T> FilterDropdown(
                         }
                     }.invokeOnCompletion { expanded = true }
                 }
-            } else Modifier,
+            } else {
+                Modifier
+            },
             label = {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -228,9 +230,9 @@ private fun <T> FilterDropdown(
                                 haptics.performHapticFeedback(HapticFeedbackType.LongPress)
                                 onItemLongPress?.invoke(item)
                                 onItemSelected(item)
-                            }
+                            },
                         ),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     if (item in selectedItems) {
                         Icon(Icons.Default.Check, contentDescription = null, modifier = Modifier.padding(end = 12.dp))
