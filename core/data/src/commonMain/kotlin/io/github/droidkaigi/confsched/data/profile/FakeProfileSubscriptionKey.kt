@@ -1,8 +1,6 @@
 package io.github.droidkaigi.confsched.data.profile
 
-import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
-import io.github.droidkaigi.confsched.data.DataScope
 import io.github.droidkaigi.confsched.model.profile.ProfileSubscriptionKey
 import io.github.droidkaigi.confsched.model.profile.ProfileWithImages
 import kotlinx.coroutines.flow.map
@@ -10,9 +8,8 @@ import qrcode.QRCode
 import soil.query.SubscriptionId
 import soil.query.buildSubscriptionKey
 
-@ContributesBinding(DataScope::class, replaces = [DefaultProfileSubscriptionKey::class])
 @Inject
-public class TestProfileSubscriptionKey(
+public class FakeProfileSubscriptionKey(
     private val dataStore: ProfileDataStore,
 ) : ProfileSubscriptionKey by buildSubscriptionKey(
     id = SubscriptionId("profile"),

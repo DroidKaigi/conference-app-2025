@@ -10,11 +10,13 @@ import io.github.droidkaigi.confsched.data.contributors.ContributorsApiClient
 import io.github.droidkaigi.confsched.data.contributors.FakeContributorsApiClient
 import io.github.droidkaigi.confsched.data.eventmap.EventMapApiClient
 import io.github.droidkaigi.confsched.data.eventmap.FakeEventMapApiClient
+import io.github.droidkaigi.confsched.data.profile.FakeProfileSubscriptionKey
 import io.github.droidkaigi.confsched.data.sessions.FakeSessionsApiClient
 import io.github.droidkaigi.confsched.data.sessions.SessionsApiClient
 import io.github.droidkaigi.confsched.data.staff.FakeStaffApiClient
 import io.github.droidkaigi.confsched.data.staff.StaffApiClient
 import io.github.droidkaigi.confsched.model.buildconfig.BuildConfigProvider
+import io.github.droidkaigi.confsched.model.profile.ProfileSubscriptionKey
 
 internal interface TestAppGraph :
     TimetableScreenTestGraph,
@@ -45,6 +47,9 @@ internal interface TestAppGraph :
 
     @Binds
     val FakeEventMapApiClient.binds: EventMapApiClient
+
+    @Binds
+    val FakeProfileSubscriptionKey.binds: ProfileSubscriptionKey
 
     @UseProductionApi
     @Provides

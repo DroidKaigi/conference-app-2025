@@ -16,6 +16,7 @@ import io.github.droidkaigi.confsched.data.core.DataStorePathProducer
 import io.github.droidkaigi.confsched.data.core.defaultJson
 import io.github.droidkaigi.confsched.data.eventmap.DefaultEventMapApiClient
 import io.github.droidkaigi.confsched.data.eventmap.DefaultEventMapQueryKey
+import io.github.droidkaigi.confsched.data.profile.DefaultProfileSubscriptionKey
 import io.github.droidkaigi.confsched.data.sessions.DefaultSessionsApiClient
 import io.github.droidkaigi.confsched.data.sessions.DefaultTimetableItemQueryKey
 import io.github.droidkaigi.confsched.data.sessions.DefaultTimetableQueryKey
@@ -51,6 +52,7 @@ import platform.Foundation.NSUserDomainMask
         DefaultContributorsApiClient::class,
         DefaultEventMapApiClient::class,
         DefaultStaffApiClient::class,
+        DefaultProfileSubscriptionKey::class,
         CoroutineDispatcher::class,
     ],
 )
