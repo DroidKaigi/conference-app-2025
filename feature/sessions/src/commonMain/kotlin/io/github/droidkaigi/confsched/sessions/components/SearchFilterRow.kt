@@ -37,6 +37,7 @@ import io.github.droidkaigi.confsched.sessions.SearchScreenUiState
 import io.github.droidkaigi.confsched.sessions.SessionsRes
 import io.github.droidkaigi.confsched.sessions.filter_chip_category
 import io.github.droidkaigi.confsched.sessions.filter_chip_day
+import io.github.droidkaigi.confsched.sessions.filter_chip_session_type
 import io.github.droidkaigi.confsched.sessions.filter_chip_supported_language
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
@@ -91,7 +92,19 @@ fun SearchFilterRow(
                 modifier = Modifier.testTag(SearchFilterRowFilterCategoryChipTestTag),
             )
         }
-
+        // Session type filter dropdown
+        if (filters.availableSessionTypes.isNotEmpty()) {
+            FilterDropdown(
+                label = stringResource(SessionsRes.string.filter_chip_session_type),
+                selectedItems = filters.selectedSessionTypes,
+                items = filters.availableSessionTypes,
+                itemLabel = { it.label.currentLangTitle },
+                onItemSelected = { sessionType ->
+                    onFilterToggle(SearchScreenEvent.Filter.SessionType(sessionType))
+                },
+                modifier = Modifier.testTag(SearchFilterRowFilterSessionTypeChipTestTag),
+            )
+        }
         // Language filter dropdown
         if (filters.availableLanguages.isNotEmpty()) {
             FilterDropdown(
