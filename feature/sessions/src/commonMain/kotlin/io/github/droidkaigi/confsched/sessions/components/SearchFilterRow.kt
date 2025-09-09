@@ -1,16 +1,18 @@
 package io.github.droidkaigi.confsched.sessions.components
 
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
@@ -25,6 +27,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
@@ -50,6 +54,7 @@ const val DropdownFilterChipTestTagPrefix = "DropdownFilterChipTestTag:"
 fun SearchFilterRow(
     filters: SearchScreenUiState.Filters,
     onFilterToggle: (SearchScreenEvent.Filter) -> Unit,
+    onFilterLongPress: ((SearchScreenEvent.Filter) -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
     val scrollState = rememberScrollState()
@@ -84,6 +89,9 @@ fun SearchFilterRow(
                 itemLabel = { it.title.currentLangTitle },
                 onItemSelected = { category ->
                     onFilterToggle(SearchScreenEvent.Filter.Category(category))
+                },
+                onItemLongPress = onFilterLongPress?.let { callback ->
+                    { category -> callback(SearchScreenEvent.Filter.Category(category)) }
                 },
                 modifier = Modifier.testTag(SearchFilterRowFilterCategoryChipTestTag),
             )
@@ -126,10 +134,14 @@ private fun <T> FilterDropdown(
     items: List<T>,
     itemLabel: (T) -> String,
     onItemSelected: (T) -> Unit,
+    onItemLongPress: ((T) -> Unit)? = null,
+    onMultiSelectFinished: (List<T>) -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
+    val haptics = LocalHapticFeedback.current
     var expanded by remember { mutableStateOf(false) }
+    var isMultiSelectMode by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
 
     Box(modifier = modifier) {
@@ -142,6 +154,21 @@ private fun <T> FilterDropdown(
                     }
                 }.invokeOnCompletion { expanded = true }
             },
+            modifier = if (onItemLongPress != null) {
+                Modifier.combinedClickable(
+                    onLongClick = {
+                        if(selectedItems.isNotEmpty()) {
+                            onItemLongPress(selectedItems.first())
+                        }
+                    }
+                ) {
+                    scope.launch {
+                        withFrameNanos {
+                            keyboardController?.hide()
+                        }
+                    }.invokeOnCompletion { expanded = true }
+                }
+            } else Modifier,
             label = {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -176,24 +203,40 @@ private fun <T> FilterDropdown(
 
         DropdownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false },
+            onDismissRequest = {
+                if (isMultiSelectMode) onMultiSelectFinished(selectedItems.toList())
+                expanded = false
+                isMultiSelectMode = false
+            },
         ) {
             items.forEach { item ->
-                DropdownMenuItem(
-                    modifier = Modifier.testTag(DropdownFilterChipTestTagPrefix.plus(item)),
-                    leadingIcon = {
-                        if (selectedItems.contains(item)) {
-                            Icon(
-                                imageVector = Icons.Default.Check,
-                                contentDescription = null,
-                            )
-                        }
-                    },
-                    text = { Text(itemLabel(item)) },
-                    onClick = {
-                        onItemSelected(item)
-                    },
-                )
+                Row(
+                    modifier = Modifier
+                        .testTag(DropdownFilterChipTestTagPrefix.plus(item))
+                        .fillMaxWidth()
+                        .heightIn(min = 48.dp)
+                        .padding(horizontal = 12.dp, vertical = 8.dp)
+                        .combinedClickable(
+                            onClick = {
+                                onItemSelected(item)
+                                if (!isMultiSelectMode) {
+                                    expanded = false
+                                }
+                            },
+                            onLongClick = {
+                                if (!isMultiSelectMode) isMultiSelectMode = true
+                                haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                                onItemLongPress?.invoke(item)
+                                onItemSelected(item)
+                            }
+                        ),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    if (item in selectedItems) {
+                        Icon(Icons.Default.Check, contentDescription = null, modifier = Modifier.padding(end = 12.dp))
+                    }
+                    Text(itemLabel(item), style = MaterialTheme.typography.bodyLarge)
+                }
             }
         }
     }
