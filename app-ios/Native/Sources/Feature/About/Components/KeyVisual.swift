@@ -1,5 +1,6 @@
 import SwiftUI
 import Theme
+import Component
 
 struct KeyVisual: View {
     var body: some View {
@@ -10,6 +11,13 @@ struct KeyVisual: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(maxWidth: .infinity)
                 .padding(.bottom, 16)
+                .closureModifier {
+                    if #available(iOS 26, *) {
+                        $0.backgroundExtensionEffect()
+                    } else {
+                        $0
+                    }
+                }
 
             // Conference description text
             Text(String(localized: "DroidKaigi is a conference for Android developers", bundle: .module))

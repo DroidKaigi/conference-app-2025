@@ -1,7 +1,78 @@
 {
   "sourceLanguage" : "ja",
   "strings" : {
+    "%@ starts in %d minutes" : {
+      "comment" : "Notification body format with session title and minutes",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ starts in %2$d minutes"
+          }
+        }
+      }
+    },
+    "About DroidKaigi" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DroidKaigiについて"
+          }
+        }
+      }
+    },
+    "Dismiss" : {
+      "comment" : "Notification action to dismiss"
+    },
+    "DroidKaigi Session Reminder" : {
+      "comment" : "Notification title for session reminders"
+    },
+    "Event Map" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "イベントマップ"
+          }
+        }
+      }
+    },
+    "Favorites" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "お気に入り"
+          }
+        }
+      }
+    },
+    "Navigation handler not available" : {
+      "comment" : "Navigation error"
+    },
+    "Notification permission was denied" : {
+      "comment" : "Permission error"
+    },
+    "Profile Card" : {
 
+    },
+    "Timetable" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タイムテーブル"
+          }
+        }
+      }
+    },
+    "UI Mode" : {
+
+    },
+    "View Session" : {
+      "comment" : "Notification action to view session"
+    }
   },
   "version" : "1.1"
 }
