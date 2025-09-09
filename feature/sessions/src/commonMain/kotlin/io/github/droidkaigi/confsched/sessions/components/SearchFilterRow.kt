@@ -129,7 +129,7 @@ private fun <T> FilterDropdown(
     val scope = rememberCoroutineScope()
     val density = LocalDensity.current
     var currentChipWidthPx by remember { mutableStateOf(0) }
-    var lockedChipWidthDp by remember { mutableStateOf<Dp?>(null)}
+    var lockedChipWidthDp by remember { mutableStateOf<Dp?>(null) }
 
     Box(modifier = modifier) {
         FilterChip(
@@ -147,16 +147,14 @@ private fun <T> FilterDropdown(
                         Modifier.width(lockedChipWidthDp!!)
                     } else {
                         Modifier
-                    }
+                    },
                 )
                 .onGloballyPositioned { cords ->
                     currentChipWidthPx = cords.size.width
-                    if (expanded && lockedChipWidthDp == null)  {
+                    if (expanded && lockedChipWidthDp == null) {
                         lockedChipWidthDp = with(density) { currentChipWidthPx.toDp() }
                     }
-
-                }
-            ,
+                },
             label = {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
