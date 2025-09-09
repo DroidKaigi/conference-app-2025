@@ -8,22 +8,8 @@ struct StaffLabel: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            // Avatar with circular shape and border
-            CacheAsyncImage(url: staff.iconUrl) { image in
-                image
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-            } placeholder: {
-                // Placeholder with background color from Figma
-                Circle()
-                    .fill(AssetColors.onSurface.swiftUIColor)
-            }
-            .frame(width: 52, height: 52)
-            .clipShape(Circle())
-            .overlay(
-                Circle()
-                    .stroke(AssetColors.outline.swiftUIColor, lineWidth: 1)
-            )
+            CircularUserIcon(imageUrl: staff.iconUrl.absoluteString)
+                .frame(width: 52, height: 52)
 
             VStack(alignment: .leading, spacing: 0) {
                 Text(staff.name)

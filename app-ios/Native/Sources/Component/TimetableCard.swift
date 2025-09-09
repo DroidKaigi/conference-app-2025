@@ -73,11 +73,7 @@ public struct TimetableCard: View {
         } label: {
             (isFavorite ? AssetImages.icFavFill.swiftUIImage : AssetImages.icFav.swiftUIImage)
                 .resizable()
-                .foregroundStyle(
-                    isFavorite
-                        ? AssetColors.primaryFixed.swiftUIColor
-                        : AssetColors.onSurfaceVariant.swiftUIColor
-                )
+                .foregroundStyle(timetableItem.room.color)
                 .frame(width: 24, height: 24)
                 .padding(.leading, 16)
                 .padding(.trailing, 12)

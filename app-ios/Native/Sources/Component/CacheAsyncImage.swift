@@ -7,6 +7,8 @@ public struct CacheAsyncImage<Content, PlaceHolder>: View where Content: View, P
     private let contentImage: (Image) -> Content
     private let placeholder: () -> PlaceHolder
 
+    @State private var cachedImage: Image?
+
     public init(
         url: URL?,
         scale: CGFloat = 1.0,
@@ -20,40 +22,49 @@ public struct CacheAsyncImage<Content, PlaceHolder>: View where Content: View, P
     }
 
     public var body: some View {
-        if let cachedImage = ImageCache[url] {
-            contentImage(cachedImage)
-        } else {
-            AsyncImage(
-                url: url,
-                scale: scale,
-                content: { image in
-                    cacheAndRender(image: image)
-                },
-                placeholder: placeholder
-            )
+        Group {
+            if let cachedImage {
+                contentImage(cachedImage)
+            } else {
+                AsyncImage(
+                    url: url,
+                    scale: scale,
+                    content: { image in
+                        cacheAndRender(image: image)
+                    },
+                    placeholder: placeholder
+                )
+            }
+        }
+        .task(id: url) {
+            // Load from cache asynchronously when the view appears or url changes
+            cachedImage = await ImageCache.shared.get(for: url)
         }
     }
 }
 
 extension CacheAsyncImage {
     fileprivate func cacheAndRender(image: Image) -> some View {
-        ImageCache[url] = image
+        // Hop to the ImageCache actor to perform the mutation.
+        Task { @MainActor in
+            await ImageCache.shared.set(image: image, for: url)
+        }
         return contentImage(image)
     }
 }
 
 private actor ImageCache {
-    static private var cache: [URL: Image] = [:]
+    static let shared = ImageCache()
+    private var cache: [URL: Image] = [:]
 
-    static subscript(url: URL?) -> Image? {
-        get {
-            guard let url else { return nil }
-            return Self.cache[url]
-        }
-        set {
-            guard let url else { return }
-            Self.cache[url] = newValue
-        }
+    func set(image: Image, for url: URL?) {
+        guard let url else { return }
+        cache[url] = image
+    }
+
+    func get(for url: URL?) -> Image? {
+        guard let url else { return nil }
+        return cache[url]
     }
 }
 
