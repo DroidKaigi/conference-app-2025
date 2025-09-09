@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -27,17 +28,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.sessions.SearchScreenEvent
 import io.github.droidkaigi.confsched.sessions.SearchScreenUiState
 import io.github.droidkaigi.confsched.sessions.SessionsRes
 import io.github.droidkaigi.confsched.sessions.filter_chip_category
 import io.github.droidkaigi.confsched.sessions.filter_chip_day
-import io.github.droidkaigi.confsched.sessions.filter_chip_session_type
 import io.github.droidkaigi.confsched.sessions.filter_chip_supported_language
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
@@ -92,19 +96,6 @@ fun SearchFilterRow(
                 modifier = Modifier.testTag(SearchFilterRowFilterCategoryChipTestTag),
             )
         }
-        // Session type filter dropdown
-        if (filters.availableSessionTypes.isNotEmpty()) {
-            FilterDropdown(
-                label = stringResource(SessionsRes.string.filter_chip_session_type),
-                selectedItems = filters.selectedSessionTypes,
-                items = filters.availableSessionTypes,
-                itemLabel = { it.label.currentLangTitle },
-                onItemSelected = { sessionType ->
-                    onFilterToggle(SearchScreenEvent.Filter.SessionType(sessionType))
-                },
-                modifier = Modifier.testTag(SearchFilterRowFilterSessionTypeChipTestTag),
-            )
-        }
         // Language filter dropdown
         if (filters.availableLanguages.isNotEmpty()) {
             FilterDropdown(
@@ -136,6 +127,9 @@ private fun <T> FilterDropdown(
     var expanded by remember { mutableStateOf(false) }
     var isMultiSelectMode by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+    val density = LocalDensity.current
+    var currentChipWidthPx by remember { mutableStateOf(0) }
+    var lockedChipWidthDp by remember { mutableStateOf<Dp?>(null)}
 
     Box(modifier = modifier) {
         FilterChip(
@@ -147,17 +141,32 @@ private fun <T> FilterDropdown(
                     }
                 }.invokeOnCompletion { expanded = true }
             },
+            modifier = Modifier
+                .then(
+                    if (lockedChipWidthDp != null) {
+                        Modifier.width(lockedChipWidthDp!!)
+                    } else {
+                        Modifier
+                    }
+                )
+                .onGloballyPositioned { cords ->
+                    currentChipWidthPx = cords.size.width
+                    if (expanded && lockedChipWidthDp == null)  {
+                        lockedChipWidthDp = with(density) { currentChipWidthPx.toDp() }
+                    }
+
+                }
+            ,
             label = {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
-                    if (selectedItems.isNotEmpty()) {
-                        Icon(
-                            imageVector = Icons.Default.Check,
-                            contentDescription = null,
-                        )
-                    }
+                    Icon(
+                        imageVector = Icons.Default.Check,
+                        contentDescription = null,
+                        modifier = Modifier.alpha(if (selectedItems.isNotEmpty()) 1f else 0f),
+                    )
                     Text(
                         text = if (selectedItems.isNotEmpty()) {
                             selectedItems.joinToString { itemLabel(it) }
@@ -185,6 +194,7 @@ private fun <T> FilterDropdown(
                 if (isMultiSelectMode) onMultiSelectFinished(selectedItems.toList())
                 expanded = false
                 isMultiSelectMode = false
+                lockedChipWidthDp = null
             },
         ) {
             items.forEach { item ->
@@ -209,9 +219,13 @@ private fun <T> FilterDropdown(
                         .padding(horizontal = 12.dp, vertical = 8.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    if (item in selectedItems) {
-                        Icon(Icons.Default.Check, contentDescription = null, modifier = Modifier.padding(end = 12.dp))
-                    }
+                    Icon(
+                        Icons.Default.Check,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(end = 12.dp)
+                            .alpha(if (selectedItems.contains(item)) 1f else 0f),
+                    )
                     Text(itemLabel(item), style = MaterialTheme.typography.bodyLarge)
                 }
             }
