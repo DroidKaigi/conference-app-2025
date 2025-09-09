@@ -86,6 +86,10 @@ actual fun KaigiAppUi() {
                         }
                         backStack.add(TimetableItemDetailNavKey(it))
                     },
+                    onNavigateToListClick = { 
+                        backStack.clear()
+                        backStack.addAll(listOf(TimetableNavKey, FavoritesNavKey).distinct())
+                    }
                 )
                 contributorsEntry(
                     onBackClick = { backStack.safeRemoveLastOrNull() },

@@ -26,6 +26,7 @@ fun NavGraphBuilder.timetableTabNavGraph(
     onLinkClick: (String) -> Unit,
     onShareClick: (TimetableItem) -> Unit,
     onAddCalendarClick: (TimetableItem) -> Unit,
+    onNavigateToListClick: () -> Unit,
 ) {
     navigation<TimetableTabRoute>(
         startDestination = TimetableRoute,
@@ -39,6 +40,7 @@ fun NavGraphBuilder.timetableTabNavGraph(
             onLinkClick = onLinkClick,
             onShareClick = onShareClick,
             onAddCalendarClick = onAddCalendarClick,
+            onNavigateToListClick = onNavigateToListClick,
         )
         searchNavGraph(
             onBackClick = onBackClick,
@@ -68,6 +70,7 @@ fun NavGraphBuilder.timetableItemDetailNavGraph(
     onLinkClick: (String) -> Unit,
     onShareClick: (TimetableItem) -> Unit,
     onAddCalendarClick: (TimetableItem) -> Unit,
+    onNavigateToListClick: () -> Unit,
 ) {
     composable<TimetableItemDetailRoute> {
         val timetableItemId =
@@ -78,6 +81,7 @@ fun NavGraphBuilder.timetableItemDetailNavGraph(
                 onLinkClick = onLinkClick,
                 onShareClick = onShareClick,
                 onAddCalendarClick = onAddCalendarClick,
+                onNavigateToListClick = onNavigateToListClick,
             )
         }
     }
