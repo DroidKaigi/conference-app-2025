@@ -23,7 +23,7 @@ private enum TabType: CaseIterable, Hashable {
     case favorite
     case info
     case profileCard
-    
+
     func tabImage(_ selectedTab: TabType) -> ImageAsset {
         switch self {
         case .timetable:
@@ -56,11 +56,11 @@ public struct RootScreen: View {
     @Dependency(\.timetableUseCase) private var timetableUseCase
 
     @State private var notificationCoordinator: NotificationNavigationCoordinator?
-  
+
     public init() {
         UITabBar.appearance().unselectedItemTintColor = UIColor(named: "tab_inactive")
     }
-    
+
     public var body: some View {
         Group {
             if composeMultiplatformEnabled {
@@ -117,7 +117,7 @@ public struct RootScreen: View {
         // NotificationUseCaseImpl instance that handles all notification operations
         NotificationUseCaseManager.shared.setNavigationHandler(coordinator)
     }
-    
+
     @ViewBuilder
     private var tabContent: some View {
         TabView(selection: $selectedTab) {
@@ -154,7 +154,7 @@ public struct RootScreen: View {
         }
         .tint(AssetColors.primaryFixed.swiftUIColor)
     }
-    
+
     private var timetableTab: some View {
         NavigationStack(path: $timetableNavigationPath) {
             HomeScreen(onNavigate: handleHomeNavigation)
@@ -167,13 +167,13 @@ public struct RootScreen: View {
                 }
         }
     }
-    
+
     private var mapTab: some View {
         NavigationStack {
             EventMapScreen()
         }
     }
-    
+
     private var favoriteTab: some View {
         NavigationStack(path: $favoriteNavigationPath) {
             ZStack(alignment: .top) {
@@ -189,7 +189,7 @@ public struct RootScreen: View {
                     KMPFavoritesScreenViewControllerWrapper(onNavigate: handleFavoriteNavigation)
                         .ignoresSafeArea(.all)
                 }
-                
+
                 HStack {
                     Spacer()
                     FavoriteScreenUiModePicker(uiMode: $favoriteScreenUiMode)
@@ -203,7 +203,7 @@ public struct RootScreen: View {
             }
         }
     }
-    
+
     private var infoTab: some View {
         NavigationStack(path: $aboutNavigationPath) {
             AboutScreen(
@@ -282,7 +282,7 @@ public struct RootScreen: View {
             profileCardNavigationPath = NavigationPath()
         }
     }
-    
+
     private func handleEnableComposeMultiplatform() {
         composeMultiplatformEnabled = true
     }
@@ -407,11 +407,11 @@ public struct RootScreen: View {
         .environment(\.colorScheme, .dark)
         .padding(.horizontal, 48)
     }
-    
+
     /// 背景用のカスタム Modifier
     private struct TabBarBackground: ViewModifier {
         @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
-        
+
         func body(content: Content) -> some View {
             if reduceTransparency {
                 // 透明度を下げる設定が有効 → 単色背景
