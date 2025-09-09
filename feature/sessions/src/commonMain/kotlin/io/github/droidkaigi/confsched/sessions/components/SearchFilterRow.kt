@@ -115,7 +115,7 @@ private fun <T> FilterDropdown(
     items: List<T>,
     itemLabel: (T) -> String,
     onItemSelected: (T) -> Unit,
-    onMultiSelectFinished: (List<T>) -> Unit = {},
+    onMultiSelectFinished: ((List<T>) -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -154,7 +154,7 @@ private fun <T> FilterDropdown(
                         style = MaterialTheme.typography.labelLarge,
                         maxLines = 1,
                     )
-                    if (selectedItems.isNotEmpty()){
+                    if (selectedItems.isNotEmpty()) {
                         Icon(
                             imageVector = Icons.Default.ArrowDropDown,
                             contentDescription = null,
@@ -171,7 +171,7 @@ private fun <T> FilterDropdown(
             DropdownMenu(
                 expanded = expanded,
                 onDismissRequest = {
-                    if (isMultiSelectMode) onMultiSelectFinished(selectedItems.toList())
+                    if (isMultiSelectMode) onMultiSelectFinished?.invoke(selectedItems.toList())
                     expanded = false
                     isMultiSelectMode = false
                 },
