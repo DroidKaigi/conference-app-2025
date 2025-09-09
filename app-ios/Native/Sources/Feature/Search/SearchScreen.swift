@@ -145,7 +145,7 @@ public struct SearchScreen: View {
             }
         }
         .padding(.horizontal, 16)
-        .padding(.bottom, 80)  // Tab bar padding
+        .padding(.bottom, Constant.bottomPadding)  // Tab bar padding
     }
 
     private var categoryFilterMenu: some View {

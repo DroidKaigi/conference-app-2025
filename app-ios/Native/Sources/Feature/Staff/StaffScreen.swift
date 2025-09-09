@@ -1,5 +1,6 @@
 import SwiftUI
 import Theme
+import Component
 
 public struct StaffScreen: View {
     @State private var presenter = StaffPresenter()
@@ -24,7 +25,7 @@ public struct StaffScreen: View {
                             .buttonStyle(PlainButtonStyle())
                         }
                     }
-                    .padding(.bottom, 80)
+                    .padding(.bottom, Constant.bottomPadding)
                 }
                 .background(AssetColors.surface.swiftUIColor)
             }

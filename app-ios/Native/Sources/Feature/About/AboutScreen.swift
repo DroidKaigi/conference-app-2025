@@ -2,6 +2,7 @@ import Dependencies
 import DependencyExtra
 import SwiftUI
 import Theme
+import Component
 
 public struct AboutScreen: View {
     @State private var presenter = AboutPresenter()
@@ -39,7 +40,7 @@ public struct AboutScreen: View {
                 }
                 .padding(.horizontal, 16)
             }
-            .padding(.bottom, 80)  // Tab bar padding
+            .padding(.bottom, Constant.bottomPadding)  // Tab bar padding
         }
         .background(AssetColors.surface.swiftUIColor)
         .navigationTitle(String(localized: "About DroidKaigi", bundle: .module))
