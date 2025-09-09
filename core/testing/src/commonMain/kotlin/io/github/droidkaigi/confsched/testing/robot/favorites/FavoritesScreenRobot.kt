@@ -7,6 +7,7 @@ import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performCustomAccessibilityActionWithLabel
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeUp
 import dev.zacsweers.metro.Inject
@@ -78,9 +79,9 @@ class FavoritesScreenRobot(
 
     context(composeUiTest: ComposeUiTest)
     fun clickFirstSessionBookmark() {
-        composeUiTest.onAllNodes(hasTestTag(TimetableItemCardBookmarkButtonTestTag))
+        composeUiTest.onAllNodes(hasTestTag(TimetableItemCardTestTag))
             .onFirst()
-            .performClick()
+            .performCustomAccessibilityActionWithLabel("Remove from Bookmarks")
         waitUntilIdle()
     }
 

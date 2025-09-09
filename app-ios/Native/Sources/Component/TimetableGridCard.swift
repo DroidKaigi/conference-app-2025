@@ -1,27 +1,39 @@
-import Component
 import Extension
 import Model
 import Presentation
 import SwiftUI
 import Theme
 
-struct TimetableGridCard: View {
+public struct TimetableGridCard: View {
     let timetableItem: any TimetableItem
+    let isFavorite: Bool
     let onTap: (any TimetableItem) -> Void
 
-    var body: some View {
+    public init(timetableItem: any TimetableItem, isFavorite: Bool, onTap: @escaping (any TimetableItem) -> Void) {
+        self.timetableItem = timetableItem
+        self.isFavorite = isFavorite
+        self.onTap = onTap
+    }
+
+    public var body: some View {
         Button {
             onTap(timetableItem)
         } label: {
             VStack(alignment: .leading, spacing: 4) {
-                Text("\(timetableItem.startsTimeString) ~ \(timetableItem.endsTimeString)")
-                    .font(Typography.labelLarge)
-                    .foregroundStyle(timetableItem.room.color)
-                    .multilineTextAlignment(.leading)
+                HStack(spacing: 4) {
+                    Image(timetableItem.room.iconName, bundle: .module)
+                        .renderingMode(.template)
+                        .resizable()
+                        .frame(width: 12, height: 12)
+                    Text("\(timetableItem.startsTimeString) ~ \(timetableItem.endsTimeString)")
+                        .font(Typography.labelLarge)
+                        .multilineTextAlignment(.leading)
+                }
+                .foregroundStyle(contentForegroundColor)
 
                 Text(timetableItem.title.currentLangTitle)
                     .font(Typography.labelLarge)
-                    .foregroundStyle(timetableItem.room.color)
+                    .foregroundStyle(contentForegroundColor)
                     .multilineTextAlignment(.leading)
                     .lineLimit(2)
 
@@ -35,7 +47,7 @@ struct TimetableGridCard: View {
 
                         Text(timetableItem.speakers.map(\.name).joined(separator: ", "))
                             .font(Typography.bodySmall)
-                            .foregroundStyle(AssetColors.onSurface.swiftUIColor)
+                            .foregroundStyle(speakerForegroundColor)
                             .lineLimit(1)
 
                         Spacer()
@@ -43,7 +55,7 @@ struct TimetableGridCard: View {
                 }
             }
             .padding(8)
-            .background(timetableItem.room.color.opacity(0.1))
+            .background(backgroundColor)
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
                     .stroke(timetableItem.room.color, lineWidth: 1)
@@ -52,11 +64,24 @@ struct TimetableGridCard: View {
         }
         .buttonStyle(PlainButtonStyle())
     }
+
+    private var contentForegroundColor: Color {
+        isFavorite ? AssetColors.surface.swiftUIColor : timetableItem.room.color
+    }
+
+    private var speakerForegroundColor: Color {
+        isFavorite ? AssetColors.surface.swiftUIColor : AssetColors.onSurface.swiftUIColor
+    }
+
+    private var backgroundColor: Color {
+        timetableItem.room.color.opacity(isFavorite ? 0.7 : 0.1)
+    }
 }
 
 #Preview {
     TimetableGridCard(
         timetableItem: PreviewData.timetableItemSession,
+        isFavorite: false,
         onTap: { _ in }
     )
     .frame(width: 200, height: 100)

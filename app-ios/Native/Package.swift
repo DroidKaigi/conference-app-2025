@@ -29,6 +29,7 @@ let package = Package(
                 .target(name: "Extension"),
                 .target(name: "Theme"),
                 .product(name: "Model", package: "Core"),
+                .product(name: "Presentation", package: "Core"),
             ]
         ),
         .testTarget(
