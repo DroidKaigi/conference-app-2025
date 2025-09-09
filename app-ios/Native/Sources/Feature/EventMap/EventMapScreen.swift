@@ -1,8 +1,8 @@
+import Component
 import Dependencies
 import DependencyExtra
 import SwiftUI
 import Theme
-import Component
 
 public struct EventMapScreen: View {
     @State private var presenter = EventMapPresenter()

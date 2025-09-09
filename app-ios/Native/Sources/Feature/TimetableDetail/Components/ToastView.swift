@@ -1,6 +1,6 @@
+import Component
 import SwiftUI
 import Theme
-import Component
 
 struct ToastView: View {
     let message: String

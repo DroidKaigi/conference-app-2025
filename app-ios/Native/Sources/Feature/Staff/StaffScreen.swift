@@ -1,6 +1,6 @@
+import Component
 import SwiftUI
 import Theme
-import Component
 
 public struct StaffScreen: View {
     @State private var presenter = StaffPresenter()
