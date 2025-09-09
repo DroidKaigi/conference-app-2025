@@ -154,7 +154,7 @@ private fun <T> FilterDropdown(
                         style = MaterialTheme.typography.labelLarge,
                         maxLines = 1,
                     )
-                    if (selectedItems.isNotEmpty()){
+                    if (selectedItems.isNotEmpty()) {
                         Icon(
                             imageVector = Icons.Default.ArrowDropDown,
                             contentDescription = null,
