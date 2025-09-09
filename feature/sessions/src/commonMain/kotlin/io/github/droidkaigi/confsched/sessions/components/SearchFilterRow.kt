@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -30,12 +29,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.sessions.SearchScreenEvent
 import io.github.droidkaigi.confsched.sessions.SearchScreenUiState
@@ -127,9 +123,6 @@ private fun <T> FilterDropdown(
     var expanded by remember { mutableStateOf(false) }
     var isMultiSelectMode by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
-    val density = LocalDensity.current
-    var currentChipWidthPx by remember { mutableStateOf(0) }
-    var lockedChipWidthDp by remember { mutableStateOf<Dp?>(null) }
 
     Box(modifier = modifier) {
         FilterChip(
@@ -141,20 +134,7 @@ private fun <T> FilterDropdown(
                     }
                 }.invokeOnCompletion { expanded = true }
             },
-            modifier = Modifier
-                .then(
-                    if (lockedChipWidthDp != null) {
-                        Modifier.width(lockedChipWidthDp!!)
-                    } else {
-                        Modifier
-                    },
-                )
-                .onGloballyPositioned { cords ->
-                    currentChipWidthPx = cords.size.width
-                    if (expanded && lockedChipWidthDp == null) {
-                        lockedChipWidthDp = with(density) { currentChipWidthPx.toDp() }
-                    }
-                },
+            modifier = Modifier,
             label = {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -174,10 +154,12 @@ private fun <T> FilterDropdown(
                         style = MaterialTheme.typography.labelLarge,
                         maxLines = 1,
                     )
-                    Icon(
-                        imageVector = Icons.Default.ArrowDropDown,
-                        contentDescription = null,
-                    )
+                    if (selectedItems.isNotEmpty()){
+                        Icon(
+                            imageVector = Icons.Default.ArrowDropDown,
+                            contentDescription = null,
+                        )
+                    }
                 }
             },
             colors = FilterChipDefaults.filterChipColors(
@@ -185,46 +167,46 @@ private fun <T> FilterDropdown(
                 selectedLabelColor = MaterialTheme.colorScheme.onSecondaryContainer,
             ),
         )
-
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = {
-                if (isMultiSelectMode) onMultiSelectFinished(selectedItems.toList())
-                expanded = false
-                isMultiSelectMode = false
-                lockedChipWidthDp = null
-            },
-        ) {
-            items.forEach { item ->
-                Row(
-                    modifier = Modifier
-                        .testTag(DropdownFilterChipTestTagPrefix.plus(item))
-                        .fillMaxWidth()
-                        .heightIn(min = 48.dp)
-                        .combinedClickable(
-                            onClick = {
-                                onItemSelected(item)
-                                if (!isMultiSelectMode) {
-                                    expanded = false
-                                }
-                            },
-                            onLongClick = {
-                                isMultiSelectMode = true
-                                haptics.performHapticFeedback(HapticFeedbackType.LongPress)
-                                onItemSelected(item)
-                            },
-                        )
-                        .padding(horizontal = 12.dp, vertical = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(
-                        Icons.Default.Check,
-                        contentDescription = null,
+        Box {
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = {
+                    if (isMultiSelectMode) onMultiSelectFinished(selectedItems.toList())
+                    expanded = false
+                    isMultiSelectMode = false
+                },
+            ) {
+                items.forEach { item ->
+                    Row(
                         modifier = Modifier
-                            .padding(end = 12.dp)
-                            .alpha(if (selectedItems.contains(item)) 1f else 0f),
-                    )
-                    Text(itemLabel(item), style = MaterialTheme.typography.bodyLarge)
+                            .testTag(DropdownFilterChipTestTagPrefix.plus(item))
+                            .fillMaxWidth()
+                            .heightIn(min = 48.dp)
+                            .combinedClickable(
+                                onClick = {
+                                    onItemSelected(item)
+                                    if (!isMultiSelectMode) {
+                                        expanded = false
+                                    }
+                                },
+                                onLongClick = {
+                                    isMultiSelectMode = true
+                                    haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                                    onItemSelected(item)
+                                },
+                            )
+                            .padding(horizontal = 12.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(
+                            Icons.Default.Check,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .padding(end = 12.dp)
+                                .alpha(if (selectedItems.contains(item)) 1f else 0f),
+                        )
+                        Text(itemLabel(item), style = MaterialTheme.typography.bodyLarge)
+                    }
                 }
             }
         }
