@@ -37,7 +37,6 @@ import io.github.droidkaigi.confsched.sessions.SearchScreenUiState
 import io.github.droidkaigi.confsched.sessions.SessionsRes
 import io.github.droidkaigi.confsched.sessions.filter_chip_category
 import io.github.droidkaigi.confsched.sessions.filter_chip_day
-import io.github.droidkaigi.confsched.sessions.filter_chip_session_type
 import io.github.droidkaigi.confsched.sessions.filter_chip_supported_language
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
@@ -54,7 +53,6 @@ const val DropdownFilterChipTestTagPrefix = "DropdownFilterChipTestTag:"
 fun SearchFilterRow(
     filters: SearchScreenUiState.Filters,
     onFilterToggle: (SearchScreenEvent.Filter) -> Unit,
-    onFilterLongPress: ((SearchScreenEvent.Filter) -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
     val scrollState = rememberScrollState()
@@ -90,24 +88,7 @@ fun SearchFilterRow(
                 onItemSelected = { category ->
                     onFilterToggle(SearchScreenEvent.Filter.Category(category))
                 },
-                onItemLongPress = onFilterLongPress?.let { callback ->
-                    { category -> callback(SearchScreenEvent.Filter.Category(category)) }
-                },
                 modifier = Modifier.testTag(SearchFilterRowFilterCategoryChipTestTag),
-            )
-        }
-
-        // Session type filter dropdown
-        if (filters.availableSessionTypes.isNotEmpty()) {
-            FilterDropdown(
-                label = stringResource(SessionsRes.string.filter_chip_session_type),
-                selectedItems = filters.selectedSessionTypes,
-                items = filters.availableSessionTypes,
-                itemLabel = { it.label.currentLangTitle },
-                onItemSelected = { sessionType ->
-                    onFilterToggle(SearchScreenEvent.Filter.SessionType(sessionType))
-                },
-                modifier = Modifier.testTag(SearchFilterRowFilterSessionTypeChipTestTag),
             )
         }
 
@@ -134,7 +115,6 @@ private fun <T> FilterDropdown(
     items: List<T>,
     itemLabel: (T) -> String,
     onItemSelected: (T) -> Unit,
-    onItemLongPress: ((T) -> Unit)? = null,
     onMultiSelectFinished: (List<T>) -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
@@ -153,23 +133,6 @@ private fun <T> FilterDropdown(
                         keyboardController?.hide()
                     }
                 }.invokeOnCompletion { expanded = true }
-            },
-            modifier = if (onItemLongPress != null) {
-                Modifier.combinedClickable(
-                    onLongClick = {
-                        if (selectedItems.isNotEmpty()) {
-                            onItemLongPress(selectedItems.first())
-                        }
-                    },
-                ) {
-                    scope.launch {
-                        withFrameNanos {
-                            keyboardController?.hide()
-                        }
-                    }.invokeOnCompletion { expanded = true }
-                }
-            } else {
-                Modifier
             },
             label = {
                 Row(
@@ -217,7 +180,6 @@ private fun <T> FilterDropdown(
                         .testTag(DropdownFilterChipTestTagPrefix.plus(item))
                         .fillMaxWidth()
                         .heightIn(min = 48.dp)
-                        .padding(horizontal = 12.dp, vertical = 8.dp)
                         .combinedClickable(
                             onClick = {
                                 onItemSelected(item)
@@ -226,12 +188,12 @@ private fun <T> FilterDropdown(
                                 }
                             },
                             onLongClick = {
-                                if (!isMultiSelectMode) isMultiSelectMode = true
+                                isMultiSelectMode = true
                                 haptics.performHapticFeedback(HapticFeedbackType.LongPress)
-                                onItemLongPress?.invoke(item)
                                 onItemSelected(item)
                             },
-                        ),
+                        )
+                        .padding(horizontal = 12.dp, vertical = 8.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     if (item in selectedItems) {
