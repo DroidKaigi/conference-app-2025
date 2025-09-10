@@ -5,9 +5,10 @@ import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.assertTextEquals
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTextInput
 import dev.zacsweers.metro.Inject
 import io.github.confsched.profile.ProfileCardCardScreenTestTag
@@ -102,7 +103,6 @@ class ProfileScreenRobot(
 
     context(composeUiTest: ComposeUiTest)
     fun clickEditButton() {
-        scrollToNodeTag(ProfileCardEditButtonTestTag)
         composeUiTest
             .onNodeWithTag(ProfileCardEditButtonTestTag)
             .performClick()
@@ -156,7 +156,6 @@ class ProfileScreenRobot(
 
     context(composeUiTest: ComposeUiTest)
     fun clickCreateButton() {
-        scrollToNodeTag(ProfileCardEditCreateCardButtonTestTag)
         composeUiTest
             .onNodeWithTag(ProfileCardEditCreateCardButtonTestTag)
             .performClick()
@@ -172,7 +171,6 @@ class ProfileScreenRobot(
 
     context(composeUiTest: ComposeUiTest)
     fun clickCardTheme(theme: ProfileCardTheme) {
-        scrollToNodeTag(ProfileCardEditThemeTestTag.plus(theme.name))
         composeUiTest.onNodeWithTag(ProfileCardEditThemeTestTag.plus(theme.name))
             .assertExists()
             .performClick()
@@ -227,5 +225,18 @@ class ProfileScreenRobot(
     }
 
     context(composeUiTest: ComposeUiTest)
-    private fun scrollToNodeTag(tag: String) = composeUiTest.onNodeWithTag(tag).performScrollTo()
+    fun scrollToNodeTagInEditScreen(tag: String) {
+        composeUiTest
+            .onNodeWithTag(ProfileCardEditScreenColumnTestTag)
+            .performScrollToNode(hasTestTag(tag))
+        waitFor5Seconds()
+    }
+
+    context(composeUiTest: ComposeUiTest)
+    fun scrollToNodeTagInCardScreen(tag: String) {
+        composeUiTest
+            .onNodeWithTag(ProfileCardCardScreenTestTag)
+            .performScrollToNode(hasTestTag(tag))
+        waitFor5Seconds()
+    }
 }

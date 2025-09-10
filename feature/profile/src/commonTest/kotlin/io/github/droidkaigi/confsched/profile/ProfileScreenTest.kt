@@ -1,6 +1,11 @@
 package io.github.droidkaigi.confsched.profile
 
 import androidx.compose.ui.test.runComposeUiTest
+import io.github.confsched.profile.ProfileCardEditButtonTestTag
+import io.github.confsched.profile.ProfileCardEditCreateCardButtonTestTag
+import io.github.confsched.profile.ProfileCardEditLinkFormLabelTestTag
+import io.github.confsched.profile.ProfileCardEditNameFormTestTag
+import io.github.confsched.profile.ProfileCardEditThemeTestTag
 import io.github.droidkaigi.confsched.model.profile.Profile
 import io.github.droidkaigi.confsched.model.profile.ProfileCardTheme
 import io.github.droidkaigi.confsched.model.profile.fake
@@ -28,7 +33,7 @@ class ProfileScreenTest {
     }
 
     val describedBehaviors = describeBehaviors<ProfileScreenRobot>("ProfileScreen") {
-        describe("when profile card is does not exists") {
+        describe("when the profile card does not exist") {
             doIt {
                 setupProfileDataStore(ProfileInputStatus.AllNotEntered)
                 setupProfileScreenContent()
@@ -38,7 +43,7 @@ class ProfileScreenTest {
                     checkEditScreenDisplayed()
                 }
             }
-            describe("fill out all text forms") {
+            describe("when filling out all text fields") {
                 val profile = Profile.fake()
                 doIt {
                     inputName(profile.nickName)
@@ -55,19 +60,22 @@ class ProfileScreenTest {
             }
             describe("when changing card themes") {
                 doIt {
+                    scrollToNodeTagInEditScreen(ProfileCardEditThemeTestTag.plus(ProfileCardTheme.LightDiamond))
                     clickCardTheme(ProfileCardTheme.LightDiamond)
                 }
-                itShould("is changed to the selected theme") {
+                itShould("change to the selected theme") {
                     captureScreenWithChecks {
                         checkThemeSelected(ProfileCardTheme.LightDiamond)
                     }
                 }
             }
-            describe("click create card button when profile is empty") {
+            describe("when the profile is empty and the create card button is clicked") {
                 doIt {
+                    scrollToNodeTagInEditScreen(ProfileCardEditCreateCardButtonTestTag)
                     clickCreateButton()
+                    scrollToNodeTagInEditScreen(ProfileCardEditNameFormTestTag)
                 }
-                itShould("show error text") {
+                itShould("show error messages") {
                     captureScreenWithChecks {
                         checkNameError()
                         checkOccupationError()
@@ -76,24 +84,26 @@ class ProfileScreenTest {
                     }
                 }
             }
-            describe("check invalid link") {
+            describe("when entering an invalid link") {
                 doIt {
                     inputLink("あいうえお")
+                    scrollToNodeTagInEditScreen(ProfileCardEditCreateCardButtonTestTag)
                     clickCreateButton()
+                    scrollToNodeTagInEditScreen(ProfileCardEditLinkFormLabelTestTag)
                 }
-                itShould("show error text") {
+                itShould("show an error message") {
                     captureScreenWithChecks {
                         checkLinkInvalidError()
                     }
                 }
             }
         }
-        describe("when profile is saved without image") {
+        describe("when the profile is saved without an image") {
             doIt {
                 setupProfileDataStore(ProfileInputStatus.NoInputOtherThanImage)
                 setupProfileScreenContent()
             }
-            itShould("show saved content") {
+            itShould("show the saved content") {
                 val profile = Profile.fake()
                 captureScreenWithChecks {
                     checkEditScreenDisplayed()
@@ -104,18 +114,18 @@ class ProfileScreenTest {
                 }
             }
         }
-        describe("when profile card is exists") {
+        describe("when the profile card exists") {
             doIt {
                 setupProfileDataStore(ProfileInputStatus.AllEntered)
                 setupProfileScreenContent()
             }
-            itShould("show profile card screen") {
+            itShould("show the profile card screen") {
                 captureScreenWithChecks {
                     checkCardScreenDisplayed()
                     checkCardFrontDisplayed()
                 }
             }
-            describe("flip the card") {
+            describe("when flipping the card") {
                 doIt {
                     flipProfileCard()
                 }
@@ -125,11 +135,12 @@ class ProfileScreenTest {
                     }
                 }
             }
-            describe("when click edit button") {
+            describe("when clicking the edit button") {
                 doIt {
+                    scrollToNodeTagInCardScreen(ProfileCardEditButtonTestTag)
                     clickEditButton()
                 }
-                itShould("back to the profile edit screen") {
+                itShould("return to the profile edit screen") {
                     val profile = Profile.fake()
                     captureScreenWithChecks {
                         checkEditScreenDisplayed()

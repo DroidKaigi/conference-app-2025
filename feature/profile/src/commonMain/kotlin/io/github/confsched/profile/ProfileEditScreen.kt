@@ -97,6 +97,7 @@ const val ProfileCardEditScreenColumnTestTag = "ProfileCardEditScreenColumnTestT
 const val ProfileCardEditNameFormTestTag = "ProfileCardEditNameFormTestTag"
 const val ProfileCardEditOccupationFormTestTag = "ProfileCardEditOccupationFormTestTag"
 const val ProfileCardEditLinkFormTestTag = "ProfileCardEditLinkFormTestTag"
+const val ProfileCardEditLinkFormLabelTestTag = "ProfileCardEditLinkFormLabelTestTag"
 const val ProfileCardEditCreateCardButtonTestTag = "ProfileCardEditCreateCardButtonTestTag"
 const val ProfileCardEditThemeTestTag = "ProfileCardEditThemeTestTag"
 const val ProfileCardEditDescriptionTextTestTag = "ProfileCardEditDescriptionTextTestTag"
@@ -264,6 +265,7 @@ private fun Form<Profile>.Link(focusManager: FocusManager) {
             ) {
                 InputLabel(
                     label = stringResource(ProfileRes.string.link) + stringResource(ProfileRes.string.link_example_text),
+                    modifier = Modifier.testTag(ProfileCardEditLinkFormLabelTestTag),
                 )
                 field.InputField(
                     modifier = Modifier.fillMaxWidth().testTag(ProfileCardEditLinkFormTestTag),
