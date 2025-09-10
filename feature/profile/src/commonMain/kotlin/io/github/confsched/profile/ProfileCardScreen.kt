@@ -50,6 +50,7 @@ import io.github.confsched.profile.components.CardPreviewImageBitmaps
 import io.github.confsched.profile.components.FlippableProfileCard
 import io.github.confsched.profile.components.ShareableProfileCard
 import io.github.confsched.profile.components.isDark
+import io.github.droidkaigi.confsched.common.compose.LocalTestMode
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.component.AnimatedTextTopAppBar
 import io.github.droidkaigi.confsched.droidkaigiui.compositionlocal.safeDrawingWithBottomNavBar
@@ -79,7 +80,8 @@ fun ProfileCardScreen(
     var shareableProfileCardRenderResult: ImageBitmap? by remember { mutableStateOf(null) }
     val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-    val isShareReady = shareableProfileCardRenderResult != null
+    val isTestMode = LocalTestMode.current
+    val isShareReady = shareableProfileCardRenderResult != null || isTestMode
     val backgroundAlpha by animateFloatAsState(
         targetValue = if (isShareReady) 1f else 0f,
         animationSpec = tween(

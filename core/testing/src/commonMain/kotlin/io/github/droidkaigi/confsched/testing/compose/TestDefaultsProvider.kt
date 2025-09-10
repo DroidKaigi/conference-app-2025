@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import io.github.droidkaigi.confsched.common.compose.LocalTestMode
 import io.github.droidkaigi.confsched.designsystem.theme.KaigiTheme
 import io.github.droidkaigi.confsched.designsystem.theme.changoFontFamily
 import kotlinx.coroutines.CoroutineScope
@@ -30,6 +31,7 @@ fun TestDefaultsProvider(
                 CompositionLocalProvider(
                     LocalLifecycleOwner provides FakeLocalLifecycleOwner(),
                     LocalViewModelStoreOwner provides FakeViewModelStoreOwner(),
+                    LocalTestMode provides true,
                     content = content,
                 )
             }
