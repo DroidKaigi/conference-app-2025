@@ -215,7 +215,7 @@ public struct RootScreen: View {
             }
         }
     }
-    
+
     @ViewBuilder
     private func aboutDestinationView(for destination: AboutNavigationDestination) -> some View {
         switch destination {
@@ -231,7 +231,7 @@ public struct RootScreen: View {
             SettingsScreen()
         }
     }
-    
+
     private var profileCardTab: some View {
         NavigationStack(path: $profileCardNavigationPath) {
             ProfileCardScreen(onNavigate: handleProfileCardNavigation)
@@ -244,7 +244,7 @@ public struct RootScreen: View {
                 }
         }
     }
-    
+
     private func handleHomeNavigation(_ destination: HomeNavigationDestination) {
         switch destination {
         case .timetableDetail(let item):
@@ -253,15 +253,15 @@ public struct RootScreen: View {
             timetableNavigationPath.append(NavigationDestination.search)
         }
     }
-    
+
     private func handleAboutNavigation(_ destination: AboutNavigationDestination) {
         aboutNavigationPath.append(destination)
     }
-    
+
     private func handleFavoriteNavigation(_ destination: FavoriteNavigationDestination) {
         favoriteNavigationPath.append(destination)
     }
-    
+
     private func handleSearchNavigation(_ destination: SearchNavigationDestination) {
         switch destination {
         case .timetableDetail(let item):
