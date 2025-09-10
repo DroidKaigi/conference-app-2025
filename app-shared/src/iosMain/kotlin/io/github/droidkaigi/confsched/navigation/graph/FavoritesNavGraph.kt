@@ -18,6 +18,7 @@ fun NavGraphBuilder.favoritesTabNavGraph(
     onShareClick: (TimetableItem) -> Unit,
     onAddCalendarClick: (TimetableItem) -> Unit,
     onTimetableItemClick: (TimetableItemId) -> Unit,
+    onNavigateToListClick: () -> Unit,
 ) {
     navigation<FavoritesTabRoute>(
         startDestination = Favorites,
@@ -28,6 +29,7 @@ fun NavGraphBuilder.favoritesTabNavGraph(
             onLinkClick = onLinkClick,
             onShareClick = onShareClick,
             onAddCalendarClick = onAddCalendarClick,
+            onNavigateToListClick = onNavigateToListClick,
         )
     }
 }

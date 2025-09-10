@@ -91,6 +91,7 @@ actual fun KaigiAppUi() {
                 onLinkClick = externalNavController::navigate,
                 onShareClick = externalNavController::onShareClick,
                 onAddCalendarClick = externalNavController::navigateToCalendarRegistration,
+                onNavigateToListClick = { navController.navigateToFavoritesTab() },
             )
             eventMapTabNavGraph(
                 onClickReadMore = externalNavController::navigate,
@@ -101,6 +102,7 @@ actual fun KaigiAppUi() {
                 onShareClick = externalNavController::onShareClick,
                 onAddCalendarClick = externalNavController::navigateToCalendarRegistration,
                 onTimetableItemClick = navController::navigateToTimetableItemDetail,
+                onNavigateToListClick = { navController.navigateToTimetableTab() },
             )
             aboutTabNavGraph(
                 onAboutItemClick = {
