@@ -18,6 +18,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.contributors.ContributorsRes
 import io.github.droidkaigi.confsched.contributors.contributor_person
@@ -44,12 +46,17 @@ fun ContributorsCounter(
     LaunchedEffect(totalContributors) {
         targetValue = totalContributors
     }
+    val totalLabel = stringResource(ContributorsRes.string.contributor_total)
+    val unit = stringResource(ContributorsRes.string.contributor_person)
     Column(
         modifier = modifier
-            .padding(horizontal = 16.dp, vertical = 10.dp),
+            .padding(horizontal = 16.dp, vertical = 10.dp)
+            .clearAndSetSemantics {
+                contentDescription = "$totalLabel $totalContributors $unit"
+            },
     ) {
         Text(
-            text = stringResource(ContributorsRes.string.contributor_total),
+            text = totalLabel,
             style = MaterialTheme.typography.titleMedium,
         )
         Row(
@@ -61,7 +68,7 @@ fun ContributorsCounter(
                 style = MaterialTheme.typography.headlineLarge,
             )
             Text(
-                text = stringResource(ContributorsRes.string.contributor_person),
+                text = unit,
                 style = MaterialTheme.typography.headlineSmall,
             )
         }

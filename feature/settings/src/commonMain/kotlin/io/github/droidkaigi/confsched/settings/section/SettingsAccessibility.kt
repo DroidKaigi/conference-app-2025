@@ -21,7 +21,7 @@ import io.github.droidkaigi.confsched.designsystem.theme.robotoMediumFontFamily
 import io.github.droidkaigi.confsched.designsystem.theme.robotoRegularFontFamily
 import io.github.droidkaigi.confsched.model.settings.KaigiFontFamily
 import io.github.droidkaigi.confsched.settings.SettingsRes
-import io.github.droidkaigi.confsched.settings.SettingsUiState
+import io.github.droidkaigi.confsched.settings.SettingsScreenUiState
 import io.github.droidkaigi.confsched.settings.component.SettingsItemRow
 import io.github.droidkaigi.confsched.settings.ic_brand_family
 import io.github.droidkaigi.confsched.settings.section_item_title_font
@@ -34,7 +34,7 @@ const val SettingsAccessibilityUseFontFamilySelectableItemColumnTestTagPrefix =
 
 fun LazyListScope.accessibility(
     modifier: Modifier = Modifier,
-    uiState: SettingsUiState,
+    uiState: SettingsScreenUiState,
     onSelectUseFontFamily: (KaigiFontFamily) -> Unit,
 ) {
     item {

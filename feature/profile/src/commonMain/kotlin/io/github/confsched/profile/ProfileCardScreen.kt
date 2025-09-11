@@ -67,7 +67,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ProfileCardScreen(
-    uiState: ProfileUiState.Card,
+    uiState: ProfileScreenUiState.Card,
     onEditClick: () -> Unit,
     onShareClick: (ImageBitmap) -> Unit,
     modifier: Modifier = Modifier,
@@ -197,7 +197,7 @@ fun ProfileCardScreen(
 private fun ProfileCardScreenPreview() {
     KaigiPreviewContainer {
         ProfileCardScreen(
-            uiState = ProfileUiState.Card(
+            uiState = ProfileScreenUiState.Card(
                 profile = Profile(
                     nickName = "DroidKaigi",
                     occupation = "Software Engineer",

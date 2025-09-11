@@ -26,13 +26,13 @@ fun ProfileScreenRoot(
     ) { profileWithImageBitmaps ->
         val eventFlow = rememberEventFlow<ProfileScreenEvent>()
 
-        val uiState = profilePresenter(
+        val uiState = profileScreenPresenter(
             eventFlow = eventFlow,
             profileWithImages = profileWithImageBitmaps,
         )
 
         when (uiState) {
-            is ProfileUiState.Card -> {
+            is ProfileScreenUiState.Card -> {
                 val shareText = stringResource(ProfileRes.string.share_description)
 
                 ProfileCardScreen(
@@ -44,7 +44,7 @@ fun ProfileScreenRoot(
                 )
             }
 
-            is ProfileUiState.Edit -> {
+            is ProfileScreenUiState.Edit -> {
                 BackHandler(enabled = uiState.canBackToCardScreen) {
                     eventFlow.tryEmit(ProfileScreenEvent.ExitEditMode)
                 }

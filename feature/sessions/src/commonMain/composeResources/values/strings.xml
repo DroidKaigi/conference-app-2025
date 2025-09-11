@@ -9,8 +9,9 @@
     <string name="image">image</string>
     <string name="read_more">More</string>
     <string name="target_audience">Target Audience</string>
-    <string name="slide">Open Session Slides</string>
-    <string name="video">Watch Video</string>
+    <string name="archive">Archive</string>
+    <string name="slide">Slides</string>
+    <string name="video">Video</string>
     <string name="workshop">Workshop</string>
     <string name="back">Back</string>
     <string name="search">Search</string>
@@ -20,11 +21,6 @@
     <string name="english">English</string>
     <string name="timetable">Timetable</string>
     <string name="content_description_share">Share</string>
-    <string name="content_description_calendar">Calendar</string>
-    <string name="content_description_schedule">Schedule</string>
-    <string name="content_description_location">Location</string>
-    <string name="content_description_language">Language</string>
-    <string name="content_description_category">Category</string>
     <string name="schedule_title">Date/Time</string>
     <string name="location_title">Location</string>
     <string name="language_title">Supported Languages</string>
@@ -42,4 +38,7 @@
     <string name="go_to_timetable_detail">Open details</string>
     <string name="request_full_space">Request full space</string>
     <string name="request_home_space">Request home space</string>
+    <string name="bookmark_menu">Favorite menu</string>
+    <string name="collapsed_menu">Collapsed</string>
+    <string name="expanded_menu">Expanded</string>
 </resources>

@@ -81,6 +81,22 @@
         }
       }
     },
+    "Archive" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Archive"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アーカイブ"
+          }
+        }
+      }
+    },
     "Calendar access not granted" : {
       "localizations" : {
         "en" : {
@@ -157,22 +173,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "場所"
-          }
-        }
-      }
-    },
-    "Open presentation slides" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Open presentation slides"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "発表スライドを開く"
           }
         }
       }
@@ -257,6 +257,22 @@
         }
       }
     },
+    "Slides" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slides"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "スライド"
+          }
+        }
+      }
+    },
     "Supported Languages" : {
       "localizations" : {
         "en" : {
@@ -289,6 +305,22 @@
         }
       }
     },
+    "Video" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Video"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "動画"
+          }
+        }
+      }
+    },
     "View list" : {
       "localizations" : {
         "en" : {
@@ -301,22 +333,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "一覧を見る"
-          }
-        }
-      }
-    },
-    "Watch video" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Watch video"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "動画を見る"
           }
         }
       }

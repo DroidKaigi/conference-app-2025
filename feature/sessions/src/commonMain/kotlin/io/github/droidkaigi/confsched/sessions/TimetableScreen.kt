@@ -2,9 +2,6 @@ package io.github.droidkaigi.confsched.sessions
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.draggable
-import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
@@ -22,9 +21,11 @@ import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -54,8 +55,6 @@ import kotlinx.collections.immutable.toPersistentMap
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.Duration.Companion.hours
 
-private const val ChangeTabDeltaThreshold = 20f
-
 @Composable
 fun TimetableScreen(
     uiState: TimetableScreenUiState,
@@ -72,13 +71,13 @@ fun TimetableScreen(
         is TimetableUiState.ListTimetable -> uiState.timetable.selectedDay
         else -> DroidKaigi2025Day.ConferenceDay1
     }
-    val listStates = remember { mutableMapOf<DroidKaigi2025Day, LazyListState>() }
-    val lazyListState = listStates.getOrPut(selectedDay) {
-        LazyListState()
-    }
+
+    val conferenceDays = DroidKaigi2025Day.visibleDays()
+    val listStates = rememberListStatesByDay(conferenceDays)
 
     val completelyScrolledToTop by remember(selectedDay) {
         derivedStateOf {
+            val lazyListState = listStates.getValue(selectedDay)
             lazyListState.firstVisibleItemIndex == 0 &&
                 lazyListState.firstVisibleItemScrollOffset == 0 &&
                 collapsingState.collapsingOffsetY == 0f
@@ -161,28 +160,32 @@ fun TimetableScreen(
                     }
 
                     is TimetableUiState.ListTimetable -> {
-                        val timetableListUiState = requireNotNull(uiState.timetable.timetableListUiStates[selectedDay])
-                        TimetableList(
-                            modifier = modifier.draggable(
-                                orientation = Orientation.Horizontal,
-                                state = rememberDraggableState { delta ->
-                                    when (selectedDay) {
-                                        DroidKaigi2025Day.ConferenceDay1 if delta < -ChangeTabDeltaThreshold -> onDaySelected(DroidKaigi2025Day.ConferenceDay2)
-                                        DroidKaigi2025Day.ConferenceDay2 if delta > ChangeTabDeltaThreshold -> onDaySelected(DroidKaigi2025Day.ConferenceDay1)
-                                        else -> {
-                                            // NOOP
-                                        }
-                                    }
-                                },
-                            ),
-                            timetableItemMap = timetableListUiState.timetableItemMap,
-                            onTimetableItemClick = onTimetableItemClick,
-                            onBookmarkClick = { id -> onBookmarkClick(id.value) },
-                            isBookmarked = { id -> timetableListUiState.timetable.bookmarks.contains(id) },
-                            lazyListState = lazyListState,
-                            contentPadding = WindowInsets.safeDrawingWithBottomNavBar.excludeTop().asPaddingValues() + PaddingValues(horizontal = 16.dp),
-                            isDateTagVisible = false,
+                        val pagerState = rememberPagerState(
+                            initialPage = selectedDay.tabIndex(),
+                            pageCount = { conferenceDays.size },
                         )
+                        LaunchedEffect(selectedDay) {
+                            pagerState.animateScrollToPage(selectedDay.tabIndex())
+                        }
+                        LaunchedEffect(pagerState.settledPage) {
+                            onDaySelected(conferenceDays[pagerState.settledPage])
+                        }
+
+                        HorizontalPager(state = pagerState) { page ->
+                            val day = conferenceDays[page]
+                            val timetableListUiState = requireNotNull(uiState.timetable.timetableListUiStates[day])
+                            val listState = listStates.getValue(day)
+
+                            TimetableList(
+                                timetableItemMap = timetableListUiState.timetableItemMap,
+                                onTimetableItemClick = onTimetableItemClick,
+                                onBookmarkClick = { id -> onBookmarkClick(id.value) },
+                                isBookmarked = { id -> timetableListUiState.timetable.bookmarks.contains(id) },
+                                lazyListState = listState,
+                                contentPadding = WindowInsets.safeDrawingWithBottomNavBar.excludeTop().asPaddingValues() + PaddingValues(horizontal = 16.dp),
+                                isDateTagVisible = false,
+                            )
+                        }
                     }
                 }
             }
@@ -192,6 +195,15 @@ fun TimetableScreen(
 
 private object TimetableDefaults {
     val dayTabWidth = 104.dp
+}
+
+@Composable
+private fun rememberListStatesByDay(
+    days: List<DroidKaigi2025Day>,
+): Map<DroidKaigi2025Day, LazyListState> {
+    return days.associateWith { day ->
+        rememberSaveable(day, saver = LazyListState.Saver) { LazyListState() }
+    }
 }
 
 @Preview

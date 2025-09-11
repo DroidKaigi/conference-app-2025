@@ -46,10 +46,6 @@ import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import io.github.droidkaigi.confsched.model.sessions.fake
 import io.github.droidkaigi.confsched.sessions.SessionsRes
 import io.github.droidkaigi.confsched.sessions.category_title
-import io.github.droidkaigi.confsched.sessions.content_description_category
-import io.github.droidkaigi.confsched.sessions.content_description_language
-import io.github.droidkaigi.confsched.sessions.content_description_location
-import io.github.droidkaigi.confsched.sessions.content_description_schedule
 import io.github.droidkaigi.confsched.sessions.language_title
 import io.github.droidkaigi.confsched.sessions.location_title
 import io.github.droidkaigi.confsched.sessions.schedule_title
@@ -76,7 +72,6 @@ fun TimetableItemDetailSummaryCard(
                     SummaryCardTextTag.plus(stringResource(SessionsRes.string.schedule_title)),
                 ),
             imageVector = Icons.Outlined.Schedule,
-            contentDescription = stringResource(SessionsRes.string.content_description_schedule),
             title = stringResource(SessionsRes.string.schedule_title),
             description = timetableItem.formattedDateTimeString,
             isCancelledSession = timetableItem.isCancelledSession,
@@ -89,7 +84,6 @@ fun TimetableItemDetailSummaryCard(
                     SummaryCardTextTag.plus(stringResource(SessionsRes.string.location_title)),
                 ),
             imageVector = Icons.Outlined.LocationOn,
-            contentDescription = stringResource(SessionsRes.string.content_description_location),
             title = stringResource(SessionsRes.string.location_title),
             description = timetableItem.room.nameAndFloor,
             isCancelledSession = timetableItem.isCancelledSession,
@@ -102,7 +96,6 @@ fun TimetableItemDetailSummaryCard(
                     SummaryCardTextTag.plus(stringResource(SessionsRes.string.language_title)),
                 ),
             imageVector = Icons.Outlined.Language,
-            contentDescription = stringResource(SessionsRes.string.content_description_language),
             title = stringResource(SessionsRes.string.language_title),
             description = timetableItem.getSupportedLangString(
                 getDefaultLocale() == Locale.JAPAN,
@@ -117,7 +110,6 @@ fun TimetableItemDetailSummaryCard(
                     SummaryCardTextTag.plus(stringResource(SessionsRes.string.category_title)),
                 ),
             imageVector = Icons.Outlined.Category,
-            contentDescription = stringResource(SessionsRes.string.content_description_category),
             title = stringResource(SessionsRes.string.category_title),
             description = timetableItem.category.title.currentLangTitle,
             isCancelledSession = timetableItem.isCancelledSession,
@@ -128,7 +120,6 @@ fun TimetableItemDetailSummaryCard(
 @Composable
 private fun SummaryCardText(
     imageVector: ImageVector,
-    contentDescription: String,
     title: String,
     description: String,
     isCancelledSession: Boolean,
@@ -149,7 +140,6 @@ private fun SummaryCardText(
 
     val inlineContent = createInlineContentsMapForSummaryCardTexts(
         imageVector = imageVector,
-        contentDescription = contentDescription,
         iconInlineContentId = iconInlineContentId,
         spacer8dpInlineContentId = spacer8dpInlineContentId,
         spacer12dpInlineContentId = spacer12dpInlineContentId,
@@ -176,7 +166,7 @@ private fun createSummaryCardTextAnnotatedString(
     spacer12dpInlineContentId: String,
 ): AnnotatedString {
     return buildAnnotatedString {
-        appendInlineContent(id = iconInlineContentId, alternateText = "[icon]")
+        appendInlineContent(id = iconInlineContentId)
         appendInlineContent(id = spacer8dpInlineContentId, alternateText = " ")
         withStyle(
             style = SpanStyle(
@@ -209,7 +199,6 @@ private fun createSummaryCardTextAnnotatedString(
 @Composable
 private fun createInlineContentsMapForSummaryCardTexts(
     imageVector: ImageVector,
-    contentDescription: String,
     iconInlineContentId: String,
     spacer8dpInlineContentId: String,
     spacer12dpInlineContentId: String,
@@ -224,7 +213,7 @@ private fun createInlineContentsMapForSummaryCardTexts(
             children = {
                 Icon(
                     imageVector = imageVector,
-                    contentDescription = contentDescription,
+                    contentDescription = null,
                     tint = LocalRoomTheme.current.primaryColor,
                 )
             },

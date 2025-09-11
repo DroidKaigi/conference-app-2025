@@ -13,8 +13,9 @@ import io.github.droidkaigi.confsched.navkey.FavoritesNavKey
 context(appGraph: AppGraph)
 fun EntryProviderBuilder<NavKey>.favoritesEntry(
     onTimetableItemClick: (TimetableItemId) -> Unit,
+    metadata: Map<String, Any> = emptyMap(),
 ) {
-    entry<FavoritesNavKey>(metadata = listDetailSceneStrategyListPaneMetaData()) {
+    entry<FavoritesNavKey>(metadata = listDetailSceneStrategyListPaneMetaData() + metadata) {
         with(rememberFavoritesScreenContextRetained()) {
             FavoritesScreenRoot(
                 onTimetableItemClick = onTimetableItemClick,

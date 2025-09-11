@@ -18,17 +18,19 @@ context(appGraph: AppGraph)
 fun EntryProviderBuilder<NavKey>.aboutEntries(
     onAboutItemClick: (AboutItem) -> Unit,
     onBackClick: () -> Unit,
+    aboutEntryMetadata: Map<String, Any> = emptyMap(),
 ) {
-    aboutEntry(onAboutItemClick)
+    aboutEntry(onAboutItemClick, aboutEntryMetadata)
     licensesEntry(onBackClick)
 }
 
 context(appGraph: AppGraph)
 fun EntryProviderBuilder<NavKey>.aboutEntry(
     onAboutItemClick: (AboutItem) -> Unit,
+    metadata: Map<String, Any> = emptyMap(),
 ) {
     entry<AboutNavKey>(
-        metadata = listDetailSceneStrategyListPaneMetaData(),
+        metadata = listDetailSceneStrategyListPaneMetaData() + metadata,
     ) {
         with(rememberAboutScreenContextRetained()) {
             AboutScreenRoot(
@@ -42,7 +44,9 @@ context(appGraph: AppGraph)
 fun EntryProviderBuilder<NavKey>.licensesEntry(
     onBackClick: () -> Unit,
 ) {
-    entry<LicensesNavKey> {
+    entry<LicensesNavKey>(
+        metadata = listDetailSceneStrategyDetailPaneMetaData(),
+    ) {
         with(rememberLicensesScreenContextRetained()) {
             LicensesScreenRoot(
                 onBackClick = onBackClick,

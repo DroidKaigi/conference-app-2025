@@ -106,7 +106,6 @@ public fun SessionsAllResponse.toTimetable(): Timetable {
                         .map { speakerIdToSpeaker[it]!! }
                         .toPersistentList(),
                     message = apiSession.message?.toMultiLangText(),
-                    levels = apiSession.levels.toPersistentList(),
                 )
             } else {
                 TimetableItem.Special(
@@ -126,7 +125,6 @@ public fun SessionsAllResponse.toTimetable(): Timetable {
                     speakers = apiSession.speakers
                         .map { speakerIdToSpeaker[it]!! }
                         .toPersistentList(),
-                    levels = apiSession.levels.toPersistentList(),
                     description = if (apiSession.i18nDesc == null) {
                         MultiLangText(
                             jaTitle = apiSession.description ?: "",

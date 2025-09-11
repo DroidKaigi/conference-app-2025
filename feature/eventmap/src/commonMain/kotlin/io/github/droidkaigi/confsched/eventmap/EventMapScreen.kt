@@ -29,7 +29,7 @@ const val EventMapScreenTestTag = "EventMapScreenTestTag"
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventMapScreen(
-    uiState: EventMapUiState,
+    uiState: EventMapScreenUiState,
     onSelectFloor: (FloorLevel) -> Unit,
     onClickReadMore: (url: String) -> Unit,
     modifier: Modifier = Modifier,
@@ -69,7 +69,7 @@ fun EventMapScreen(
 private fun EventMapScreenPreview() {
     KaigiPreviewContainer {
         EventMapScreen(
-            uiState = EventMapUiState(
+            uiState = EventMapScreenUiState(
                 events = EventMapEvent.Companion.fakes(),
                 selectedFloor = FloorLevel.Ground,
             ),

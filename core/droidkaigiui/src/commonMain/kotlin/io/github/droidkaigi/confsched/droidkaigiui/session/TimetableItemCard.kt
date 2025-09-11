@@ -293,9 +293,8 @@ private fun TimetableItemSpeaker(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier,
     ) {
-        SubcomposeAsyncImage(
-            model = speaker.iconUrl,
-            contentDescription = null,
+        TimetableProfileIcon(
+            speakerUrl = speaker.iconUrl,
             modifier = Modifier
                 .width(32.dp)
                 .height(32.dp)

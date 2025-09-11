@@ -5,9 +5,7 @@ import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material.icons.outlined.PlayCircle
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingActionButtonMenu
 import androidx.compose.material3.FloatingActionButtonMenuItem
@@ -28,6 +26,10 @@ import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import io.github.droidkaigi.confsched.designsystem.theme.LocalRoomTheme
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.DroidkaigiuiRes
@@ -39,23 +41,24 @@ import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import io.github.droidkaigi.confsched.model.sessions.fake
 import io.github.droidkaigi.confsched.sessions.SessionsRes
 import io.github.droidkaigi.confsched.sessions.add_to_calendar
+import io.github.droidkaigi.confsched.sessions.bookmark_menu
+import io.github.droidkaigi.confsched.sessions.collapsed_menu
+import io.github.droidkaigi.confsched.sessions.expanded_menu
 import io.github.droidkaigi.confsched.sessions.share_link
-import io.github.droidkaigi.confsched.sessions.slide
-import io.github.droidkaigi.confsched.sessions.video
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+const val TimetableItemDetailBookmarkFabButtonTestTag = "TimetableItemDetailBookmarkFabButtonTestTag"
+const val TimetableItemDetailBookmarkMenuItemTestTag = "TimetableItemDetailBookmarkMenuItemTestTag"
+const val TimetableItemDetailBookmarkIconTestTag = "TimetableItemDetailBookmarkIconTestTag"
+
 @Composable
 fun TimetableItemDetailFloatingActionButtonMenu(
     isBookmarked: Boolean,
-    slideUrl: String?,
-    videoUrl: String?,
     onBookmarkToggle: () -> Unit,
     onAddCalendarClick: () -> Unit,
     onShareClick: () -> Unit,
-    onViewSlideClick: (url: String) -> Unit,
-    onWatchVideoClick: (url: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -63,14 +66,10 @@ fun TimetableItemDetailFloatingActionButtonMenu(
     TimetableItemDetailFloatingActionButtonMenu(
         expanded = expanded,
         isBookmarked = isBookmarked,
-        slideUrl = slideUrl,
-        videoUrl = videoUrl,
         onExpandedChange = { expanded = it },
         onBookmarkToggle = onBookmarkToggle,
         onAddCalendarClick = onAddCalendarClick,
         onShareClick = onShareClick,
-        onViewSlideClick = onViewSlideClick,
-        onWatchVideoClick = onWatchVideoClick,
         modifier = modifier,
     )
 }
@@ -80,14 +79,10 @@ fun TimetableItemDetailFloatingActionButtonMenu(
 private fun TimetableItemDetailFloatingActionButtonMenu(
     expanded: Boolean,
     isBookmarked: Boolean,
-    slideUrl: String?,
-    videoUrl: String?,
     onExpandedChange: (Boolean) -> Unit,
     onBookmarkToggle: () -> Unit,
     onAddCalendarClick: () -> Unit,
     onShareClick: () -> Unit,
-    onViewSlideClick: (url: String) -> Unit,
-    onWatchVideoClick: (url: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var height by remember { mutableIntStateOf(0) }
@@ -109,10 +104,16 @@ private fun TimetableItemDetailFloatingActionButtonMenu(
     FloatingActionButtonMenu(
         expanded = expanded,
         button = {
+            val fabMenuStateDescription = stringResource(if (expanded) SessionsRes.string.expanded_menu else SessionsRes.string.collapsed_menu)
+            val fabMenuDescription = stringResource(SessionsRes.string.bookmark_menu)
             ToggleFloatingActionButton(
                 checked = expanded,
                 onCheckedChange = onExpandedChange,
                 containerColor = { _ -> menuItemContainerColor },
+                modifier = Modifier.semantics {
+                    stateDescription = fabMenuStateDescription
+                    contentDescription = fabMenuDescription
+                }.testTag(TimetableItemDetailBookmarkFabButtonTestTag),
             ) {
                 if (expanded) {
                     Icon(
@@ -121,6 +122,7 @@ private fun TimetableItemDetailFloatingActionButtonMenu(
                     )
                 } else {
                     Icon(
+                        modifier = Modifier.testTag("$TimetableItemDetailBookmarkIconTestTag:$isBookmarked"),
                         imageVector = if (isBookmarked) Icons.Default.Favorite else Icons.Outlined.FavoriteBorder,
                         contentDescription = null,
                     )
@@ -133,6 +135,7 @@ private fun TimetableItemDetailFloatingActionButtonMenu(
         horizontalAlignment = Alignment.End,
     ) {
         FloatingActionButtonMenuItem(
+            modifier = Modifier.testTag(TimetableItemDetailBookmarkMenuItemTestTag),
             onClick = {
                 if (!isBookmarked) {
                     haptic.performHapticFeedback(HapticFeedbackType.LongPress)
@@ -175,28 +178,6 @@ private fun TimetableItemDetailFloatingActionButtonMenu(
             icon = { Icon(Icons.Default.Share, contentDescription = null) },
             containerColor = menuItemContainerColor,
         )
-        slideUrl?.let { url ->
-            FloatingActionButtonMenuItem(
-                onClick = {
-                    onViewSlideClick(url)
-                    onExpandedChange(false)
-                },
-                text = { Text(stringResource(SessionsRes.string.slide)) },
-                icon = { Icon(Icons.Outlined.Description, contentDescription = null) },
-                containerColor = menuItemContainerColor,
-            )
-        }
-        videoUrl?.let { url ->
-            FloatingActionButtonMenuItem(
-                onClick = {
-                    onWatchVideoClick(url)
-                    onExpandedChange(false)
-                },
-                text = { Text(stringResource(SessionsRes.string.video)) },
-                icon = { Icon(Icons.Outlined.PlayCircle, contentDescription = null) },
-                containerColor = menuItemContainerColor,
-            )
-        }
     }
 }
 
@@ -213,10 +194,6 @@ private fun TimetableItemDetailFloatingMenuPreview() {
                 onBookmarkToggle = {},
                 onAddCalendarClick = {},
                 onShareClick = {},
-                slideUrl = session.asset.slideUrl,
-                videoUrl = session.asset.videoUrl,
-                onViewSlideClick = {},
-                onWatchVideoClick = {},
             )
         }
     }
@@ -235,10 +212,6 @@ private fun TimetableItemDetailFloatingMenuExpandedPreview() {
                 onBookmarkToggle = {},
                 onAddCalendarClick = {},
                 onShareClick = {},
-                slideUrl = session.asset.slideUrl,
-                videoUrl = session.asset.videoUrl,
-                onViewSlideClick = {},
-                onWatchVideoClick = {},
             )
         }
     }

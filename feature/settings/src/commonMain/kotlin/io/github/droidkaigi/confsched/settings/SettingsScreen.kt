@@ -29,7 +29,7 @@ const val SettingsScreenLazyColumnTestTag = "SettingsScreen"
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-    uiState: SettingsUiState,
+    uiState: SettingsScreenUiState,
     onBackClick: () -> Unit,
     onSelectUseFontFamily: (KaigiFontFamily) -> Unit,
     modifier: Modifier = Modifier,
@@ -69,7 +69,7 @@ fun SettingsScreen(
 fun SettingsScreenPreview() {
     KaigiPreviewContainer {
         SettingsScreen(
-            uiState = SettingsUiState(
+            uiState = SettingsScreenUiState(
                 useKaigiFontFamily = KaigiFontFamily.ChangoRegular,
             ),
             onBackClick = {},

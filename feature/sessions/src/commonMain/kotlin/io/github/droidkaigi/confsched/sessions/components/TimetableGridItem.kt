@@ -1,6 +1,5 @@
 package io.github.droidkaigi.confsched.sessions.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -35,9 +34,9 @@ import androidx.compose.ui.unit.sp
 import io.github.droidkaigi.confsched.designsystem.theme.LocalRoomTheme
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
-import io.github.droidkaigi.confsched.droidkaigiui.SubcomposeAsyncImage
 import io.github.droidkaigi.confsched.droidkaigiui.extension.icon
 import io.github.droidkaigi.confsched.droidkaigiui.extension.roomTheme
+import io.github.droidkaigi.confsched.droidkaigiui.session.TimetableProfileIcon
 import io.github.droidkaigi.confsched.model.core.MultiLangText
 import io.github.droidkaigi.confsched.model.core.Room
 import io.github.droidkaigi.confsched.model.core.RoomType
@@ -193,9 +192,8 @@ private fun TimetableSpeaker(
 ) {
     val size = (TimetableGridItemDefaults.speakerHeight * scale).coerceAtLeast(16.dp)
     Row(modifier.height(size)) {
-        SubcomposeAsyncImage(
-            model = speaker.iconUrl,
-            contentDescription = null,
+        TimetableProfileIcon(
+            speakerUrl = speaker.iconUrl,
             modifier = Modifier
                 .size(size)
                 .clip(CircleShape)

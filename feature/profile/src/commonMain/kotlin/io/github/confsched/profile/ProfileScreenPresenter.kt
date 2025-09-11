@@ -14,10 +14,10 @@ import soil.query.compose.rememberMutation
 
 @Composable
 context(screenContext: ProfileScreenContext)
-fun profilePresenter(
+fun profileScreenPresenter(
     eventFlow: EventFlow<ProfileScreenEvent>,
     profileWithImages: ProfileWithImages,
-): ProfileUiState = providePresenterDefaults {
+): ProfileScreenUiState = providePresenterDefaults {
     val isAllowedToShowCard = profileWithImages.profile != null &&
         profileWithImages.profileImageByteArray != null &&
         profileWithImages.qrImageByteArray != null
@@ -43,12 +43,12 @@ fun profilePresenter(
     }
 
     if (!isAllowedToShowCard || isInEditMode) {
-        ProfileUiState.Edit(
+        ProfileScreenUiState.Edit(
             baseProfile = profileWithImages.profile,
             canBackToCardScreen = isAllowedToShowCard,
         )
     } else {
-        ProfileUiState.Card(
+        ProfileScreenUiState.Card(
             profile = requireNotNull(profileWithImages.profile),
             profileImageBitmap = requireNotNull(profileWithImages.profileImageByteArray).decodeToImageBitmap(),
             qrImageBitmap = requireNotNull(profileWithImages.qrImageByteArray).decodeToImageBitmap(),

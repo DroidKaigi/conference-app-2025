@@ -1,6 +1,7 @@
 package io.github.droidkaigi.confsched.testing.robot.sessions
 
 import androidx.compose.ui.test.ComposeUiTest
+import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.assertTextEquals
@@ -10,6 +11,7 @@ import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
@@ -23,10 +25,16 @@ import io.github.droidkaigi.confsched.sessions.TimetableItemDetailScreenRoot
 import io.github.droidkaigi.confsched.sessions.components.DescriptionMoreButtonTestTag
 import io.github.droidkaigi.confsched.sessions.components.SummaryCardTextTag
 import io.github.droidkaigi.confsched.sessions.components.TargetAudienceSectionTestTag
+import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailBookmarkFabButtonTestTag
+import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailBookmarkIconTestTag
+import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailBookmarkMenuItemTestTag
+import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailContentArchiveSectionBottomTestTag
+import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailContentArchiveSectionSlideButtonTestTag
+import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailContentArchiveSectionTestTag
+import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailContentArchiveSectionVideoButtonTestTag
 import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailContentTargetAudienceSectionBottomTestTag
 import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailHeadlineTestTag
 import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailMessageRowTestTag
-import io.github.droidkaigi.confsched.sessions.components.TimetableItemDetailMessageRowTextTestTag
 import io.github.droidkaigi.confsched.testing.compose.TestDefaultsProvider
 import io.github.droidkaigi.confsched.testing.robot.core.CaptureScreenRobot
 import io.github.droidkaigi.confsched.testing.robot.core.DefaultCaptureScreenRobot
@@ -74,8 +82,18 @@ class TimetableItemDetailScreenRobot(
     context(composeUiTest: ComposeUiTest)
     fun setupTimetableItemDetailScreenContentWithLongDescription() = setupTimetableItemDetailScreenContent(TimetableItemId(FakeSessionsApiClient.defaultSessionIdWithLongDescription))
 
-    // TODO https://github.com/DroidKaigi/conference-app-2025/issues/218
-    // TODO Prepare a method to click on bookmarks to test whether they are bookmarked or not.
+    context(composeUiTest: ComposeUiTest)
+    fun bookmark() {
+        composeUiTest
+            .onNodeWithTag(TimetableItemDetailBookmarkFabButtonTestTag)
+            .performClick()
+        waitUntilIdle()
+
+        composeUiTest
+            .onNodeWithTag(TimetableItemDetailBookmarkMenuItemTestTag)
+            .performClick()
+        waitUntilIdle()
+    }
 
     context(composeUiTest: ComposeUiTest)
     fun scroll() {
@@ -127,9 +145,16 @@ class TimetableItemDetailScreenRobot(
             )
     }
 
-    // TODO https://github.com/DroidKaigi/conference-app-2025/issues/218
-    // TODO Prepare a method to scroll to the asset section, such as slides and videos.
-    // TODO Note that this may not be necessary depending on the design, so if it is not needed, do not implement it and delete this TODO.
+    context(composeUiTest: ComposeUiTest)
+    fun scrollToArchiveSectionBottom() {
+        composeUiTest
+            .onNodeWithTag(TimetableItemDetailScreenLazyColumnTestTag)
+            .performScrollToNode(
+                hasTestTag(
+                    TimetableItemDetailContentArchiveSectionBottomTestTag,
+                ),
+            )
+    }
 
     context(composeUiTest: ComposeUiTest)
     fun scrollToMessageRow() {
@@ -153,8 +178,41 @@ class TimetableItemDetailScreenRobot(
             .assertTextEquals(FakeSessionsApiClient.defaultSession.title.ja)
     }
 
-    // TODO https://github.com/DroidKaigi/conference-app-2025/issues/218
-    // TODO Please prepare a method to check bookmarked and unbookmarked items.
+    context(composeUiTest: ComposeUiTest)
+    fun checkNotBookmarked() {
+        composeUiTest
+            .onNodeWithTag(
+                "$TimetableItemDetailBookmarkIconTestTag:true",
+                useUnmergedTree = true,
+            )
+            .assertDoesNotExist()
+
+        composeUiTest
+            .onNodeWithTag(
+                "$TimetableItemDetailBookmarkIconTestTag:false",
+                useUnmergedTree = true,
+            )
+            .assertExists()
+            .assertIsDisplayed()
+    }
+
+    context(composeUiTest: ComposeUiTest)
+    fun checkBookmarked() {
+        composeUiTest
+            .onNodeWithTag(
+                "$TimetableItemDetailBookmarkIconTestTag:true",
+                useUnmergedTree = true,
+            )
+            .assertExists()
+            .assertIsDisplayed()
+
+        composeUiTest
+            .onNodeWithTag(
+                "$TimetableItemDetailBookmarkIconTestTag:false",
+                useUnmergedTree = true,
+            )
+            .assertDoesNotExist()
+    }
 
     context(composeUiTest: ComposeUiTest)
     fun checkTargetAudience() {
@@ -196,20 +254,81 @@ class TimetableItemDetailScreenRobot(
             .assertIsDisplayed()
     }
 
-    // TODO https://github.com/DroidKaigi/conference-app-2025/issues/218
-    // TODO Verify that both asset buttons (slide and video) are displayed
-    // TODO Verify that the asset section is not displayed
-    // TODO Verify that only the slide button is displayed and the video button is not
-    // TODO Verify that only the video button is displayed and the slide button is not
-    // TODO Verify that the slide button exists, is displayed, and has a click action
-    // TODO Verify that the video button exists, is displayed, and has a click action
-    // TODO Verify that the slide button is not displayed and does not exist
-    // TODO Verify that the video button is not displayed and does not exist
+    context(composeUiTest: ComposeUiTest)
+    fun checkBothOfSlidesButtonAndVideoButtonDisplayed() {
+        composeUiTest
+            .onNodeWithTag(TimetableItemDetailContentArchiveSectionTestTag)
+            .assertExists()
+            .assertIsDisplayed()
+
+        composeUiTest
+            .onNodeWithTag(TimetableItemDetailContentArchiveSectionSlideButtonTestTag)
+            .assertExists()
+            .assertIsDisplayed()
+            .assertHasClickAction()
+
+        composeUiTest
+            .onNodeWithTag(TimetableItemDetailContentArchiveSectionVideoButtonTestTag)
+            .assertExists()
+            .assertIsDisplayed()
+            .assertHasClickAction()
+    }
+
+    context(composeUiTest: ComposeUiTest)
+    fun checkOnlySlidesButtonDisplayed() {
+        composeUiTest
+            .onNodeWithTag(TimetableItemDetailContentArchiveSectionTestTag)
+            .assertExists()
+            .assertIsDisplayed()
+
+        composeUiTest
+            .onNodeWithTag(TimetableItemDetailContentArchiveSectionSlideButtonTestTag)
+            .assertExists()
+            .assertIsDisplayed()
+            .assertHasClickAction()
+
+        composeUiTest
+            .onNodeWithTag(TimetableItemDetailContentArchiveSectionVideoButtonTestTag)
+            .assertDoesNotExist()
+    }
+
+    context(composeUiTest: ComposeUiTest)
+    fun checkOnlyVideoButtonDisplayed() {
+        composeUiTest
+            .onNodeWithTag(TimetableItemDetailContentArchiveSectionTestTag)
+            .assertExists()
+            .assertIsDisplayed()
+
+        composeUiTest
+            .onNodeWithTag(TimetableItemDetailContentArchiveSectionSlideButtonTestTag)
+            .assertDoesNotExist()
+
+        composeUiTest
+            .onNodeWithTag(TimetableItemDetailContentArchiveSectionVideoButtonTestTag)
+            .assertExists()
+            .assertIsDisplayed()
+            .assertHasClickAction()
+    }
+
+    context(composeUiTest: ComposeUiTest)
+    fun checkBothOfSlidesButtonAndVideoButtonNotDisplayed() {
+        composeUiTest
+            .onNodeWithTag(TimetableItemDetailContentArchiveSectionTestTag)
+            .assertDoesNotExist()
+
+        composeUiTest
+            .onNodeWithTag(TimetableItemDetailContentArchiveSectionSlideButtonTestTag)
+            .assertDoesNotExist()
+
+        composeUiTest
+            .onNodeWithTag(TimetableItemDetailContentArchiveSectionVideoButtonTestTag)
+            .assertDoesNotExist()
+    }
 
     context(composeUiTest: ComposeUiTest)
     fun checkMessageDisplayed() {
         composeUiTest
-            .onAllNodesWithTag(TimetableItemDetailMessageRowTextTestTag)
+            .onAllNodesWithTag(TimetableItemDetailMessageRowTestTag)
             .onFirst()
             .assertExists()
             .assertIsDisplayed()

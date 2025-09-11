@@ -32,7 +32,6 @@ sealed class TimetableItem {
     abstract val targetAudience: String
     abstract val language: TimetableLanguage
     abstract val asset: TimetableAsset
-    abstract val levels: PersistentList<String>
     abstract val speakers: PersistentList<TimetableSpeaker>
     abstract val description: MultiLangText
     abstract val message: MultiLangText?
@@ -51,7 +50,6 @@ sealed class TimetableItem {
         override val targetAudience: String,
         override val language: TimetableLanguage,
         override val asset: TimetableAsset,
-        override val levels: PersistentList<String>,
         override val speakers: PersistentList<TimetableSpeaker>,
         override val description: MultiLangText,
         override val message: MultiLangText?,
@@ -71,7 +69,6 @@ sealed class TimetableItem {
         override val targetAudience: String,
         override val language: TimetableLanguage,
         override val asset: TimetableAsset,
-        override val levels: PersistentList<String>,
         override val speakers: PersistentList<TimetableSpeaker>,
         override val description: MultiLangText,
         override val message: MultiLangText?,
@@ -209,8 +206,32 @@ fun TimetableItem.Session.Companion.fake(duration: Duration = 40.minutes): Timet
             jaTitle = "このセッションは事情により中止となりました",
             enTitle = "This session has been cancelled due to circumstances.",
         ),
-        levels = listOf(
-            "INTERMEDIATE",
-        ).toPersistentList(),
+    )
+}
+
+fun TimetableItem.Session.Companion.onlySlideAssetAvailableFake(duration: Duration = 40.minutes): TimetableItem.Session {
+    return fake(duration).copy(
+        asset = TimetableAsset(
+            videoUrl = null,
+            slideUrl = "https://droidkaigi.jp/2021/",
+        ),
+    )
+}
+
+fun TimetableItem.Session.Companion.onlyVideoAssetAvailableFake(duration: Duration = 40.minutes): TimetableItem.Session {
+    return fake(duration).copy(
+        asset = TimetableAsset(
+            videoUrl = "https://www.youtube.com/watch?v=hFdKCyJ-Z9A",
+            slideUrl = null,
+        ),
+    )
+}
+
+fun TimetableItem.Session.Companion.noAssetAvailableFake(duration: Duration = 40.minutes): TimetableItem.Session {
+    return fake(duration).copy(
+        asset = TimetableAsset(
+            videoUrl = null,
+            slideUrl = null,
+        ),
     )
 }

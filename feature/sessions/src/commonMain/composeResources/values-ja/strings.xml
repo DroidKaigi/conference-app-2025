@@ -9,8 +9,9 @@
     <string name="image">画像</string>
     <string name="read_more">続きを読む</string>
     <string name="target_audience">対象者</string>
-    <string name="slide">発表スライドを開く</string>
-    <string name="video">動画を見る</string>
+    <string name="archive">アーカイブ</string>
+    <string name="slide">スライド</string>
+    <string name="video">動画</string>
     <string name="workshop">ワークショップ</string>
     <string name="back">戻る</string>
     <string name="search">検索</string>
@@ -20,11 +21,6 @@
     <string name="english">English</string>
     <string name="timetable">Timetable</string>
     <string name="content_description_share">共有</string>
-    <string name="content_description_calendar">カレンダー</string>
-    <string name="content_description_schedule">スケジュール</string>
-    <string name="content_description_location">場所</string>
-    <string name="content_description_language">言語</string>
-    <string name="content_description_category">カテゴリ</string>
     <string name="schedule_title">日時</string>
     <string name="location_title">場所</string>
     <string name="language_title">対応言語</string>
@@ -42,4 +38,7 @@
     <string name="go_to_timetable_detail">詳細を開く</string>
     <string name="request_full_space">フルスペースに切り替え</string>
     <string name="request_home_space">ホームスペースに切り替え</string>
+    <string name="bookmark_menu">お気に入りメニュー</string>
+    <string name="collapsed_menu">閉じた状態</string>
+    <string name="expanded_menu">開いた状態</string>
 </resources>

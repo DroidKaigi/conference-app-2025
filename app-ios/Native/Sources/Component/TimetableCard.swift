@@ -125,7 +125,6 @@ public struct TimetableCard: View {
             targetAudience: "All levels",
             language: TimetableLanguage(langOfSpeaker: "JA", isInterpretationTarget: true),
             asset: TimetableAsset(videoUrl: nil, slideUrl: nil),
-            levels: ["Beginner"],
             speakers: [
                 Speaker(
                     id: "speaker-1",

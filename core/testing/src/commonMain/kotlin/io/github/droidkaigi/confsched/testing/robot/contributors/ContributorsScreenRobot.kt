@@ -1,13 +1,9 @@
 package io.github.droidkaigi.confsched.testing.robot.contributors
 
 import androidx.compose.ui.test.ComposeUiTest
-import androidx.compose.ui.test.assertContentDescriptionEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
-import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.isDisplayed
-import androidx.compose.ui.test.onAllNodesWithTag
-import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performScrollToIndex
 import dev.zacsweers.metro.Inject
@@ -27,7 +23,6 @@ import io.github.droidkaigi.confsched.testing.robot.core.DefaultCaptureScreenRob
 import io.github.droidkaigi.confsched.testing.robot.core.DefaultWaitRobot
 import io.github.droidkaigi.confsched.testing.robot.core.WaitRobot
 import io.github.droidkaigi.confsched.testing.util.assertCountAtLeast
-import io.github.droidkaigi.confsched.testing.util.hasTestTag
 import io.github.droidkaigi.confsched.testing.util.onAllNodesWithTag
 import kotlinx.coroutines.test.TestDispatcher
 
@@ -85,16 +80,6 @@ class ContributorsScreenRobot(
                 .onNodeWithTag(ContributorsItemTestTagPrefix.plus(contributor.id))
                 .assertExists()
                 .assertIsDisplayed()
-
-            composeUiTest
-                .onNodeWithTag(
-                    ContributorsItemImageTestTagPrefix.plus(contributor.username),
-                    useUnmergedTree = true,
-                )
-                .assertExists()
-                .assertIsDisplayed()
-                .onChild()
-                .assertContentDescriptionEquals(contributor.username)
 
             composeUiTest
                 .onNodeWithTag(

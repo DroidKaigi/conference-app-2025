@@ -26,10 +26,12 @@ fun EntryProviderBuilder<NavKey>.sessionEntries(
     onLinkClick: (String) -> Unit,
     onSearchClick: () -> Unit,
     onTimetableItemClick: (TimetableItemId) -> Unit,
+    timeTableEntryMetadata: Map<String, Any> = emptyMap(),
 ) {
     timetableEntry(
         onSearchClick = onSearchClick,
         onTimetableItemClick = onTimetableItemClick,
+        metadata = timeTableEntryMetadata,
     )
     timetableItemDetailEntry(
         onBackClick = onBackClick,
@@ -47,8 +49,9 @@ context(appGraph: AppGraph)
 fun EntryProviderBuilder<NavKey>.timetableEntry(
     onSearchClick: () -> Unit,
     onTimetableItemClick: (TimetableItemId) -> Unit,
+    metadata: Map<String, Any> = emptyMap(),
 ) {
-    entry<TimetableNavKey>(metadata = listDetailSceneStrategyListPaneMetaData()) {
+    entry<TimetableNavKey>(metadata = listDetailSceneStrategyListPaneMetaData() + metadata) {
         with(rememberTimetableScreenContextRetained()) {
             TimetableScreenRoot(
                 onSearchClick = onSearchClick,

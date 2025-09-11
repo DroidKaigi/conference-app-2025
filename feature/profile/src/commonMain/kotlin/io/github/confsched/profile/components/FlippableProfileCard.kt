@@ -4,14 +4,11 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.offset
 import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,13 +17,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.BlurredEdgeTreatment
-import androidx.compose.ui.draw.blur
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.unit.dp
-import io.github.confsched.profile.ProfileUiState
+import io.github.confsched.profile.ProfileScreenUiState
+import io.github.confsched.profile.hologramaticEffect
+import io.github.confsched.profile.tiltEffect
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
+import io.github.droidkaigi.confsched.droidkaigiui.WithDeviceOrientation
 import io.github.droidkaigi.confsched.model.profile.Profile
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -38,7 +34,7 @@ private enum class FlipState { Initial, Animating, Default }
 
 @Composable
 fun FlippableProfileCard(
-    uiState: ProfileUiState.Card,
+    uiState: ProfileScreenUiState.Card,
     modifier: Modifier = Modifier,
 ) {
     var flipState by remember { mutableStateOf(FlipState.Initial) }
@@ -85,54 +81,58 @@ fun FlippableProfileCard(
 
 @Composable
 private fun ProfileCard(
-    uiState: ProfileUiState.Card,
+    uiState: ProfileScreenUiState.Card,
     rotation: Float,
     isFlipped: Boolean,
     onFlippedChange: (Boolean) -> Unit,
     interactionsEnabled: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    Card(
-        modifier = modifier
-            .clickable(
-                enabled = interactionsEnabled,
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null,
-            ) {
-                onFlippedChange(!isFlipped)
+    WithDeviceOrientation {
+        Card(
+            modifier = modifier
+                .clickable(
+                    enabled = interactionsEnabled,
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                ) {
+                    onFlippedChange(!isFlipped)
+                }
+                .draggable(
+                    enabled = interactionsEnabled,
+                    orientation = Orientation.Horizontal,
+                    state = rememberDraggableState { delta ->
+                        if (isFlipped && delta > ChangeFlipCardDeltaThreshold) {
+                            onFlippedChange(false)
+                        }
+                        if (!isFlipped && delta < -ChangeFlipCardDeltaThreshold) {
+                            onFlippedChange(true)
+                        }
+                    },
+                )
+                .graphicsLayer {
+                    rotationY = rotation
+                    cameraDistance = 12f * density
+                }
+                .tiltEffect(this@WithDeviceOrientation),
+        ) {
+            if (rotation < 90f) {
+                ProfileCardFront(
+                    theme = uiState.profile.theme,
+                    profileImageBitmap = uiState.profileImageBitmap,
+                    nickName = uiState.profile.nickName,
+                    occupation = uiState.profile.occupation,
+                    modifier = Modifier.hologramaticEffect(this@WithDeviceOrientation),
+                )
+            } else {
+                ProfileCardBack(
+                    theme = uiState.profile.theme,
+                    qrImageBitmap = uiState.qrImageBitmap,
+                    modifier = Modifier.graphicsLayer {
+                        rotationY = 180f
+                    },
+                )
             }
-            .draggable(
-                enabled = interactionsEnabled,
-                orientation = Orientation.Horizontal,
-                state = rememberDraggableState { delta ->
-                    if (isFlipped && delta > ChangeFlipCardDeltaThreshold) {
-                        onFlippedChange(false)
-                    }
-                    if (!isFlipped && delta < -ChangeFlipCardDeltaThreshold) {
-                        onFlippedChange(true)
-                    }
-                },
-            )
-            .graphicsLayer {
-                rotationY = rotation
-                cameraDistance = 12f * density
-            },
-    ) {
-        if (rotation < 90f) {
-            ProfileCardFront(
-                theme = uiState.profile.theme,
-                profileImageBitmap = uiState.profileImageBitmap,
-                nickName = uiState.profile.nickName,
-                occupation = uiState.profile.occupation,
-            )
-        } else {
-            ProfileCardBack(
-                theme = uiState.profile.theme,
-                qrImageBitmap = uiState.qrImageBitmap,
-                modifier = Modifier.graphicsLayer {
-                    rotationY = 180f
-                },
-            )
         }
     }
 }
@@ -142,7 +142,7 @@ private fun ProfileCard(
 private fun FlippableProfileCardPreview() {
     KaigiPreviewContainer {
         FlippableProfileCard(
-            uiState = ProfileUiState.Card(
+            uiState = ProfileScreenUiState.Card(
                 profile = Profile(
                     nickName = "DroidKaigi",
                     occupation = "Software Engineer",

@@ -30,7 +30,6 @@ enum NotificationTestData {
             targetAudience: "All levels",
             language: TimetableLanguage(langOfSpeaker: "JA", isInterpretationTarget: true),
             asset: TimetableAsset(videoUrl: nil, slideUrl: nil),
-            levels: ["Beginner"],
             speakers: [],
             description: MultiLangText(jaTitle: "説明", enTitle: "Description"),
             message: nil,

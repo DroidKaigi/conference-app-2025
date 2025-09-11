@@ -107,7 +107,6 @@ private enum PreviewData {
         targetAudience: "All levels",
         language: TimetableLanguage(langOfSpeaker: "JA", isInterpretationTarget: true),
         asset: TimetableAsset(videoUrl: nil, slideUrl: nil),
-        levels: ["Intermediate"],
         speakers: [
             Speaker(
                 id: "speaker-1",

@@ -32,7 +32,7 @@ fun eventMapScreenPresenter(
         }
     }
 
-    EventMapUiState(
+    EventMapScreenUiState(
         events = events,
         selectedFloor = selectedFloor,
     )

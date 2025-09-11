@@ -163,23 +163,19 @@ private fun RoomResponse.Companion.fakes(): List<RoomResponse> = listOf(
 private fun CategoryResponse.Companion.fakes(): List<CategoryResponse> = listOf(
     CategoryResponse(
         id = 1,
-        sort = 1,
         title = LocaledResponse(ja = "Category1 ja", en = "Category1 en"),
         items = listOf(
             CategoryItemResponse(
                 id = 1,
                 name = LocaledResponse(ja = "App Architecture ja", en = "App Architecture en"),
-                sort = 1,
             ),
             CategoryItemResponse(
                 id = 2,
                 name = LocaledResponse(ja = "Jetpack Compose ja", en = "Jetpack Compose en"),
-                sort = 2,
             ),
             CategoryItemResponse(
                 id = 3,
                 name = LocaledResponse(ja = "Other ja", en = "Other en"),
-                sort = 3,
             ),
         ),
     ),
@@ -191,8 +187,8 @@ private fun SessionAssetResponse.Companion.fake(): SessionAssetResponse = Sessio
 )
 
 private fun SpeakerResponse.Companion.fakes(): List<SpeakerResponse> = listOf(
-    SpeakerResponse(fullName = "taka", id = "1", isTopSpeaker = true),
-    SpeakerResponse(fullName = "ry", id = "2", isTopSpeaker = true),
+    SpeakerResponse(fullName = "taka", id = "1"),
+    SpeakerResponse(fullName = "ry", id = "2"),
 )
 
 private fun SessionResponse.Companion.fakes(
@@ -216,7 +212,6 @@ private fun SessionResponse.Companion.fakes(
                     .toCustomIsoString(),
                 endsAt = (DroidKaigi2025Day.Workday.start + 10.hours + 30.minutes + dayIndex.days).toCustomIsoString(),
                 isServiceSession = true,
-                isPlenumSession = false,
                 speakers = emptyList(),
                 roomId = 2,
                 targetAudience = "TBW",
@@ -226,7 +221,6 @@ private fun SessionResponse.Companion.fakes(
                 asset = asset,
                 message = message,
                 sessionType = "WELCOME_TALK",
-                levels = listOf("UNSPECIFIED"),
             ),
         )
     }
@@ -287,11 +281,9 @@ private fun SessionResponse.Companion.fakes(
                     sessionCategoryItemId = sessionCategoryItemId,
                     sessionType = "NORMAL",
                     message = message,
-                    isPlenumSession = false,
                     targetAudience = "For App developer アプリ開発者向け",
                     interpretationTarget = false,
                     asset = asset,
-                    levels = listOf("INTERMEDIATE"),
                 )
                 sessions.add(session)
             }

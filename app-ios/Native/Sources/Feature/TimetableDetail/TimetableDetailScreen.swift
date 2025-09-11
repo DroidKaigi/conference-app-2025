@@ -35,6 +35,10 @@ public struct TimetableDetailScreen: View {
                         .padding(.horizontal, 16)
                     targetAudience
                         .padding(16)
+                    if presenter.timetableItem.timetableItem.asset.isAvailable {
+                        archive
+                            .padding(16)
+                    }
 
                     Spacer().frame(height: 56 + Constant.bottomPadding)  // FAB space + Tab bar padding
                 }
@@ -176,6 +180,63 @@ public struct TimetableDetailScreen: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
+    var archive: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text(String(localized: "Archive", bundle: .module))
+                .font(Typography.titleLarge)
+                .foregroundStyle(presenter.timetableItem.timetableItem.room.roomTheme.primaryColor)
+
+            HStack(spacing: 12) {
+                // Open slides button
+                if let slideUrlString = presenter.timetableItem.timetableItem.asset.slideUrl,
+                    let slideUrl = URL(string: slideUrlString)
+                {
+                    Button {
+                        showingURL = slideUrl
+                    } label: {
+                        HStack(spacing: 8) {
+                            AssetImages.icDescription.swiftUIImage
+                                .resizable()
+                                .frame(width: 18, height: 18)
+                            Text(String(localized: "Slides", bundle: .module))
+                                .font(Typography.labelLarge)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                        .padding(.horizontal, 16)
+                        .foregroundColor(AssetColors.surface.swiftUIColor)
+                        .background(presenter.timetableItem.timetableItem.room.roomTheme.primaryColor)
+                        .clipShape(RoundedRectangle(cornerRadius: 28))
+                    }
+                }
+
+                // Watch video button
+                if let videoUrlString = presenter.timetableItem.timetableItem.asset.videoUrl,
+                    let videoUrl = URL(string: videoUrlString)
+                {
+                    Button {
+                        showingURL = videoUrl
+                    } label: {
+                        HStack(spacing: 8) {
+                            AssetImages.icPlayCircle.swiftUIImage
+                                .resizable()
+                                .frame(width: 18, height: 18)
+                            Text(String(localized: "Video", bundle: .module))
+                                .font(Typography.labelLarge)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                        .padding(.horizontal, 16)
+                        .foregroundColor(AssetColors.surface.swiftUIColor)
+                        .background(presenter.timetableItem.timetableItem.room.roomTheme.primaryColor)
+                        .clipShape(RoundedRectangle(cornerRadius: 28))
+                    }
+                }
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
     var fabMenu: some View {
         VStack {
             Spacer()
@@ -231,50 +292,6 @@ public struct TimetableDetailScreen: View {
                                     AssetImages.icShare.swiftUIImage
 
                                     Text(String(localized: "Share link", bundle: .module))
-                                        .font(Typography.titleMedium)
-                                }
-                                .foregroundStyle(AssetColors.tertiaryContainer.swiftUIColor)
-                                .padding(.horizontal, 24)
-                                .padding(.vertical, 16)
-                                .background(
-                                    AssetColors.onTertiaryContainer.swiftUIColor, in: RoundedRectangle(cornerRadius: 28)
-                                )
-                            }
-                        }
-
-                        if let slideUrlString = presenter.timetableItem.timetableItem.asset.slideUrl,
-                            let slideUrl = URL(string: slideUrlString)
-                        {
-                            Button {
-                                showingURL = slideUrl
-                                isShowFabMenu = false
-                            } label: {
-                                HStack(spacing: 8) {
-                                    AssetImages.icDescription.swiftUIImage
-
-                                    Text(String(localized: "Open presentation slides", bundle: .module))
-                                        .font(Typography.titleMedium)
-                                }
-                                .foregroundStyle(AssetColors.tertiaryContainer.swiftUIColor)
-                                .padding(.horizontal, 24)
-                                .padding(.vertical, 16)
-                                .background(
-                                    AssetColors.onTertiaryContainer.swiftUIColor, in: RoundedRectangle(cornerRadius: 28)
-                                )
-                            }
-                        }
-
-                        if let videoUrlString = presenter.timetableItem.timetableItem.asset.videoUrl,
-                            let videoUrl = URL(string: videoUrlString)
-                        {
-                            Button {
-                                showingURL = videoUrl
-                                isShowFabMenu = false
-                            } label: {
-                                HStack(spacing: 8) {
-                                    AssetImages.icPlayCircle.swiftUIImage
-
-                                    Text(String(localized: "Watch video", bundle: .module))
                                         .font(Typography.titleMedium)
                                 }
                                 .foregroundStyle(AssetColors.tertiaryContainer.swiftUIColor)
@@ -365,7 +382,6 @@ public struct TimetableDetailScreen: View {
                 language: TimetableLanguage(langOfSpeaker: "JA", isInterpretationTarget: false),
                 asset: TimetableAsset(
                     videoUrl: "https://2025.droidkaigi.jp/", slideUrl: "https://2025.droidkaigi.jp/en/"),
-                levels: ["初級"],
                 speakers: [],
                 description: MultiLangText(jaTitle: "セッションの説明", enTitle: "Session description"),
                 message: MultiLangText(jaTitle: "このセッションは中止になりました", enTitle: "This session has been cancelled")

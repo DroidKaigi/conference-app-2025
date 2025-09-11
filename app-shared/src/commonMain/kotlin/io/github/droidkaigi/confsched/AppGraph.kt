@@ -6,6 +6,7 @@ import io.github.droidkaigi.confsched.about.LicensesScreenContext
 import io.github.droidkaigi.confsched.contributors.ContributorsScreenContext
 import io.github.droidkaigi.confsched.eventmap.EventMapScreenContext
 import io.github.droidkaigi.confsched.favorites.FavoritesScreenContext
+import io.github.droidkaigi.confsched.model.settings.SettingsSubscriptionKey
 import io.github.droidkaigi.confsched.sessions.SearchScreenContext
 import io.github.droidkaigi.confsched.sessions.TimetableItemDetailScreenContext
 import io.github.droidkaigi.confsched.sessions.TimetableScreenContext
@@ -25,4 +26,8 @@ interface AppGraph :
     ProfileScreenContext.Factory,
     LicensesScreenContext.Factory,
     EventMapScreenContext.Factory,
-    SettingsScreenContext.Factory
+    SettingsScreenContext.Factory {
+
+    // NOTE: This is used in KaigiApp to apply user selected font family in the entire app.
+    val settingsSubscriptionKey: SettingsSubscriptionKey
+}

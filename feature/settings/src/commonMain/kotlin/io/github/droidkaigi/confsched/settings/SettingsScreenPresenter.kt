@@ -12,7 +12,7 @@ context(screenContext: SettingsScreenContext)
 fun settingsScreenPresenter(
     eventFlow: EventFlow<SettingsScreenEvent>,
     settings: Settings,
-): SettingsUiState = providePresenterDefaults {
+): SettingsScreenUiState = providePresenterDefaults {
     val settingsMutation = rememberMutation(screenContext.settingsMutationKey)
 
     EventEffect(eventFlow) { event ->
@@ -23,7 +23,7 @@ fun settingsScreenPresenter(
         }
     }
 
-    SettingsUiState(
+    SettingsScreenUiState(
         useKaigiFontFamily = settings.useKaigiFontFamily,
     )
 }

@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.droidkaigiui.extension.enableMouseDragScroll
-import io.github.droidkaigi.confsched.eventmap.EventMapUiState
+import io.github.droidkaigi.confsched.eventmap.EventMapScreenUiState
 import io.github.droidkaigi.confsched.eventmap.EventmapRes
 import io.github.droidkaigi.confsched.eventmap.event_map_description
 import io.github.droidkaigi.confsched.model.eventmap.FloorLevel
@@ -27,7 +27,7 @@ const val EventMapItemTestTag = "EventMapItemTestTag:"
 
 @Composable
 fun EventMap(
-    uiState: EventMapUiState,
+    uiState: EventMapScreenUiState,
     listState: LazyListState,
     onSelectFloor: (FloorLevel) -> Unit,
     onClickReadMore: (url: String) -> Unit,

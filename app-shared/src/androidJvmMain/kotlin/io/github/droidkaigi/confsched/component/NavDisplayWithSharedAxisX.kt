@@ -1,6 +1,6 @@
 package io.github.droidkaigi.confsched.component
 
-import androidx.compose.animation.ContentTransform
+import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,22 +29,13 @@ fun <T : Any> NavDisplayWithSharedAxisX(
         onBack = onBack,
         contentAlignment = contentAlignment,
         transitionSpec = {
-            ContentTransform(
-                targetContentEnter = materialSharedAxisXIn(forward = true, slideDistance),
-                initialContentExit = materialSharedAxisXOut(forward = true, slideDistance),
-            )
+            materialSharedAxisXIn(forward = true, slideDistance) togetherWith materialSharedAxisXOut(forward = true, slideDistance)
         },
         popTransitionSpec = {
-            ContentTransform(
-                targetContentEnter = materialSharedAxisXIn(forward = false, slideDistance),
-                initialContentExit = materialSharedAxisXOut(forward = false, slideDistance),
-            )
+            materialSharedAxisXIn(forward = false, slideDistance) togetherWith materialSharedAxisXOut(forward = false, slideDistance)
         },
         predictivePopTransitionSpec = {
-            ContentTransform(
-                targetContentEnter = materialSharedAxisXIn(forward = false, slideDistance),
-                initialContentExit = materialSharedAxisXOut(forward = false, slideDistance),
-            )
+            materialSharedAxisXIn(forward = false, slideDistance) togetherWith materialSharedAxisXOut(forward = false, slideDistance)
         },
         entryDecorators = platformEntryDecorators(),
         entryProvider = entryProvider,

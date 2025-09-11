@@ -20,7 +20,6 @@ struct TimetableUseCaseTests {
                 targetAudience: "All",
                 language: TimetableLanguage(langOfSpeaker: "JA", isInterpretationTarget: false),
                 asset: TimetableAsset(videoUrl: nil, slideUrl: nil),
-                levels: ["Beginner"],
                 speakers: [],
                 description: MultiLangText(jaTitle: "Description", enTitle: "Description"),
                 message: nil,
@@ -139,7 +138,6 @@ struct TimetableUseCaseTests {
                 targetAudience: "All",
                 language: TimetableLanguage(langOfSpeaker: "JA", isInterpretationTarget: true),
                 asset: TimetableAsset(videoUrl: "https://example.com/video", slideUrl: "https://example.com/slide"),
-                levels: ["Intermediate"],
                 speakers: [
                     Speaker(id: "speaker-1", name: "Test Speaker", iconUrl: "https://example.com/icon", bio: "Bio", tagLine: "Engineer")
                 ],
@@ -158,7 +156,6 @@ struct TimetableUseCaseTests {
                 targetAudience: "All",
                 language: TimetableLanguage(langOfSpeaker: "JA", isInterpretationTarget: false),
                 asset: TimetableAsset(videoUrl: nil, slideUrl: nil),
-                levels: [],
                 speakers: [],
                 description: MultiLangText(jaTitle: "Lunch Time", enTitle: "Lunch Time"),
                 message: nil,

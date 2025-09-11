@@ -5,9 +5,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.ImageBitmap
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import java.awt.Desktop
+import java.awt.Toolkit
+import java.awt.datatransfer.StringSelection
 import java.net.URI
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
+import javax.swing.JOptionPane
 import kotlin.time.Instant
 
 @Composable
@@ -51,7 +54,24 @@ class JvmExternalNavController : ExternalNavController {
     }
 
     override fun onShareClick(timetableItem: TimetableItem) {
-        TODO("Not yet implemented")
+        val text = "[${timetableItem.room.name.currentLangTitle}] ${timetableItem.formattedMonthAndDayString} " +
+            "${timetableItem.startsTimeString} - ${timetableItem.endsTimeString}\n" +
+            "${timetableItem.title.currentLangTitle}\n" +
+            timetableItem.url
+        try {
+            val clipboard = Toolkit.getDefaultToolkit().systemClipboard
+            val selection = StringSelection(text)
+            clipboard.setContents(selection, selection)
+
+            JOptionPane.showMessageDialog(
+                null,
+                text,
+                "Copied to clipboard!",
+                JOptionPane.PLAIN_MESSAGE,
+            )
+        } catch (e: Exception) {
+            println("Failed to copy to clipboard: ${e.message}")
+        }
     }
 
     override fun onShareProfileCardClick(shareText: String, imageBitmap: ImageBitmap) {

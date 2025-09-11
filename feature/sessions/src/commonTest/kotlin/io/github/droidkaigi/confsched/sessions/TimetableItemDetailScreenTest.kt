@@ -38,12 +38,23 @@ class TimetableItemDetailScreenTest {
                     captureScreenWithChecks(
                         checks = {
                             checkSessionDetailTitle()
+                            checkNotBookmarked()
                         },
                     )
                 }
 
-                // TODO https://github.com/DroidKaigi/conference-app-2025/issues/218
-                // TODO Test two states: bookmarked and not bookmarked.
+                describe("bookmark") {
+                    doIt {
+                        bookmark()
+                    }
+                    itShould("show bookmarked icon") {
+                        captureScreenWithChecks(
+                            checks = {
+                                checkBookmarked()
+                            },
+                        )
+                    }
+                }
 
                 describe("scroll") {
                     doIt {
@@ -53,13 +64,11 @@ class TimetableItemDetailScreenTest {
                         captureScreenWithChecks(
                             checks = {
                                 checkTargetAudience()
+                                checkBothOfSlidesButtonAndVideoButtonNotDisplayed()
                             },
                         )
                     }
                 }
-
-                // TODO https://github.com/DroidKaigi/conference-app-2025/issues/218
-                // TODO Test that both the transition methods to the video and slide assets are hidden.
             }
             describe("when the description is lengthy") {
                 doIt {
@@ -140,10 +149,56 @@ class TimetableItemDetailScreenTest {
             }
         }
 
-        // TODO https://github.com/DroidKaigi/conference-app-2025/issues/218
-        // TODO 1. Test that the transition means to both slide and video assets are displayed.
-        // TODO 2. Test that the transition means to slide assets only are displayed.
-        // TODO 3. Test that the transition means to video assets only are displayed.
+        describe("when server is operational both asset available") {
+            doIt {
+                setupTimetableServer(ServerStatus.OperationalBothAssetAvailable)
+            }
+            describe("when launch") {
+                doIt {
+                    setupTimetableItemDetailScreenContent()
+                    scrollToArchiveSectionBottom()
+                }
+                itShould("display slide and video buttons") {
+                    captureScreenWithChecks {
+                        checkBothOfSlidesButtonAndVideoButtonDisplayed()
+                    }
+                }
+            }
+        }
+
+        describe("when server is operational only slide asset available") {
+            doIt {
+                setupTimetableServer(ServerStatus.OperationalOnlySlideAssetAvailable)
+            }
+            describe("when launch") {
+                doIt {
+                    setupTimetableItemDetailScreenContent()
+                    scrollToArchiveSectionBottom()
+                }
+                itShould("display only slide button") {
+                    captureScreenWithChecks {
+                        checkOnlySlidesButtonDisplayed()
+                    }
+                }
+            }
+        }
+
+        describe("when server is operational only video asset available") {
+            doIt {
+                setupTimetableServer(ServerStatus.OperationalOnlyVideoAssetAvailable)
+            }
+            describe("when launch") {
+                doIt {
+                    setupTimetableItemDetailScreenContent()
+                    scrollToArchiveSectionBottom()
+                }
+                itShould("display only video button") {
+                    captureScreenWithChecks {
+                        checkOnlyVideoButtonDisplayed()
+                    }
+                }
+            }
+        }
 
         describe("when server is operational exists message") {
             doIt {

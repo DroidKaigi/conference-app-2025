@@ -47,7 +47,7 @@ fun ContributorItem(
     ) {
         SubcomposeAsyncImage(
             model = contributor.iconUrl,
-            contentDescription = contributor.username,
+            contentDescription = null,
             modifier = Modifier
                 .size(52.dp)
                 .clip(CircleShape)

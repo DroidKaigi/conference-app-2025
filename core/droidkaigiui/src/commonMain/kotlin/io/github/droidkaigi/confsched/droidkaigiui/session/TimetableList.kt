@@ -1,5 +1,14 @@
 package io.github.droidkaigi.confsched.droidkaigiui.session
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -10,6 +19,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
@@ -38,6 +48,7 @@ import io.github.droidkaigi.confsched.model.sessions.TimetableItemId
 import io.github.droidkaigi.confsched.model.sessions.fake
 import kotlinx.collections.immutable.PersistentMap
 import kotlinx.collections.immutable.persistentMapOf
+import kotlinx.collections.immutable.toPersistentList
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 const val TimetableListTestTag = "TimetableList"
@@ -89,6 +100,7 @@ fun TimetableList(
 
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    modifier = Modifier.animateItem(),
                 ) {
                     TimetableTimeSlot(
                         startTimeText = timeSlot.startTimeString,
@@ -97,30 +109,55 @@ fun TimetableList(
                             .onSizeChanged { timetableTimeSlotHeight = it.height }
                             .offset { IntOffset(0, timetableTimeSlotOffsetY) },
                     )
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(12.dp),
-                    ) {
-                        timetableItems.windowed(columnCount, columnCount, true).forEach { windowedItems ->
-                            Row(
-                                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                                modifier = Modifier.height(IntrinsicSize.Max),
-                            ) {
-                                windowedItems.forEach { item ->
-                                    TimetableItemCard(
-                                        timetableItem = item,
-                                        isBookmarked = isBookmarked(item.id),
-                                        isDateTagVisible = isDateTagVisible,
-                                        highlightWord = highlightWord,
-                                        onBookmarkClick = { onBookmarkClick(item.id) },
-                                        onTimetableItemClick = { onTimetableItemClick(item.id) },
-                                        modifier = Modifier
-                                            .weight(1f)
-                                            .fillMaxHeight(),
-                                    )
-                                }
-                                if (windowedItems.size < columnCount) {
-                                    repeat(columnCount - windowedItems.size) {
-                                        Spacer(Modifier.weight(1f))
+                    // Since LazyList cannot be placed within LazyList, AnimatedContent is used instead.
+                    AnimatedContent(
+                        targetState = timetableItems,
+                        contentKey = { items -> items.map { it.id } },
+                        transitionSpec = {
+                            val enter = fadeIn(animationSpec = tween(300)) + scaleIn(
+                                initialScale = 0.95f,
+                                animationSpec = spring(
+                                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                                    stiffness = Spring.StiffnessLow,
+                                ),
+                            )
+                            val exit = fadeOut(animationSpec = tween(200)) + scaleOut(
+                                targetScale = 0.95f,
+                                animationSpec = spring(
+                                    dampingRatio = Spring.DampingRatioNoBouncy,
+                                    stiffness = Spring.StiffnessMedium,
+                                ),
+                            )
+                            enter.togetherWith(exit)
+                        },
+                        label = "TimetableItemsAnimation",
+                    ) { items ->
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(12.dp),
+                            modifier = Modifier.fillMaxSize(),
+                        ) {
+                            items.chunked(columnCount).forEach { rowItems ->
+                                Row(
+                                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                                    modifier = Modifier.height(IntrinsicSize.Max),
+                                ) {
+                                    rowItems.forEach { item ->
+                                        TimetableItemCard(
+                                            timetableItem = item,
+                                            isBookmarked = isBookmarked(item.id),
+                                            isDateTagVisible = isDateTagVisible,
+                                            highlightWord = highlightWord,
+                                            onBookmarkClick = { onBookmarkClick(item.id) },
+                                            onTimetableItemClick = { onTimetableItemClick(item.id) },
+                                            modifier = Modifier
+                                                .weight(1f)
+                                                .fillMaxHeight(),
+                                        )
+                                    }
+                                    if (rowItems.size < columnCount) {
+                                        repeat(columnCount - rowItems.size) {
+                                            Spacer(modifier = Modifier.weight(1f))
+                                        }
                                     }
                                 }
                             }
@@ -147,6 +184,10 @@ private fun TimetableListPreview() {
         override val key: String,
     ) : TimeSlotItem
 
+    // Create items with varying number of speakers to demonstrate layout adaptability
+    val items = List(2) { TimetableItem.Session.fake() }
+        .mapIndexed { index, item -> item.copy(speakers = item.speakers.drop(index).toPersistentList()) }
+
     KaigiPreviewContainer {
         TimetableList(
             timetableItemMap = persistentMapOf(
@@ -154,7 +195,7 @@ private fun TimetableListPreview() {
                     startTimeString = "11:20",
                     endTimeString = "12:00",
                     key = "11:20-12:00",
-                ) to List(2) { TimetableItem.Session.fake() },
+                ) to items,
                 PreviewTimeSlot(
                     startTimeString = "12:00",
                     endTimeString = "13:00",
@@ -166,4 +207,10 @@ private fun TimetableListPreview() {
             isBookmarked = { false },
         )
     }
+}
+
+@Preview(widthDp = 1024)
+@Composable
+private fun TimetableListLandscapePreview() {
+    TimetableListPreview()
 }

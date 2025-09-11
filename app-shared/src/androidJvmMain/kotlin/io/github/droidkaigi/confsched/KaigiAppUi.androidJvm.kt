@@ -1,9 +1,11 @@
 package io.github.droidkaigi.confsched
 
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.ui.NavDisplay
 import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.rememberHazeState
 import io.github.droidkaigi.confsched.component.KaigiNavigationScaffold
@@ -23,6 +25,8 @@ import io.github.droidkaigi.confsched.naventry.settingsEntry
 import io.github.droidkaigi.confsched.naventry.sponsorsEntry
 import io.github.droidkaigi.confsched.naventry.staffEntry
 import io.github.droidkaigi.confsched.navigation.extension.safeRemoveLastOrNull
+import io.github.droidkaigi.confsched.navigation.materialFadeIn
+import io.github.droidkaigi.confsched.navigation.materialFadeOut
 import io.github.droidkaigi.confsched.navigation.rememberNavBackStack
 import io.github.droidkaigi.confsched.navigation.sceneStrategy
 import io.github.droidkaigi.confsched.navkey.AboutNavKey
@@ -86,6 +90,7 @@ actual fun KaigiAppUi() {
                         }
                         backStack.add(TimetableItemDetailNavKey(it))
                     },
+                    timeTableEntryMetadata = NavDisplay.topLevelTransition(),
                 )
                 contributorsEntry(
                     onBackClick = { backStack.safeRemoveLastOrNull() },
@@ -109,9 +114,11 @@ actual fun KaigiAppUi() {
                         }
                         backStack.add(TimetableItemDetailNavKey(it))
                     },
+                    metadata = NavDisplay.topLevelTransition(),
                 )
                 eventMapEntry(
                     onClickReadMore = externalNavController::navigate,
+                    metadata = NavDisplay.topLevelTransition(),
                 )
                 aboutEntries(
                     onAboutItemClick = { item ->
@@ -165,9 +172,11 @@ actual fun KaigiAppUi() {
                         }
                     },
                     onBackClick = { backStack.safeRemoveLastOrNull() },
+                    aboutEntryMetadata = NavDisplay.topLevelTransition(),
                 )
                 profileNavEntry(
                     onShareProfileCardClick = externalNavController::onShareProfileCardClick,
+                    metadata = NavDisplay.topLevelTransition(),
                 )
             },
             modifier = Modifier
@@ -178,4 +187,12 @@ actual fun KaigiAppUi() {
                 ),
         )
     }
+}
+
+private fun NavDisplay.topLevelTransition() = transitionSpec {
+    materialFadeIn() togetherWith materialFadeOut()
+} + NavDisplay.popTransitionSpec {
+    materialFadeIn() togetherWith materialFadeOut()
+} + NavDisplay.predictivePopTransitionSpec {
+    materialFadeIn() togetherWith materialFadeOut()
 }

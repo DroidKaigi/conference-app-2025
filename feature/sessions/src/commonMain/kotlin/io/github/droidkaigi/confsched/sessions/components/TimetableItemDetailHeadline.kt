@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -29,17 +30,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched.designsystem.theme.LocalRoomTheme
 import io.github.droidkaigi.confsched.designsystem.theme.ProvideRoomTheme
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
-import io.github.droidkaigi.confsched.droidkaigiui.SubcomposeAsyncImage
 import io.github.droidkaigi.confsched.droidkaigiui.component.OutlinedToolTip
 import io.github.droidkaigi.confsched.droidkaigiui.component.RoomToolTip
 import io.github.droidkaigi.confsched.droidkaigiui.extension.icon
 import io.github.droidkaigi.confsched.droidkaigiui.extension.roomTheme
+import io.github.droidkaigi.confsched.droidkaigiui.session.TimetableProfileIcon
 import io.github.droidkaigi.confsched.model.core.Lang
 import io.github.droidkaigi.confsched.model.sessions.TimetableItem
 import io.github.droidkaigi.confsched.model.sessions.fake
@@ -92,7 +98,11 @@ fun TimetableItemDetailHeadline(
         }
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            modifier = Modifier.testTag(TimetableItemDetailHeadlineTestTag),
+            modifier = Modifier
+                .testTag(TimetableItemDetailHeadlineTestTag)
+                .semantics {
+                    heading()
+                },
             text = timetableItem.title.getByLang(currentLang),
             style = MaterialTheme.typography.headlineSmall,
         )
@@ -100,10 +110,10 @@ fun TimetableItemDetailHeadline(
         timetableItem.speakers.forEach { speaker ->
             Row(
                 verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.semantics(mergeDescendants = true) {},
             ) {
-                SubcomposeAsyncImage(
-                    model = speaker.iconUrl,
-                    contentDescription = null,
+                TimetableProfileIcon(
+                    speakerUrl = speaker.iconUrl,
                     modifier = Modifier
                         .border(border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.onSurfaceVariant), shape = CircleShape)
                         .clip(CircleShape)
@@ -144,15 +154,20 @@ private fun LanguageSwitcher(
     val lastIndex = availableLangs.size - 1
 
     Row(
-        modifier = modifier,
+        modifier = modifier.selectableGroup(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         availableLangs.forEachIndexed { index, lang ->
             val isSelected = normalizedCurrentLang == lang
+
             TextButton(
                 onClick = { onLanguageSelect(lang) },
                 shapes = ButtonDefaults.shapes(),
                 contentPadding = PaddingValues(12.dp),
+                modifier = Modifier.semantics {
+                    role = Role.RadioButton
+                    selected = isSelected
+                },
             ) {
                 val contentColor = if (isSelected) {
                     LocalRoomTheme.current.primaryColor

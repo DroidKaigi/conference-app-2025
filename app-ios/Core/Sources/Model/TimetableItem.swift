@@ -11,7 +11,6 @@ public protocol TimetableItem: Identifiable, Equatable, Sendable {
     var targetAudience: String { get }
     var language: TimetableLanguage { get }
     var asset: TimetableAsset { get }
-    var levels: [String] { get }
     var speakers: [Speaker] { get }
     var day: DroidKaigi2025Day? { get }
 }
@@ -27,7 +26,6 @@ public struct TimetableItemSession: TimetableItem {
     public let targetAudience: String
     public let language: TimetableLanguage
     public let asset: TimetableAsset
-    public let levels: [String]
     public let speakers: [Speaker]
     public let description: MultiLangText
     public let message: MultiLangText?
@@ -44,7 +42,6 @@ public struct TimetableItemSession: TimetableItem {
         targetAudience: String,
         language: TimetableLanguage,
         asset: TimetableAsset,
-        levels: [String],
         speakers: [Speaker],
         description: MultiLangText,
         message: MultiLangText? = nil,
@@ -60,7 +57,6 @@ public struct TimetableItemSession: TimetableItem {
         self.targetAudience = targetAudience
         self.language = language
         self.asset = asset
-        self.levels = levels
         self.speakers = speakers
         self.description = description
         self.message = message
@@ -79,7 +75,6 @@ public struct TimetableItemSpecial: TimetableItem {
     public let targetAudience: String
     public let language: TimetableLanguage
     public let asset: TimetableAsset
-    public let levels: [String]
     public let speakers: [Speaker]
     public let description: MultiLangText
     public let message: MultiLangText?
@@ -96,7 +91,6 @@ public struct TimetableItemSpecial: TimetableItem {
         targetAudience: String,
         language: TimetableLanguage,
         asset: TimetableAsset,
-        levels: [String],
         speakers: [Speaker],
         description: MultiLangText,
         message: MultiLangText? = nil,
@@ -112,7 +106,6 @@ public struct TimetableItemSpecial: TimetableItem {
         self.targetAudience = targetAudience
         self.language = language
         self.asset = asset
-        self.levels = levels
         self.speakers = speakers
         self.description = description
         self.message = message

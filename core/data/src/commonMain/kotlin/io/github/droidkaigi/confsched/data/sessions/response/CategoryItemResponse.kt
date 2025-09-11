@@ -7,5 +7,4 @@ import kotlinx.serialization.Serializable
 public data class CategoryItemResponse(
     val name: LocaledResponse,
     val id: Int,
-    val sort: Int,
 )

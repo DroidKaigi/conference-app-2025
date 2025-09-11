@@ -133,11 +133,6 @@ fun Timetable.Companion.fake(): Timetable {
                     isInterpretationTarget = true,
                 ),
                 asset = TimetableAsset(null, null),
-                levels = persistentListOf(
-                    "BEGINNER",
-                    "INTERMEDIATE",
-                    "ADVANCED",
-                ),
                 speakers = persistentListOf(
                     TimetableSpeaker(
                         id = "1",
@@ -202,11 +197,6 @@ fun Timetable.Companion.fake(): Timetable {
                     isInterpretationTarget = true,
                 ),
                 asset = TimetableAsset(null, null),
-                levels = persistentListOf(
-                    "BEGINNER",
-                    "INTERMEDIATE",
-                    "ADVANCED",
-                ),
                 speakers = persistentListOf(
                     TimetableSpeaker(
                         id = "1",

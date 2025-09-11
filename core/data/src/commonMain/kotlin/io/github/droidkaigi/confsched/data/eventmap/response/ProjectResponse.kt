@@ -9,7 +9,6 @@ public data class ProjectResponse(
     val id: String,
     val message: LocaledResponse?,
     val moreDetailsUrl: String?,
-    val noShow: Boolean,
     val roomId: Int,
     val title: LocaledResponse,
 )
