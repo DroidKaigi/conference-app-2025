@@ -83,6 +83,7 @@ class AndroidExternalNavController(
         val text = "[${timetableItem.room.name.currentLangTitle}] ${timetableItem.formattedMonthAndDayString} " +
             "${timetableItem.startsTimeString} - ${timetableItem.endsTimeString}\n" +
             "${timetableItem.title.currentLangTitle}\n" +
+            "#Droidkaigi\n" +
             timetableItem.url
         try {
             ShareCompat.IntentBuilder(context)
