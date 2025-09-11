@@ -5,15 +5,22 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
@@ -175,6 +182,45 @@ private fun SelectedTabSideLineIndicator(
         )
     }
 }
+
+val LocalNavigationRailOverride: ProvidableCompositionLocal<NavigationRailOverride> =
+    compositionLocalOf {
+        DefaultNavigationRailOverride
+    }
+
+private object DefaultNavigationRailOverride : NavigationRailOverride {
+    @Composable
+    override fun NavigationRailOverrideScope.NavigationRail() {
+        GlassLikeNavigationRailBar(
+            hazeState = hazeState,
+            currentTab = currentTab,
+            onTabSelected = onTabSelected,
+            animatedSelectedTabIndex = animatedSelectedTabIndex,
+            animatedColor = animatedColor,
+            modifier = Modifier
+                .padding(start = 16.dp, end = 8.dp)
+                .windowInsetsPadding(
+                    WindowInsets.safeDrawing.only(
+                        WindowInsetsSides.Vertical + WindowInsetsSides.Start,
+                    ),
+                ),
+        )
+    }
+}
+
+interface NavigationRailOverride {
+    @Composable
+    fun NavigationRailOverrideScope.NavigationRail()
+}
+
+class NavigationRailOverrideScope internal constructor(
+    val hazeState: HazeState,
+    val currentTab: MainScreenTab,
+    val onTabSelected: (MainScreenTab) -> Unit,
+    val animatedSelectedTabIndex: Float,
+    val animatedColor: Color,
+    val modifier: Modifier,
+)
 
 @Preview
 @Composable

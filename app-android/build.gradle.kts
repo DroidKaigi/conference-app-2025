@@ -124,6 +124,7 @@ dependencies {
     implementation(compose.materialIconsExtended)
     implementation(libs.material3)
     debugImplementation(compose.uiTooling)
+    implementation(libs.haze)
 
     implementation(libs.androidxActivityCompose)
 

@@ -92,24 +92,17 @@ private fun KaigiNavigationScaffold(
 ) {
     Row(modifier = modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
         AnimatedVisibility(currentTab != null && navigationBarType == NavigationBarType.NavigationRail) {
-            /**
-             * TODO: Orbiter support for NavigationRail in XR.
-             * Also, as of September 9, 2025, there is a problem where Orbiter cannot be displayed on the XR emulator.
-             */
-            GlassLikeNavigationRailBar(
-                currentTab = currentTab ?: MainScreenTab.Timetable,
-                hazeState = hazeState,
-                onTabSelected = onTabSelected,
-                animatedSelectedTabIndex = animatedSelectedTabIndex,
-                animatedColor = animatedColor,
-                modifier = Modifier
-                    .padding(start = 16.dp, end = 8.dp)
-                    .windowInsetsPadding(
-                        WindowInsets.safeDrawing.only(
-                            WindowInsetsSides.Vertical + WindowInsetsSides.Start,
-                        ),
-                    ),
-            )
+            with(LocalNavigationRailOverride.current) {
+                NavigationRailOverrideScope(
+                    currentTab = currentTab ?: MainScreenTab.Timetable,
+                    hazeState = hazeState,
+                    onTabSelected = onTabSelected,
+                    animatedSelectedTabIndex = animatedSelectedTabIndex,
+                    animatedColor = animatedColor,
+                    modifier = Modifier,
+                )
+                    .NavigationRail()
+            }
         }
         Scaffold(
             bottomBar = {
