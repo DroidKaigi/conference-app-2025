@@ -43,3 +43,34 @@ jobs:
       working-directory: app-ios
       run: |
         make test
+
+  test-native:
+    name: Run Native Tests
+    runs-on: macos-15
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Select Xcode
+      run: sudo xcode-select -s /Applications/Xcode_16.4.app/Contents/Developer
+    
+    - name: Cache SPM dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          app-ios/.build
+          app-ios/Core/.build
+          app-ios/Native/.build
+          ~/Library/Developer/Xcode/DerivedData
+        key: ${{ runner.os }}-spm-native-${{ hashFiles('app-ios/Core/Package.swift', 'app-ios/Native/Package.swift') }}
+        restore-keys: |
+          ${{ runner.os }}-spm-native-
+    
+    - name: Show available simulators
+      run: xcrun simctl list devices available
+    
+    - name: Run Native Tests
+      working-directory: app-ios
+      run: |
+        make test-native
