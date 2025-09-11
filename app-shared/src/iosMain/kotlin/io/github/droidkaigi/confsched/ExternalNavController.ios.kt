@@ -100,6 +100,7 @@ internal class IosExternalNavController : ExternalNavController {
         val text = "[${timetableItem.room.name.currentLangTitle}] ${timetableItem.formattedMonthAndDayString} " +
             "${timetableItem.startsTimeString} - ${timetableItem.endsTimeString}\n" +
             "${timetableItem.title.currentLangTitle}\n" +
+            "#DroidKaigi\n" +
             timetableItem.url
 
         share(listOf(NSString.create(text)))
