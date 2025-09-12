@@ -5,12 +5,15 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import io.github.droidkaigi.confsched.data.DataScope
 import io.github.droidkaigi.confsched.data.ProfileDataStoreQualifier
 import io.github.droidkaigi.confsched.model.profile.Profile
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
 
+@SingleIn(DataScope::class)
 @Inject
 public class ProfileDataStore(
     @param:ProfileDataStoreQualifier private val dataStore: DataStore<Preferences>,

@@ -1,6 +1,5 @@
 package io.github.confsched.profile
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -49,6 +48,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -90,6 +92,19 @@ import soil.form.compose.hasError
 import soil.form.compose.rememberForm
 import soil.form.rule.match
 import soil.form.rule.notBlank
+
+const val ProfileCardEditScreenColumnTestTag = "ProfileCardEditScreenColumnTestTag"
+const val ProfileCardEditNameFormTestTag = "ProfileCardEditNameFormTestTag"
+const val ProfileCardEditOccupationFormTestTag = "ProfileCardEditOccupationFormTestTag"
+const val ProfileCardEditLinkFormTestTag = "ProfileCardEditLinkFormTestTag"
+const val ProfileCardEditLinkFormLabelTestTag = "ProfileCardEditLinkFormLabelTestTag"
+const val ProfileCardEditCreateCardButtonTestTag = "ProfileCardEditCreateCardButtonTestTag"
+const val ProfileCardEditThemeTestTag = "ProfileCardEditThemeTestTag"
+const val ProfileCardEditDescriptionTextTestTag = "ProfileCardEditDescriptionTextTestTag"
+const val ProfileCardEditNameErrorTextTestTag = "ProfileCardEditNameErrorTextTestTag"
+const val ProfileCardEditOccupationErrorTextTestTag = "ProfileCardEditOccupationErrorTextTestTag"
+const val ProfileCardEditLinkErrorTextTestTag = "ProfileCardEditLinkErrorTextTestTag"
+const val ProfileCardEditImageErrorTextTestTag = "ProfileCardEditImageErrorTextTestTag"
 
 private val profileSaver: Saver<Profile, Any> = listSaver(
     save = {
@@ -142,13 +157,15 @@ fun ProfileEditScreen(
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp)
-                .padding(contentPadding),
+                .padding(contentPadding)
+                .testTag(ProfileCardEditScreenColumnTestTag),
             verticalArrangement = Arrangement.spacedBy(32.dp),
         ) {
             Text(
                 text = stringResource(ProfileRes.string.profile_card_edit_description),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.testTag(ProfileCardEditDescriptionTextTestTag),
             )
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 form.Name()
@@ -158,9 +175,11 @@ fun ProfileEditScreen(
             }
             form.Theme()
             Button(
-                onClick = { form.handleSubmit() },
+                onClick = form::handleSubmit,
                 shapes = ButtonDefaults.shapes(),
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag(ProfileCardEditCreateCardButtonTestTag),
                 contentPadding = PaddingValues(18.dp),
             ) {
                 Text(stringResource(ProfileRes.string.create_card))
@@ -182,9 +201,17 @@ private fun Form<Profile>.Name() {
             notBlank { emptyNameErrorString }
         },
         render = { field ->
-            field.InputField(
-                label = stringResource(ProfileRes.string.nickname),
-            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                InputLabel(
+                    label = stringResource(ProfileRes.string.nickname),
+                )
+                field.InputField(
+                    modifier = Modifier.fillMaxWidth().testTag(ProfileCardEditNameFormTestTag),
+                    errorTextTestTag = ProfileCardEditNameErrorTextTestTag,
+                )
+            }
         },
     )
 }
@@ -202,9 +229,15 @@ private fun Form<Profile>.Occupation() {
             notBlank { emptyOccupationErrorString }
         },
         render = { field ->
-            field.InputField(
-                label = stringResource(ProfileRes.string.occupation),
-            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                InputLabel(label = stringResource(ProfileRes.string.occupation))
+                field.InputField(
+                    modifier = Modifier.fillMaxWidth().testTag(ProfileCardEditOccupationFormTestTag),
+                    errorTextTestTag = ProfileCardEditOccupationErrorTextTestTag,
+                )
+            }
         },
     )
 }
@@ -227,16 +260,25 @@ private fun Form<Profile>.Link(focusManager: FocusManager) {
             match(linkPattern) { invalidLinkErrorString }
         },
         render = { field ->
-            field.InputField(
-                label = stringResource(ProfileRes.string.link) + stringResource(ProfileRes.string.link_example_text),
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Done,
-                    keyboardType = KeyboardType.Uri,
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = { focusManager.clearFocus() },
-                ),
-            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                InputLabel(
+                    label = stringResource(ProfileRes.string.link) + stringResource(ProfileRes.string.link_example_text),
+                    modifier = Modifier.testTag(ProfileCardEditLinkFormLabelTestTag),
+                )
+                field.InputField(
+                    modifier = Modifier.fillMaxWidth().testTag(ProfileCardEditLinkFormTestTag),
+                    errorTextTestTag = ProfileCardEditLinkErrorTextTestTag,
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Done,
+                        keyboardType = KeyboardType.Uri,
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = { focusManager.clearFocus() },
+                    ),
+                )
+            }
         },
     )
 }
@@ -295,6 +337,7 @@ private fun Form<Profile>.Image() {
                         text = field.error.messages.first(),
                         color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.testTag(ProfileCardEditImageErrorTextTestTag),
                     )
                 }
             }
@@ -379,7 +422,12 @@ private fun Form<Profile>.Theme() {
                                             field.onValueChange(theme)
                                         },
                                         theme = theme,
-                                        modifier = Modifier.weight(1f),
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .semantics {
+                                                selected = field.value == theme
+                                            }
+                                            .testTag(ProfileCardEditThemeTestTag.plus(theme.name)),
                                     )
                                 }
                             }
@@ -392,46 +440,43 @@ private fun Form<Profile>.Theme() {
 
 @Composable
 private fun FormField<String>.InputField(
-    label: String,
+    modifier: Modifier = Modifier,
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
     keyboardActions: KeyboardActions = KeyboardActions.Default,
+    errorTextTestTag: String? = null,
 ) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        InputLabel(label = label)
-        OutlinedTextField(
-            value = value,
-            onValueChange = { onValueChange(it) },
-            isError = hasError,
-            singleLine = true,
-            keyboardOptions = keyboardOptions,
-            keyboardActions = keyboardActions,
-            trailingIcon = {
-                if (value.isNotEmpty()) {
-                    IconButton(
-                        onClick = { onValueChange("") },
-                        modifier = Modifier.size(40.dp),
-                    ) {
-                        Icon(
-                            painter = painterResource(ProfileRes.drawable.clear_button_icon),
-                            contentDescription = "clear text",
-                        )
-                    }
-                }
-            },
-            textStyle = MaterialTheme.typography.bodyLarge,
-            supportingText = {
-                if (hasError) {
-                    Text(
-                        text = error.messages.first(),
-                        color = MaterialTheme.colorScheme.error,
+    OutlinedTextField(
+        value = value,
+        onValueChange = { onValueChange(it) },
+        isError = hasError,
+        singleLine = true,
+        keyboardOptions = keyboardOptions,
+        keyboardActions = keyboardActions,
+        trailingIcon = {
+            if (value.isNotEmpty()) {
+                IconButton(
+                    onClick = { onValueChange("") },
+                    modifier = Modifier.size(40.dp),
+                ) {
+                    Icon(
+                        painter = painterResource(ProfileRes.drawable.clear_button_icon),
+                        contentDescription = "clear text",
                     )
                 }
-            },
-            modifier = Modifier.fillMaxWidth(),
-        )
-    }
+            }
+        },
+        textStyle = MaterialTheme.typography.bodyLarge,
+        supportingText = {
+            if (hasError) {
+                Text(
+                    text = error.messages.first(),
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = errorTextTestTag?.let { Modifier.testTag(it) } ?: Modifier,
+                )
+            }
+        },
+        modifier = modifier,
+    )
 }
 
 @Composable

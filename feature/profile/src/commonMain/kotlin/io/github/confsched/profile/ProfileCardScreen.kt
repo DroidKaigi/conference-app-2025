@@ -44,11 +44,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import io.github.confsched.profile.components.CardPreviewImageBitmaps
 import io.github.confsched.profile.components.FlippableProfileCard
 import io.github.confsched.profile.components.ShareableProfileCard
 import io.github.confsched.profile.components.isDark
+import io.github.droidkaigi.confsched.common.compose.LocalTestMode
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.droidkaigiui.component.AnimatedTextTopAppBar
 import io.github.droidkaigi.confsched.droidkaigiui.compositionlocal.safeDrawingWithBottomNavBar
@@ -64,6 +66,9 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+const val ProfileCardCardScreenTestTag = "ProfileCardCardScreenTestTag"
+const val ProfileCardEditButtonTestTag = "ProfileCardEditButtonTestTag"
+
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ProfileCardScreen(
@@ -75,7 +80,8 @@ fun ProfileCardScreen(
     var shareableProfileCardRenderResult: ImageBitmap? by remember { mutableStateOf(null) }
     val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-    val isShareReady = shareableProfileCardRenderResult != null
+    val isTestMode = LocalTestMode.current
+    val isShareReady = shareableProfileCardRenderResult != null || isTestMode
     val backgroundAlpha by animateFloatAsState(
         targetValue = if (isShareReady) 1f else 0f,
         animationSpec = tween(
@@ -133,7 +139,8 @@ fun ProfileCardScreen(
                     .nestedScroll(scrollBehavior.nestedScrollConnection)
                     .verticalScroll(rememberScrollState())
                     .padding(horizontal = 16.dp)
-                    .padding(contentPadding),
+                    .padding(contentPadding)
+                    .testTag(ProfileCardCardScreenTestTag),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
             ) {
@@ -178,7 +185,7 @@ fun ProfileCardScreen(
                 OutlinedButton(
                     onClick = onEditClick,
                     shapes = ButtonDefaults.shapes(),
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().testTag(ProfileCardEditButtonTestTag),
                     border = null,
                     contentPadding = PaddingValues(18.dp),
                 ) {

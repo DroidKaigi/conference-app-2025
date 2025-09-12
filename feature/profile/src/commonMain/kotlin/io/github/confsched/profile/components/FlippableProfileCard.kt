@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.testTag
 import io.github.confsched.profile.ProfileScreenUiState
 import io.github.confsched.profile.hologramaticEffect
 import io.github.confsched.profile.tiltEffect
@@ -29,6 +30,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 private const val ChangeFlipCardDeltaThreshold = 20f
 private const val IntroAnimationMaxRotation = 30f
+const val ProfileCardFlipCardTestTag = "ProfileCardFlipCardTestTag"
+const val ProfileCardFlipCardFrontTestTag = "ProfileCardFlipCardFrontTestTag"
+const val ProfileCardFlipCardBackTestTag = "ProfileCardFlipCardBackTestTag"
 
 private enum class FlipState { Initial, Animating, Default }
 
@@ -91,6 +95,7 @@ private fun ProfileCard(
     WithDeviceOrientation {
         Card(
             modifier = modifier
+                .testTag(ProfileCardFlipCardTestTag)
                 .clickable(
                     enabled = interactionsEnabled,
                     interactionSource = remember { MutableInteractionSource() },
@@ -122,15 +127,19 @@ private fun ProfileCard(
                     profileImageBitmap = uiState.profileImageBitmap,
                     nickName = uiState.profile.nickName,
                     occupation = uiState.profile.occupation,
-                    modifier = Modifier.hologramaticEffect(this@WithDeviceOrientation),
+                    modifier = Modifier
+                        .hologramaticEffect(this@WithDeviceOrientation)
+                        .testTag(ProfileCardFlipCardFrontTestTag),
                 )
             } else {
                 ProfileCardBack(
                     theme = uiState.profile.theme,
                     qrImageBitmap = uiState.qrImageBitmap,
-                    modifier = Modifier.graphicsLayer {
-                        rotationY = 180f
-                    },
+                    modifier = Modifier
+                        .graphicsLayer {
+                            rotationY = 180f
+                        }
+                        .testTag(ProfileCardFlipCardBackTestTag),
                 )
             }
         }

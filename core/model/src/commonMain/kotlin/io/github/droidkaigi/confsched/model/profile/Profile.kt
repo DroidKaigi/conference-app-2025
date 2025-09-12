@@ -10,3 +10,12 @@ data class Profile(
     val imagePath: String = "",
     val theme: ProfileCardTheme = ProfileCardTheme.DarkPill,
 )
+
+fun Profile.Companion.fake(): Profile {
+    return Profile(
+        nickName = "User",
+        occupation = "Developer",
+        link = "https://2025.droidkaigi.jp",
+        imagePath = "image.png",
+    )
+}
