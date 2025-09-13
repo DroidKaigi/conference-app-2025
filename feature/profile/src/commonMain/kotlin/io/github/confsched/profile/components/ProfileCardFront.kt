@@ -17,11 +17,13 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
+import coil3.compose.rememberAsyncImagePainter
 import io.github.confsched.profile.innerShadow
 import io.github.droidkaigi.confsched.droidkaigiui.KaigiPreviewContainer
 import io.github.droidkaigi.confsched.model.profile.ProfileCardTheme
 import io.github.droidkaigi.confsched.profile.ProfileRes
+import io.github.droidkaigi.confsched.profile.card_front_background_day
+import io.github.droidkaigi.confsched.profile.card_front_background_night
 import io.github.droidkaigi.confsched.profile.card_front_bottom_curve
 import io.github.droidkaigi.confsched.profile.card_front_logo_frame_day
 import io.github.droidkaigi.confsched.profile.card_front_logo_frame_night
@@ -53,6 +55,7 @@ fun ProfileCardFront(
         CardFrontBackgroundImage(
             isDark = theme.isDark,
             modifier = Modifier.matchParentSize(),
+            isAsyncLoadImage = false,
         )
         ProfileCardUser(
             isDarkTheme = theme.isDark,
@@ -94,19 +97,31 @@ fun ProfileCardFront(
 fun CardFrontBackgroundImage(
     isDark: Boolean,
     modifier: Modifier = Modifier,
+    isAsyncLoadImage: Boolean = true,
 ) {
-    /**
-     * Displaying high-resolution WebP images directly with painterResource results in poor performance, so we use Coil.
-     *
-     * Care must be taken when renaming resources, as Coil does not support Compose Multiplatform Resources and specifies files as strings.
-     * ref: https://github.com/coil-kt/coil/issues/2812
-     */
-    AsyncImage(
-        model = if (isDark) {
-            ProfileRes.getUri("drawable/card_front_background_night.webp")
+    val painter = if (isAsyncLoadImage) {
+        /**
+         * Displaying high-resolution WebP images directly with painterResource results in poor performance, so we use Coil.
+         *
+         * Care must be taken when renaming resources, as Coil does not support Compose Multiplatform Resources and specifies files as strings.
+         * ref: https://github.com/coil-kt/coil/issues/2812
+         */
+        rememberAsyncImagePainter(
+            model = if (isDark) {
+                ProfileRes.getUri("drawable/card_front_background_night.webp")
+            } else {
+                ProfileRes.getUri("drawable/card_front_background_day.webp")
+            },
+        )
+    } else {
+        if (isDark) {
+            painterResource(ProfileRes.drawable.card_front_background_night)
         } else {
-            ProfileRes.getUri("drawable/card_front_background_day.webp")
-        },
+            painterResource(ProfileRes.drawable.card_front_background_day)
+        }
+    }
+    Image(
+        painter = painter,
         contentScale = ContentScale.Crop,
         contentDescription = null,
         modifier = modifier,
