@@ -1,3 +1,4 @@
+import Component
 import Dependencies
 import DependencyExtra
 import SwiftUI
@@ -52,7 +53,7 @@ public struct EventMapScreen: View {
                         }
                     }
                 }
-                .padding(.bottom, 80)  // Tab bar padding
+                .padding(.bottom, Constant.bottomPadding)  // Tab bar padding
             }
         }
         .background(AssetColors.background.swiftUIColor)

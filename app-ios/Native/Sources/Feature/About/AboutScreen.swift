@@ -1,3 +1,4 @@
+import Component
 import Dependencies
 import DependencyExtra
 import SwiftUI
@@ -39,7 +40,7 @@ public struct AboutScreen: View {
                 }
                 .padding(.horizontal, 16)
             }
-            .padding(.bottom, 80)  // Tab bar padding
+            .padding(.bottom, Constant.bottomPadding)  // Tab bar padding
         }
         .background(AssetColors.surface.swiftUIColor)
         .navigationTitle(String(localized: "About DroidKaigi", bundle: .module))

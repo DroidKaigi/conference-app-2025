@@ -39,7 +39,7 @@ struct FavoriteItemList: View {
                 }
             }
             .padding(.vertical, 20)
-            .padding(.bottom, 80)  // Tab bar padding
+            .padding(.bottom, Constant.bottomPadding)  // Tab bar padding
         }
     }
 }

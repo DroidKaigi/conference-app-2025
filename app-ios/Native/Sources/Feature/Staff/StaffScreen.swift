@@ -1,3 +1,4 @@
+import Component
 import SwiftUI
 import Theme
 
@@ -24,7 +25,7 @@ public struct StaffScreen: View {
                             .buttonStyle(PlainButtonStyle())
                         }
                     }
-                    .padding(.bottom, 80)
+                    .padding(.bottom, Constant.bottomPadding)
                 }
                 .background(AssetColors.surface.swiftUIColor)
             }

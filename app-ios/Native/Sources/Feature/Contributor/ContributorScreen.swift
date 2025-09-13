@@ -1,3 +1,4 @@
+import Component
 import SwiftUI
 import Theme
 
@@ -58,7 +59,7 @@ public struct ContributorScreen: View {
                             }
                         }
                     }
-                    .padding(.bottom, 80)  // Tab bar padding
+                    .padding(.bottom, Constant.bottomPadding)  // Tab bar padding
                 }
             }
         }

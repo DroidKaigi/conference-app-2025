@@ -123,32 +123,38 @@ public struct RootScreen: View {
                     .hiddenTabBarIfNeeded()
             } label: {
                 TabType.timetable.tabImage(selectedTab).swiftUIImage
+                Text(String(localized: "Timetable", bundle: .module))
             }
             Tab(value: .map) {
                 mapTab
                     .hiddenTabBarIfNeeded()
             } label: {
                 TabType.map.tabImage(selectedTab).swiftUIImage
+                Text(String(localized: "Event Map", bundle: .module))
             }
             Tab(value: .favorite) {
                 favoriteTab
                     .hiddenTabBarIfNeeded()
             } label: {
                 TabType.favorite.tabImage(selectedTab).swiftUIImage
+                Text(String(localized: "Favorites", bundle: .module))
             }
             Tab(value: .info) {
                 infoTab
                     .hiddenTabBarIfNeeded()
             } label: {
                 TabType.info.tabImage(selectedTab).swiftUIImage
+                Text(String(localized: "About DroidKaigi", bundle: .module))
             }
             Tab(value: .profileCard) {
                 profileCardTab
                     .hiddenTabBarIfNeeded()
             } label: {
                 TabType.profileCard.tabImage(selectedTab).swiftUIImage
+                Text(String(localized: "Profile Card", bundle: .module))
             }
         }
+        .tabViewStyle(.sidebarAdaptable)
         .tint(AssetColors.primaryFixed.swiftUIColor)
     }
 

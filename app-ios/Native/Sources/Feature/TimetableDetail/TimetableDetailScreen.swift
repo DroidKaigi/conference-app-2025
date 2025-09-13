@@ -40,12 +40,12 @@ public struct TimetableDetailScreen: View {
                             .padding(16)
                     }
 
-                    Spacer().frame(height: 56)  // FAB space
+                    Spacer().frame(height: 56 + Constant.bottomPadding)  // FAB space + Tab bar padding
                 }
 
                 fabMenu
+                    .padding(.bottom, Constant.bottomPadding)  // Tab bar padding
             }
-            .padding(.bottom, 80)  // Tab bar padding
             .background(AssetColors.background.swiftUIColor)
             .frame(maxWidth: .infinity)
             .ignoresSafeArea(edges: [.top])

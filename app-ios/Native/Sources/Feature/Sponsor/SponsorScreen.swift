@@ -1,3 +1,4 @@
+import Component
 import SwiftUI
 import Theme
 
@@ -16,7 +17,7 @@ public struct SponsorScreen: View {
                 }
             }
             .padding(.top, 24)
-            .padding(.bottom, 80)
+            .padding(.bottom, Constant.bottomPadding)
         }
         .background(AssetColors.background.swiftUIColor)  // #111418
         .navigationTitle("スポンサー")

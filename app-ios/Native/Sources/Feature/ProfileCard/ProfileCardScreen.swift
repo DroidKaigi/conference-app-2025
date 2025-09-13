@@ -48,7 +48,7 @@ public struct ProfileCardScreen: View {
                     EmptyView()
                 }
             }
-            .padding(.bottom, 80)  // Tab bar padding
+            .padding(.bottom, Constant.bottomPadding)  // Tab bar padding
         }
     }
 

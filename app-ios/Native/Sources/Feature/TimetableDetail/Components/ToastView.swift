@@ -1,3 +1,4 @@
+import Component
 import SwiftUI
 import Theme
 
@@ -25,7 +26,8 @@ struct ToastView: View {
         .padding(.vertical, 14)
         .padding(.horizontal, 16)
         .background(AssetColors.inverseSurface.swiftUIColor, in: RoundedRectangle(cornerRadius: 4))
-        .padding(.bottom, 100)  // Tab bar padding
+        .padding(.horizontal, 16)
+        .padding(.bottom, Constant.bottomPadding)  // Tab bar padding
     }
 }
 
